@@ -1,0 +1,1677 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Ma Boussole Business · Human Design et business passion</title>
+<meta name="description" content="Découvre ton Human Design et trouve ton business passion : charte gratuite, bilan d'orientation et pistes de business sur mesure.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400&family=Figtree:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a single scrolling journey in three chapters (charte → bilan → pistes), each a wide sand band holding one working card */
+:root{
+  --bg:#F4EDE1; --surface:#FBF7F1; --sand:#E9DCC8; --line:#D8C6AC; --ink:#3A2819; --muted:#7A614B;
+  --accent:#8A5A35; --accent-ink:#FBF7F1; --design:#C08C4E; --center-on:#DDBE93; --line-off:#E4D6C1; --focus:#B07A45;
+  --display:'Fraunces', Georgia, 'Times New Roman', serif; --body:'Figtree', system-ui, -apple-system, 'Segoe UI', sans-serif; --mono:'IBM Plex Mono', ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#1B140F; --surface:#261D16; --sand:#30251B; --line:#4A3A2B; --ink:#F1E6D6; --muted:#BDA58B;
+  --accent:#D4A373; --accent-ink:#1B140F; --design:#D9A35E; --center-on:#86603A; --line-off:#3A2D22; --focus:#E3B686; color-scheme:dark } }
+:root[data-theme="dark"]{
+  --bg:#1B140F; --surface:#261D16; --sand:#30251B; --line:#4A3A2B; --ink:#F1E6D6; --muted:#BDA58B;
+  --accent:#D4A373; --accent-ink:#1B140F; --design:#D9A35E; --center-on:#86603A; --line-off:#3A2D22; --focus:#E3B686; color-scheme:dark }
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1080px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3{font-family:var(--display);font-weight:600;text-wrap:balance;margin:0;letter-spacing:-.01em}
+p{margin:0}
+a{color:var(--accent)}
+:focus-visible{outline:2px solid var(--focus);outline-offset:2px;border-radius:6px}
+.eyebrow{font-size:.75rem;text-transform:uppercase;letter-spacing:.14em;color:var(--muted);font-weight:600}
+.muted{color:var(--muted)}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+
+/* header */
+.top{border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:14px;flex-wrap:wrap}
+.brand{font-family:var(--display);font-size:1.15rem;font-weight:600;display:flex;align-items:center;gap:10px}
+.brand svg{flex:none}
+.nav{display:flex;gap:18px;font-size:.92rem}
+.nav a{color:var(--muted);text-decoration:none}
+.nav a:hover{color:var(--ink)}
+
+/* hero */
+.hero .wrap{padding-block:56px 40px;display:grid;grid-template-columns:1.25fr .75fr;gap:40px;align-items:end}
+.hero h1{font-size:clamp(2.1rem,5vw,3.6rem);line-height:1.05;font-weight:400}
+.hero h1 em{font-style:italic;color:var(--accent)}
+.hero .lead{margin-top:18px;font-size:1.1rem;max-width:56ch;color:var(--muted)}
+.steps{list-style:none;margin:0;padding:0;display:grid;gap:10px;counter-reset:s}
+.steps li{display:grid;grid-template-columns:34px 1fr;gap:12px;align-items:start;padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+.steps li::before{counter-increment:s;content:counter(s);font-family:var(--display);font-size:1.3rem;color:var(--accent);line-height:1.2}
+.steps b{display:block;font-weight:600}
+.steps span{font-size:.88rem;color:var(--muted)}
+
+/* chapters */
+.chapter{padding-block:40px}
+.chapter + .chapter{border-top:1px solid var(--line)}
+.chapter-head{display:flex;justify-content:space-between;align-items:end;gap:16px;flex-wrap:wrap;margin-bottom:22px}
+.chapter-head h2{font-size:clamp(1.6rem,3.4vw,2.3rem);font-weight:400}
+.chapter-head p{max-width:52ch}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:24px}
+.band{background:var(--sand);border-radius:22px;padding:18px}
+
+/* form */
+.chart-grid{display:grid;grid-template-columns:320px 1fr;gap:18px;align-items:start}
+.chart-grid > *{min-width:0}
+form{display:grid;gap:14px}
+label{display:grid;gap:6px;font-size:.88rem;font-weight:600}
+input[type=text],input[type=date],input[type=time],select,textarea{font:inherit;font-weight:400;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px 12px;width:100%}
+textarea{min-height:84px;resize:vertical}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.check{display:flex;align-items:center;gap:8px;font-weight:400}
+.hint{font-size:.8rem;color:var(--muted);font-weight:400}
+.btn{font:inherit;font-weight:600;border:0;border-radius:999px;padding:12px 20px;background:var(--accent);color:var(--accent-ink);cursor:pointer;display:inline-flex;align-items:center;gap:8px;justify-content:center}
+.btn:hover{filter:brightness(1.07)}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.tag{display:inline-block;font-size:.72rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:3px 9px;border-radius:999px;background:var(--sand);color:var(--muted)}
+.tag.ex{background:var(--design);color:var(--accent-ink)}
+
+/* chart result */
+.result{display:grid;grid-template-columns:minmax(220px,300px) 1fr;gap:22px;align-items:start}
+.result > *{min-width:0}
+.body-wrap{position:relative}
+.body-wrap svg{width:100%;height:auto;display:block}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:.8rem;color:var(--muted);margin-top:8px}
+.legend i{display:inline-block;width:18px;height:5px;border-radius:3px;vertical-align:middle;margin-right:6px}
+.facts{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.fact{background:var(--surface);padding:12px 14px}
+.fact dt{font-size:.72rem;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);font-weight:600}
+.fact dd{margin:3px 0 0;font-family:var(--display);font-size:1.15rem;line-height:1.25}
+.fact.wide{grid-column:1/-1}
+.who{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+.who h3{font-size:1.5rem;font-weight:400}
+
+.details{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:18px}
+.block{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:18px;display:grid;gap:8px;align-content:start}
+.block h4{margin:0;font-family:var(--display);font-weight:600;font-size:1.1rem}
+.block .biz{border-left:3px solid var(--design);padding-left:12px;font-size:.95rem}
+.block.full{grid-column:1/-1}
+.centers{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.center{border:1px solid var(--line);border-radius:12px;padding:10px 12px;font-size:.88rem;display:grid;gap:4px}
+.center b{display:flex;justify-content:space-between;gap:6px;font-size:.92rem}
+.center.on{background:color-mix(in srgb,var(--center-on) 32%,var(--surface))}
+.center small{font-size:.7rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);font-weight:600}
+.chan{display:grid;gap:8px}
+.chan div{display:grid;grid-template-columns:64px 1fr;gap:10px;font-size:.92rem}
+details summary{cursor:pointer;font-weight:600}
+.table-scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:.88rem}
+th,td{padding:7px 10px;border-bottom:1px solid var(--line);text-align:left}
+th{font-size:.72rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted)}
+td.d{color:var(--design);font-weight:600}
+
+/* wizard */
+.wizard{display:grid;gap:18px}
+.progress{display:flex;gap:6px;flex-wrap:wrap}
+.progress button{font:inherit;font-size:.82rem;border:1px solid var(--line);background:var(--surface);color:var(--muted);border-radius:999px;padding:6px 12px;cursor:pointer}
+.progress button.cur{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.progress button.done{color:var(--ink);border-color:var(--design)}
+.bar{height:6px;background:var(--line-off);border-radius:3px;overflow:hidden}
+.bar span{display:block;height:100%;background:var(--accent);transition:width .3s}
+.mod-head h3{font-size:1.4rem;font-weight:400}
+.mod-head p{margin-top:4px}
+.likert{display:grid;gap:2px}
+.lk{display:grid;grid-template-columns:1fr auto;gap:14px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line-off)}
+.dots{display:flex;gap:6px}
+.dots button{width:34px;height:34px;border-radius:50%;border:1px solid var(--line);background:var(--bg);color:var(--muted);font:inherit;font-size:.82rem;cursor:pointer}
+.dots button.on{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.scale-note{display:flex;justify-content:flex-end;gap:14px;font-size:.75rem;color:var(--muted)}
+.skill-group{display:grid;gap:8px;margin-bottom:14px}
+.skill-group h4{margin:0;font-size:.78rem;text-transform:uppercase;letter-spacing:.12em;color:var(--muted)}
+.sk{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;padding:6px 0;border-bottom:1px solid var(--line-off)}
+.seg{display:flex;border:1px solid var(--line);border-radius:999px;overflow:hidden}
+.seg button{font:inherit;font-size:.78rem;border:0;background:var(--bg);color:var(--muted);padding:6px 10px;cursor:pointer}
+.seg button + button{border-left:1px solid var(--line)}
+.seg button.on{background:var(--accent);color:var(--accent-ink)}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{font:inherit;font-size:.9rem;border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:999px;padding:8px 14px;cursor:pointer;display:inline-flex;gap:8px;align-items:center}
+.chip.on{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.chip .n{font-family:var(--mono);font-size:.75rem;opacity:.85}
+.pair{display:grid;gap:8px;padding:10px 0;border-bottom:1px solid var(--line-off)}
+.pair .seg{width:max-content;max-width:100%;flex-wrap:wrap}
+.qgrid{display:grid;gap:14px}
+.wiz-nav{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+
+/* compass */
+.compass{display:grid;grid-template-columns:340px 1fr;gap:18px;align-items:start}
+.compass > *{min-width:0}
+.profile-card{display:grid;gap:18px}
+.holland{display:flex;align-items:baseline;gap:10px}
+.holland b{font-family:var(--display);font-size:2.2rem;letter-spacing:.08em}
+.rbars{display:grid;gap:8px}
+.rb{display:grid;grid-template-columns:110px 1fr 28px;gap:10px;align-items:center;font-size:.86rem}
+.rb .track{height:10px;background:var(--line-off);border-radius:5px;overflow:hidden}
+.rb .track span{display:block;height:100%;background:var(--design);border-radius:5px}
+.rb.top .track span{background:var(--accent)}
+.rb .v{font-family:var(--mono);font-size:.8rem;text-align:right;color:var(--muted)}
+.mini{display:grid;gap:6px}
+.mini h4{margin:0;font-size:.75rem;text-transform:uppercase;letter-spacing:.12em;color:var(--muted)}
+.pill{display:inline-block;font-size:.84rem;padding:4px 10px;border-radius:999px;background:var(--sand);margin:0 6px 6px 0}
+.ideas{display:grid;gap:14px}
+.idea{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:20px;display:grid;gap:10px}
+.idea-top{display:flex;justify-content:space-between;align-items:start;gap:14px}
+.idea h4{margin:0;font-family:var(--display);font-weight:600;font-size:1.25rem;line-height:1.2}
+.score{text-align:right;flex:none}
+.score b{font-family:var(--display);font-size:1.7rem;font-weight:400;color:var(--accent)}
+.score small{display:block;font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:.1em}
+.meta{display:flex;flex-wrap:wrap;gap:6px}
+.breakdown{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}
+.breakdown div{font-size:.7rem;color:var(--muted);display:grid;gap:4px}
+.breakdown i{display:block;height:5px;border-radius:3px;background:var(--line-off);overflow:hidden}
+.breakdown i span{display:block;height:100%;background:var(--design)}
+.firststep{background:var(--bg);border-radius:12px;padding:10px 12px;font-size:.92rem}
+.firststep b{font-weight:600}
+.why{font-size:.92rem}
+.ai-box{border:1px dashed var(--design);border-radius:16px;padding:18px;display:grid;gap:12px;background:var(--surface)}
+.ai-status{font-size:.9rem;color:var(--muted)}
+.notice{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 14px;font-size:.88rem;display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:space-between}
+footer{border-top:1px solid var(--line);padding-block:26px;font-size:.82rem;color:var(--muted)}
+footer .wrap{display:grid;gap:6px}
+
+
+/* 4 clés */
+.hdbiz-head h4{font-size:1.35rem;font-weight:400}
+.key{border-top:3px solid var(--design)}
+.key-top{display:flex;gap:12px;align-items:center}
+.key-n{flex:none;width:36px;height:36px;border-radius:50%;background:var(--sand);display:grid;place-items:center;font-family:var(--display);font-size:1.15rem;color:var(--accent)}
+.evolve{font-size:.95rem}
+.trap{font-size:.88rem;color:var(--muted);background:var(--bg);border-radius:10px;padding:8px 12px}
+/* récap */
+.recap-grid{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:14px;align-items:start}
+.recap-side{display:grid;gap:14px}
+.offer-form{display:grid;gap:14px}
+.offer-form h3,.recap-actions h3,.empty h3{font-size:1.3rem;font-weight:400;margin-top:4px}
+.empty{display:grid;gap:10px}
+.actions{display:flex;gap:10px;flex-wrap:wrap}
+.recap-actions{display:grid;gap:12px}
+.howto{margin:0;padding-left:18px;display:grid;gap:6px;font-size:.9rem;color:var(--muted)}
+.howto b{color:var(--ink)}
+.copy-area{min-height:180px;font-family:var(--mono);font-size:.8rem}
+.recap-doc{font-family:var(--display)}
+.recap-doc p,.recap-doc dd,.recap-doc li{font-family:var(--body)}
+.rc-head{border-bottom:2px solid var(--accent);padding-bottom:16px}
+.rc-eyebrow,.rc-k-label,.recap-doc dt,.rc-w{font-family:var(--body);font-size:.72rem;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);font-weight:600;margin:0}
+.rc-head h2{font-size:clamp(1.5rem,3vw,2rem);font-weight:400;margin:8px 0 4px}
+.rc-angle{font-family:var(--display)!important;font-style:italic;font-size:1.15rem;color:var(--accent)}
+.rc-sec{padding:16px 0;border-bottom:1px solid var(--line)}
+.rc-sec h3{font-size:1.1rem;margin-bottom:10px}
+.rc-dl{margin:0;display:grid;gap:8px}
+.rc-dl div{display:grid;grid-template-columns:150px minmax(0,1fr);gap:12px}
+.rc-dl dd{margin:0}
+.rc-keys{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.rc-key{background:var(--bg);border-radius:12px;padding:10px 12px;display:grid;gap:4px;font-size:.88rem}
+.rc-k-title{font-family:var(--display)!important;font-weight:600;font-size:1rem}
+.rc-plan{margin:0;padding-left:18px;display:grid;gap:10px}
+.rc-empty{color:var(--muted);font-style:italic}
+.rc-foot{font-size:.8rem;color:var(--muted);margin-top:14px}
+@media (max-width:900px){.recap-grid{grid-template-columns:1fr}}
+@media (max-width:520px){.rc-dl div,.rc-keys{grid-template-columns:1fr}}
+
+/* comité */
+.team{display:grid;gap:14px}
+.team-card{display:grid;gap:18px}
+.roster{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.agent{display:grid;grid-template-columns:40px 1fr;gap:12px;border:1px solid var(--line);border-radius:14px;padding:12px;font-size:.88rem;background:var(--bg)}
+.agent b{font-size:.95rem}
+.agent p{color:var(--muted);margin:2px 0 6px}
+.ini{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;font-family:var(--mono);font-size:.78rem;font-weight:500;background:var(--sand);color:var(--accent);flex:none}
+.state{font-size:.72rem;text-transform:uppercase;letter-spacing:.1em;font-weight:600;color:var(--muted)}
+.agent.run{border-color:var(--design)}
+.agent.run .state{color:var(--accent)}
+.agent.run .ini{animation:pulse 1.4s ease-in-out infinite}
+.agent.done .ini{background:var(--accent);color:var(--accent-ink)}
+.agent.done .state{color:var(--ink)}
+.agent.err .state{color:var(--accent)}
+@keyframes pulse{50%{opacity:.45}}
+.team-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.team-actions .ai-status{flex:1 1 260px}
+.vision{display:grid;gap:14px}
+.vision-line{font-size:clamp(1.4rem,3vw,2rem);font-weight:400;font-style:italic;color:var(--accent);line-height:1.25}
+.vision-why{font-size:1.02rem;max-width:68ch}
+.prios{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.prios div{display:grid;grid-template-columns:36px 1fr;gap:10px;align-items:start;background:var(--bg);border-radius:12px;padding:12px}
+.road-title{font-family:var(--display);font-weight:600;font-size:1.1rem;margin:6px 0 0}
+.road{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.month{border:1px solid var(--line);border-top:3px solid var(--design);border-radius:12px;padding:12px;display:grid;gap:6px;align-content:start}
+.m-goal{font-family:var(--display);font-weight:600}
+.month ul,.report ul{margin:0;padding-left:18px;display:grid;gap:4px;font-size:.92rem}
+.kpi{background:var(--bg);border-radius:12px;padding:10px 12px}
+.encourage{font-family:var(--display);font-style:italic;font-size:1.05rem}
+.report summary{display:flex;gap:12px;align-items:center;list-style:none}
+.report summary::-webkit-details-marker{display:none}
+.report summary::after{content:"+";margin-left:auto;font-size:1.3rem;color:var(--muted)}
+.report[open] summary::after{content:"–"}
+.report-body{display:grid;gap:12px;margin-top:16px;padding-top:16px;border-top:1px solid var(--line)}
+.report h5{margin:0 0 6px;font-size:.75rem;text-transform:uppercase;letter-spacing:.12em;color:var(--muted)}
+.lead-s{font-size:1.02rem}
+.genie{font-family:var(--display);font-style:italic;font-size:1.15rem;color:var(--accent)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.three{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.offer-box{background:var(--bg);border-radius:14px;padding:16px;display:grid;gap:10px}
+.report .offer-name{font-family:var(--display);font-size:1.3rem;font-weight:600;margin:0;text-transform:none;letter-spacing:0;color:var(--ink)}
+.pitch{margin:0;border-left:3px solid var(--design);padding:4px 0 4px 14px;font-style:italic}
+.chan-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.chan-cards div{background:var(--bg);border-radius:12px;padding:12px;display:grid;gap:4px;font-size:.9rem}
+.blocks{display:grid;gap:8px}
+.blocks div{background:var(--bg);border-radius:12px;padding:10px 12px;font-size:.92rem}
+.rc-vision{font-family:var(--display)!important;font-style:italic;font-size:1.1rem;color:var(--accent)}
+.rc-ul{margin:4px 0 0;padding-left:16px;font-size:.85rem}
+@media (max-width:900px){.roster,.prios,.road,.chan-cards,.three{grid-template-columns:1fr}.two{grid-template-columns:1fr}}
+
+/* finitions */
+.k-ess{font-size:.98rem}
+.k-rows{display:grid;gap:8px}
+.k-rows div{display:grid;grid-template-columns:78px 1fr;gap:10px;align-items:start;font-size:.92rem}
+.k-lab{font-size:.68rem;text-transform:uppercase;letter-spacing:.1em;font-weight:600;color:var(--accent);background:var(--sand);border-radius:999px;padding:3px 8px;text-align:center;margin-top:2px}
+.k-lab.warn{background:transparent;border:1px solid var(--line);color:var(--muted)}
+.mail{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:18px;align-items:center;margin-top:18px}
+.mail h3,.paywall h3,.locked h3{font-size:1.3rem;font-weight:400;margin-top:4px}
+.mail-form{display:grid;gap:10px}
+.mail-btns{display:flex;gap:10px;flex-wrap:wrap}
+.owner-note{grid-column:1/-1;border:1px dashed var(--design);border-radius:12px;padding:10px 12px;font-size:.84rem;color:var(--muted)}
+.owner-note b{color:var(--ink)}
+.compass.is-locked{grid-template-columns:1fr}
+.paywall{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:14px;align-items:start}
+.pw-left,.pw-right{display:grid;gap:14px}
+.pw-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.pw-stats div{background:var(--bg);border-radius:12px;padding:10px 12px;display:grid}
+.pw-stats b{font-family:var(--display);font-size:1.15rem;font-weight:600}
+.pw-stats span{font-size:.75rem;color:var(--muted)}
+.pw-list{margin:0;padding-left:18px;display:grid;gap:6px}
+.pw-blur{display:grid;gap:10px;filter:blur(3px);opacity:.55;user-select:none;pointer-events:none}
+.pw-price{font-family:var(--display);font-size:3rem;line-height:1;color:var(--accent)}
+.pw-right{position:sticky;top:calc(env(safe-area-inset-top,0px) + 16px)}
+.code-form{display:grid;gap:6px;border-top:1px solid var(--line);padding-top:14px}
+.code-row{display:flex;gap:8px}
+.code-row input{flex:1;min-width:0}
+.locked{display:grid;grid-template-columns:auto 1fr auto;gap:16px;align-items:center}
+.lock{font-size:1.6rem}
+@media (max-width:900px){.mail,.paywall{grid-template-columns:1fr}.pw-right{position:static}}
+@media (max-width:520px){.locked{grid-template-columns:1fr}.pw-stats{grid-template-columns:1fr}.k-rows div{grid-template-columns:1fr}.k-lab{justify-self:start}}
+@media (max-width:900px){
+  .hero .wrap,.chart-grid,.compass{grid-template-columns:1fr}
+  .result{grid-template-columns:1fr}
+  .body-wrap{max-width:320px;margin:0 auto;width:100%}
+  .details{grid-template-columns:1fr}
+  .centers{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:520px){
+  .card{padding:18px}
+  .band{padding:10px;border-radius:18px}
+  .lk{grid-template-columns:1fr}
+  .sk{grid-template-columns:1fr}
+  .facts{grid-template-columns:1fr}
+  .centers{grid-template-columns:1fr}
+  .breakdown{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .nav{display:none}
+}
+@media (prefers-reduced-motion: reduce){ *{transition:none!important;scroll-behavior:auto!important} }
+html{scroll-behavior:smooth}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <div class="brand">
+      <svg width="26" height="26" viewBox="0 0 26 26" aria-hidden="true"><circle cx="13" cy="13" r="11.5" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M13 4 L16 13 L13 22 L10 13 Z" fill="var(--accent)"/></svg>
+      Ma Boussole Business
+    </div>
+    <nav class="nav" aria-label="Sections">
+      <a href="#charte">Ta charte</a><a href="#bilan">Ton bilan</a><a href="#pistes">Tes pistes</a><a href="#comite" class="navl">Ton comité</a><a href="#recap" class="navl">Ton récap</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap">
+    <div>
+      <p class="eyebrow">Human Design · bilan d'orientation · idées de business</p>
+      <h1 style="margin-top:14px">Découvre ton Human Design et trouve ton <em>business passion</em></h1>
+      <p class="lead">Calcule ta charte, réponds à un bilan de 20 minutes sur tes intérêts, tes compétences et tes envies, puis reçois des idées de projets faites pour ta façon de fonctionner.</p>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:22px">
+        <a class="btn" href="#charte">Calculer ma charte</a>
+        <a class="btn ghost" href="#pistes">Voir un exemple de résultat</a>
+      </div>
+    </div>
+    <ol class="steps">
+      <li><div><b>Ta charte</b><span>Type, stratégie, autorité, profil, centres et talents.</span></div></li>
+      <li><div><b>Ton bilan</b><span>7 courts modules : intérêts, compétences, valeurs, contraintes…</span></div></li>
+      <li><div><b>Tes pistes</b><span>4 idées classées par alignement, avec un premier pas.</span></div></li>
+      <li><div><b>Ton comité d'experts</b><span>6 experts IA analysent ton profil et construisent ta vision.</span></div></li>
+      <li><div><b>Ton récap</b><span>Ton offre de lancement et ton plan sur 30 jours, à garder.</span></div></li>
+    </ol>
+  </div>
+</section>
+
+<section class="chapter" id="charte">
+  <div class="wrap">
+    <div class="chapter-head">
+      <div><p class="eyebrow">Étape 1</p><h2>Ton mode de fonctionnement</h2></div>
+      <p class="muted">Gratuit. Il te faut ta date, ton heure et ton lieu de naissance : plus l'heure est précise, plus ton profil et ton autorité sont fiables.</p>
+    </div>
+    <div class="band">
+      <div class="chart-grid">
+        <div class="card">
+          <form id="birthForm" novalidate>
+            <label for="fName">Ton prénom<input type="text" id="fName" autocomplete="given-name" placeholder="Camille"></label>
+            <label for="fDate">Date de naissance<input type="date" id="fDate" required></label>
+            <div class="row2">
+              <label for="fTime">Heure<input type="time" id="fTime"></label>
+              <label for="fCity">Ville<input type="text" id="fCity" placeholder="Lyon"></label>
+            </div>
+            <label class="check" for="fUnknown"><input type="checkbox" id="fUnknown"> Je ne connais pas mon heure</label>
+            <label for="fZone">Pays ou fuseau de naissance<select id="fZone"></select><span class="hint">Il sert à convertir ton heure locale, heure d'été comprise.</span></label>
+            <p class="hint" id="formErr" role="alert" hidden></p>
+            <button class="btn" type="submit">Calculer ma charte</button>
+          </form>
+        </div>
+        <div class="card" id="chartOut"></div>
+      </div>
+    </div>
+    <div id="mailBox"></div>
+    <div id="chartDetails"></div>
+  </div>
+</section>
+
+<section class="chapter" id="bilan">
+  <div class="wrap">
+    <div class="chapter-head">
+      <div><p class="eyebrow">Étape 2</p><h2>Ton bilan d'orientation</h2></div>
+      <p class="muted">Gratuit · environ 20 minutes. Réponds spontanément : il n'y a pas de bonne réponse, et tes réponses restent dans ton navigateur.</p>
+    </div>
+    <div class="band"><div class="card wizard" id="wizard"></div></div>
+  </div>
+</section>
+
+<section class="chapter" id="pistes">
+  <div class="wrap">
+    <div class="chapter-head">
+      <div><p class="eyebrow">Étape 3</p><h2>Tes pistes de business passion</h2></div>
+      <p class="muted">Chaque idée est notée sur 100 : compétences 30, intérêts 25, valeurs 15, style de fonctionnement 15, faisabilité 15.</p>
+    </div>
+    <div id="exampleNotice"></div>
+    <div class="compass" id="compass"></div>
+  </div>
+</section>
+
+<section class="chapter" id="comite">
+  <div class="wrap">
+    <div class="chapter-head">
+      <div><p class="eyebrow">Étape 4</p><h2>Ton comité d'experts</h2></div>
+      <p class="muted">Six experts IA, chacun dans son domaine, analysent ton profil à tour de rôle. Chacun lit les rapports des précédents, puis la directrice de synthèse en tire ta vision et ta feuille de route.</p>
+    </div>
+    <div class="band team" id="teamBox"></div>
+  </div>
+</section>
+
+<section class="chapter" id="recap">
+  <div class="wrap">
+    <div class="chapter-head">
+      <div><p class="eyebrow">Étape 5</p><h2>Ton offre et ton récap</h2></div>
+      <p class="muted">Transforme ta piste en offre claire, puis garde ton récap : à télécharger, à imprimer ou à t'envoyer par e-mail.</p>
+    </div>
+    <div class="band" id="recapBox"></div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p>Le Human Design est une grille de lecture de soi, pas une science validée. Ce bilan donne des pistes de réflexion ; il ne remplace ni un conseil professionnel, ni un bilan de compétences officiel.</p>
+    <p>Charte calculée dans ton navigateur avec des éphémérides simplifiées (précision d'environ une minute d'arc).</p>
+    <p class="legal-links"><a href="/mentions-legales.html">Mentions légales</a> · <a href="/cgv.html">CGV</a> · <a href="/confidentialite.html">Confidentialité</a></p>
+  </div>
+</footer>
+
+<script>
+// Human Design chart engine — low-precision ephemeris (Schlyter) + bodygraph logic
+const HD = (() => {
+  const R = Math.PI / 180, D = 180 / Math.PI;
+  const rev = x => ((x % 360) + 360) % 360;
+  const sin = x => Math.sin(x * R), cos = x => Math.cos(x * R);
+  const atan2d = (y, x) => rev(Math.atan2(y, x) * D);
+
+  const dayNum = ms => ms / 864e5 + 2440587.5 - 2451543.5; // days since 2000 Jan 0.0 UT
+
+  function kepler(M, e) {
+    let E = M + e * D * sin(M) * (1 + e * cos(M));
+    for (let k = 0; k < 8; k++) E = E - (E - e * D * sin(E) - M) / (1 - e * cos(E));
+    return E;
+  }
+
+  function sun(d) {
+    const w = 282.9404 + 4.70935e-5 * d, e = 0.016709 - 1.151e-9 * d, M = rev(356.0470 + 0.9856002585 * d);
+    const E = kepler(M, e);
+    const xv = cos(E) - e, yv = Math.sqrt(1 - e * e) * sin(E);
+    return { lon: rev(Math.atan2(yv, xv) * D + w), r: Math.hypot(xv, yv), M, w };
+  }
+
+  const EL = {
+    mercury: d => [48.3313 + 3.24587e-5 * d, 7.0047 + 5e-8 * d, 29.1241 + 1.01444e-5 * d, 0.387098, 0.205635 + 5.59e-10 * d, 168.6562 + 4.0923344368 * d],
+    venus: d => [76.6799 + 2.4659e-5 * d, 3.3946 + 2.75e-8 * d, 54.891 + 1.38374e-5 * d, 0.72333, 0.006773 - 1.302e-9 * d, 48.0052 + 1.6021302244 * d],
+    mars: d => [49.5574 + 2.11081e-5 * d, 1.8497 - 1.78e-8 * d, 286.5016 + 2.92961e-5 * d, 1.523688, 0.093405 + 2.516e-9 * d, 18.6021 + 0.5240207766 * d],
+    jupiter: d => [100.4542 + 2.76854e-5 * d, 1.303 - 1.557e-7 * d, 273.8777 + 1.64505e-5 * d, 5.20256, 0.048498 + 4.469e-9 * d, 19.895 + 0.0830853001 * d],
+    saturn: d => [113.6634 + 2.3898e-5 * d, 2.4886 - 1.081e-7 * d, 339.3939 + 2.97661e-5 * d, 9.55475, 0.055546 - 9.499e-9 * d, 316.967 + 0.0334442282 * d],
+    uranus: d => [74.0005 + 1.3978e-5 * d, 0.7733 + 1.9e-8 * d, 96.6612 + 3.0565e-5 * d, 19.18171 - 1.55e-8 * d, 0.047318 + 7.45e-9 * d, 142.5905 + 0.011725806 * d],
+    neptune: d => [131.7806 + 3.0173e-5 * d, 1.77 - 2.55e-7 * d, 272.8461 - 6.027e-6 * d, 30.05826 + 3.313e-8 * d, 0.008606 + 2.15e-9 * d, 260.2471 + 0.005995147 * d]
+  };
+
+  function helio(name, d) {
+    if (name === 'pluto') {
+      const S = 50.03 + 0.033459652 * d, P = 238.95 + 0.003968789 * d;
+      const lon = 238.9508 + 0.00400703 * d - 19.799 * sin(P) + 19.848 * cos(P) + 0.897 * sin(2 * P) - 4.956 * cos(2 * P) + 0.61 * sin(3 * P) + 1.211 * cos(3 * P) - 0.341 * sin(4 * P) - 0.19 * cos(4 * P) + 0.128 * sin(5 * P) - 0.034 * cos(5 * P) - 0.038 * sin(6 * P) + 0.031 * cos(6 * P) + 0.02 * sin(S - P) - 0.01 * cos(S - P);
+      const lat = -3.9082 - 5.453 * sin(P) - 14.975 * cos(P) + 3.527 * sin(2 * P) + 1.673 * cos(2 * P) - 1.051 * sin(3 * P) + 0.328 * cos(3 * P) + 0.179 * sin(4 * P) - 0.292 * cos(4 * P) + 0.019 * sin(5 * P) + 0.1 * cos(5 * P) - 0.031 * sin(6 * P) - 0.026 * cos(6 * P) + 0.011 * cos(S - P);
+      const r = 40.72 + 6.68 * sin(P) + 6.9 * cos(P) - 1.18 * sin(2 * P) - 0.03 * cos(2 * P) + 0.15 * sin(3 * P) - 0.14 * cos(3 * P);
+      return { lon, lat, r };
+    }
+    const [N, i, w, a, e, M0] = EL[name](d);
+    const M = rev(M0), E = kepler(M, e);
+    const xv = a * (cos(E) - e), yv = a * Math.sqrt(1 - e * e) * sin(E);
+    const v = Math.atan2(yv, xv) * D, r = Math.hypot(xv, yv);
+    const xh = r * (cos(N) * cos(v + w) - sin(N) * sin(v + w) * cos(i));
+    const yh = r * (sin(N) * cos(v + w) + cos(N) * sin(v + w) * cos(i));
+    const zh = r * sin(v + w) * sin(i);
+    let lon = atan2d(yh, xh), lat = Math.atan2(zh, Math.hypot(xh, yh)) * D;
+    const Mj = rev(19.895 + 0.0830853001 * d), Ms = rev(316.967 + 0.0334442282 * d), Mu = rev(142.5905 + 0.011725806 * d);
+    if (name === 'jupiter') lon += -0.332 * sin(2 * Mj - 5 * Ms - 67.6) - 0.056 * sin(2 * Mj - 2 * Ms + 21) + 0.042 * sin(3 * Mj - 5 * Ms + 21) - 0.036 * sin(Mj - 2 * Ms) + 0.022 * cos(Mj - Ms) + 0.023 * sin(2 * Mj - 3 * Ms + 52) - 0.016 * sin(Mj - 5 * Ms - 69);
+    if (name === 'saturn') { lon += 0.812 * sin(2 * Mj - 5 * Ms - 67.6) - 0.229 * cos(2 * Mj - 4 * Ms - 2) + 0.119 * sin(Mj - 2 * Ms - 3) + 0.046 * sin(2 * Mj - 6 * Ms - 69) + 0.014 * sin(Mj - 3 * Ms + 32); lat += -0.02 * cos(2 * Mj - 4 * Ms - 2) + 0.018 * sin(2 * Mj - 6 * Ms - 49); }
+    if (name === 'uranus') lon += 0.04 * sin(Ms - 2 * Mu + 6) + 0.035 * sin(Ms - 3 * Mu + 33) - 0.015 * sin(Mj - Mu + 20);
+    return { lon, lat, r };
+  }
+
+  function geo(name, d) {
+    const s = sun(d), h = helio(name, d);
+    const x = h.r * cos(h.lon) * cos(h.lat) + s.r * cos(s.lon);
+    const y = h.r * sin(h.lon) * cos(h.lat) + s.r * sin(s.lon);
+    return atan2d(y, x);
+  }
+
+  function moonAndNode(d) {
+    const N = 125.1228 - 0.0529538083 * d, i = 5.1454, w = 318.0634 + 0.1643573223 * d, e = 0.0549, M = rev(115.3654 + 13.0649929509 * d);
+    const E = kepler(M, e);
+    const xv = cos(E) - e, yv = Math.sqrt(1 - e * e) * sin(E), v = Math.atan2(yv, xv) * D;
+    const xh = cos(N) * cos(v + w) - sin(N) * sin(v + w) * cos(i);
+    const yh = sin(N) * cos(v + w) + cos(N) * sin(v + w) * cos(i);
+    let lon = atan2d(yh, xh);
+    const s = sun(d), Ms = s.M, Ls = rev(s.M + s.w), Lm = rev(N + w + M), Dm = rev(Lm - Ls), F = rev(Lm - N);
+    lon += -1.274 * sin(M - 2 * Dm) + 0.658 * sin(2 * Dm) - 0.186 * sin(Ms) - 0.059 * sin(2 * M - 2 * Dm) - 0.057 * sin(M - 2 * Dm + Ms) + 0.053 * sin(M + 2 * Dm) + 0.046 * sin(2 * Dm - Ms) + 0.041 * sin(M - Ms) - 0.035 * sin(Dm) - 0.031 * sin(M + Ms) - 0.015 * sin(2 * F - 2 * Dm) + 0.011 * sin(M - 4 * Dm);
+    // true node (Meeus main terms) from mean node
+    const node = rev(N - 1.4979 * sin(2 * Dm - 2 * F) - 0.15 * sin(Ms) - 0.1226 * sin(2 * Dm) + 0.1176 * sin(2 * F) - 0.0801 * sin(2 * M - 2 * F));
+    return { moon: rev(lon), node };
+  }
+
+  function positions(ms) {
+    const d = dayNum(ms), s = sun(d), mn = moonAndNode(d);
+    return {
+      sun: s.lon, earth: rev(s.lon + 180), moon: mn.moon, northNode: mn.node, southNode: rev(mn.node + 180),
+      mercury: geo('mercury', d), venus: geo('venus', d), mars: geo('mars', d), jupiter: geo('jupiter', d),
+      saturn: geo('saturn', d), uranus: geo('uranus', d), neptune: geo('neptune', d), pluto: geo('pluto', d)
+    };
+  }
+
+  const ORDER = [41, 19, 13, 49, 30, 55, 37, 63, 22, 36, 25, 17, 21, 51, 42, 3, 27, 24, 2, 23, 8, 20, 16, 35, 45, 12, 15, 52, 39, 53, 62, 56, 31, 33, 7, 4, 29, 59, 40, 64, 47, 6, 46, 18, 48, 57, 32, 50, 28, 44, 1, 43, 14, 34, 9, 5, 26, 11, 10, 58, 38, 54, 61, 60];
+  function gateOf(lon) {
+    const off = rev(lon - 302);
+    const idx = Math.floor(off / 5.625);
+    return { gate: ORDER[idx], line: Math.floor((off - idx * 5.625) / 0.9375) + 1 };
+  }
+
+  const CENTERS = {
+    head: [64, 61, 63], ajna: [47, 24, 4, 17, 43, 11], throat: [62, 23, 56, 35, 12, 45, 33, 8, 31, 20, 16],
+    g: [7, 1, 13, 10, 25, 15, 46, 2], heart: [21, 40, 26, 51], sacral: [5, 14, 29, 59, 9, 3, 42, 27, 34],
+    solar: [6, 37, 22, 36, 30, 55, 49], spleen: [48, 57, 44, 50, 32, 28, 18], root: [58, 38, 54, 53, 60, 52, 19, 39, 41]
+  };
+  const GATE_CENTER = {};
+  for (const c in CENTERS) for (const g of CENTERS[c]) GATE_CENTER[g] = c;
+  const CHANNELS = [[64, 47], [61, 24], [63, 4], [17, 62], [43, 23], [11, 56], [16, 48], [20, 57], [20, 10], [20, 34], [31, 7], [8, 1], [33, 13], [45, 21], [35, 36], [12, 22], [10, 34], [10, 57], [15, 5], [2, 14], [46, 29], [25, 51], [26, 44], [40, 37], [27, 50], [59, 6], [34, 57], [3, 60], [42, 53], [9, 52], [18, 58], [28, 38], [32, 54], [19, 49], [39, 55], [41, 30]];
+  const BODIES = ['sun', 'earth', 'northNode', 'southNode', 'moon', 'mercury', 'venus', 'mars', 'jupiter', 'saturn', 'uranus', 'neptune', 'pluto'];
+
+  // find design time: sun 88° before natal sun
+  function designTime(ms) {
+    const target = rev(sun(dayNum(ms)).lon - 88);
+    let t = ms - 88.5 * 864e5;
+    for (let k = 0; k < 30; k++) {
+      let diff = rev(target - sun(dayNum(t)).lon); if (diff > 180) diff -= 360;
+      t += diff / 0.9856 * 864e5;
+      if (Math.abs(diff) < 1e-7) break;
+    }
+    return t;
+  }
+
+  function chart(utcMs) {
+    const pT = utcMs, dT = designTime(utcMs);
+    const pp = positions(pT), dp = positions(dT);
+    const pers = {}, des = {};
+    for (const b of BODIES) { pers[b] = gateOf(pp[b]); des[b] = gateOf(dp[b]); }
+    const gates = {}; // gate -> {p:bool,d:bool}
+    for (const b of BODIES) {
+      (gates[pers[b].gate] ||= { p: false, d: false }).p = true;
+      (gates[des[b].gate] ||= { p: false, d: false }).d = true;
+    }
+    const channels = CHANNELS.filter(([a, b]) => gates[a] && gates[b]);
+    const defined = new Set();
+    channels.forEach(([a, b]) => { defined.add(GATE_CENTER[a]); defined.add(GATE_CENTER[b]); });
+    // connectivity graph among defined centers
+    const adj = {};
+    channels.forEach(([a, b]) => { const x = GATE_CENTER[a], y = GATE_CENTER[b]; (adj[x] ||= new Set()).add(y); (adj[y] ||= new Set()).add(x); });
+    const reach = (from) => { const seen = new Set([from]), st = [from]; while (st.length) { const c = st.pop(); for (const n of adj[c] || []) if (!seen.has(n)) { seen.add(n); st.push(n); } } return seen; };
+    const throatReach = defined.has('throat') ? reach('throat') : new Set();
+    const motorToThroat = ['sacral', 'solar', 'heart', 'root'].some(m => throatReach.has(m));
+    let type;
+    if (defined.size === 0) type = 'reflector';
+    else if (defined.has('sacral')) type = throatReach.has('sacral') || motorToThroat ? 'mg' : 'generator';
+    else type = ['solar', 'heart', 'root'].some(m => throatReach.has(m)) ? 'manifestor' : 'projector';
+    if (type === 'mg' && !motorToThroat) type = 'generator';
+    let authority;
+    if (defined.has('solar')) authority = 'emotional';
+    else if (defined.has('sacral')) authority = 'sacral';
+    else if (defined.has('spleen')) authority = 'splenic';
+    else if (defined.has('heart')) authority = 'ego';
+    else if (defined.has('g')) authority = 'self';
+    else if (type === 'reflector') authority = 'lunar';
+    else authority = 'mental';
+    // definition: connected components among defined centers
+    const comps = []; const left = new Set(defined);
+    while (left.size) { const s0 = left.values().next().value; const r = reach(s0); r.forEach(c => left.delete(c)); comps.push(r); }
+    const definition = ['none', 'single', 'split', 'triple', 'quadruple'][Math.min(comps.length, 4)];
+    const profile = `${pers.sun.line}/${des.sun.line}`;
+    const cross = { p: [pers.sun.gate, pers.earth.gate], d: [des.sun.gate, des.earth.gate] };
+    return { type, authority, profile, definition, defined: [...defined], channels, gates, pers, des, cross, designMs: dT };
+  }
+
+  // local wall time in IANA zone -> UTC ms
+  function zoneOffset(ms, zone) {
+    const f = new Intl.DateTimeFormat('en-US', { timeZone: zone, hourCycle: 'h23', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' });
+    const p = Object.fromEntries(f.formatToParts(new Date(ms)).map(x => [x.type, x.value]));
+    return Date.UTC(+p.year, +p.month - 1, +p.day, +p.hour, +p.minute, +p.second) - ms;
+  }
+  function localToUtc(y, mo, da, h, mi, zone) {
+    const guess = Date.UTC(y, mo - 1, da, h, mi);
+    let utc = guess - zoneOffset(guess, zone);
+    utc = guess - zoneOffset(utc, zone);
+    return utc;
+  }
+
+  return { chart, positions, gateOf, localToUtc, CENTERS, CHANNELS, GATE_CENTER, dayNum, sun };
+})();
+
+
+const TYPES = {
+  generator: { name: 'Générateur', strat: 'Répondre à ce qui se présente', sig: 'Satisfaction', ns: 'Frustration',
+    desc: "Tu as une énergie de travail durable, faite pour les activités qui t'allument vraiment. Quand tu fais ce que tu aimes, tu peux le faire longtemps et devenir excellent.",
+    biz: "Construis ton activité autour d'un savoir-faire que tu adores pratiquer. Les offres récurrentes (abonnements, clients réguliers) te conviennent. Laisse venir les opportunités et teste-les par ta réponse instinctive." },
+  mg: { name: 'Générateur-Manifesteur', strat: 'Répondre, puis informer', sig: 'Satisfaction', ns: 'Frustration et colère',
+    desc: "Tu as l'énergie durable du Générateur et la rapidité du Manifesteur. Tu avances vite, tu sautes des étapes et tu mènes plusieurs projets de front.",
+    biz: "Un business à plusieurs facettes te va bien : plusieurs offres, des lancements courts, des tests rapides. Préviens tes clients et tes proches avant de changer de cap." },
+  projector: { name: 'Projecteur', strat: "Attendre l'invitation", sig: 'Succès', ns: 'Amertume',
+    desc: "Tu es fait pour guider : tu vois les personnes et les systèmes avec justesse. Ton énergie n'est pas faite pour travailler en continu ; tu donnes le meilleur en peu d'heures, quand on reconnaît ton talent.",
+    biz: "Vends ton regard : conseil, coaching, audit, stratégie. Mise sur peu de clients bien accompagnés, et sur du contenu qui montre ton expertise pour être invité." },
+  manifestor: { name: 'Manifesteur', strat: "Informer avant d'agir", sig: 'Paix', ns: 'Colère',
+    desc: "Tu es là pour initier. Tu as des impulsions fortes et la capacité de lancer des choses que d'autres feront ensuite vivre.",
+    biz: "Lance des concepts, des marques ou des projets, puis délègue l'exécution. Travaille par cycles : impulsion intense, puis repos. Annonce tes projets pour réduire les résistances." },
+  reflector: { name: 'Réflecteur', strat: 'Attendre un cycle lunaire', sig: 'Surprise', ns: 'Déception',
+    desc: "Tu es le miroir de ton environnement. Très rare (environ 1 % des personnes), tu ressens la santé d'un groupe ou d'un lieu.",
+    biz: "Les rôles d'évaluation, de curation et d'animation de communauté te conviennent. Choisis ton environnement avec soin et prends environ 28 jours avant une grande décision." }
+};
+
+const AUTH = {
+  emotional: ['Émotionnelle', "Ne décide jamais à chaud. Laisse passer la vague émotionnelle et attends une clarté calme, parfois après plusieurs jours."],
+  sacral: ['Sacrale', "Ta réponse instinctive, dans l'instant, est fiable. Pose-toi des questions fermées et écoute ton corps dire oui ou non."],
+  splenic: ['Splénique', "Ton intuition parle une seule fois, doucement, dans l'instant. Si quelque chose te semble juste ou risqué tout de suite, écoute-le."],
+  ego: ['Ego (cœur)', "Demande-toi : est-ce que j'en ai vraiment envie ? Est-ce que je veux m'engager ? Ta volonté sincère est ta boussole."],
+  self: ['Auto-projetée', "Parle de ta décision à voix haute à une personne de confiance. En t'entendant, tu sais ce qui est juste pour toi."],
+  mental: ['Environnementale', "Discute de tes options avec plusieurs personnes de confiance, dans des lieux où tu te sens bien. La clarté vient en t'entendant réfléchir."],
+  lunar: ['Lunaire', "Laisse passer un cycle lunaire complet (environ 28 jours) avant une grande décision, en en parlant autour de toi."]
+};
+
+const LINES = {
+  1: ['Chercheur', "Tu vends par la profondeur : approfondis un sujet jusqu'à en devenir la référence."],
+  2: ['Ermite', "Tes talents naturels se repèrent de l'extérieur : laisse-toi appeler et protège tes temps seul·e."],
+  3: ['Expérimentateur', "Tu apprends en testant : raconte tes essais et tes échecs, c'est ton meilleur contenu."],
+  4: ['Opportuniste', "Tes clients viennent de ton réseau : entretiens tes relations, le bouche-à-oreille est ton canal n°1."],
+  5: ['Hérétique', "On attend de toi des solutions : propose des méthodes pratiques, simples à appliquer."],
+  6: ['Modèle', "Ton autorité grandit avec l'expérience : incarne ce que tu transmets et vise le long terme."]
+};
+
+const DEFS = { none: 'Aucune définition', single: 'Définition simple', split: 'Définition partagée', triple: 'Triple définition', quadruple: 'Quadruple définition' };
+
+const CENTER_TXT = {
+  head: ['Tête', "Tu as une source d'inspiration constante et des questions qui t'animent.", "Tu captes les idées des autres ; ne cours pas après toutes les questions."],
+  ajna: ['Ajna', "Ta façon de penser est fiable et constante.", "Ta pensée est souple ; tu n'as pas besoin de certitudes sur tout."],
+  throat: ['Gorge', "Ta manière de t'exprimer est constante et reconnaissable.", "Tu t'adaptes à ton public ; inutile de forcer l'attention."],
+  g: ['G (identité)', "Tu as un sens stable de qui tu es et d'où tu vas.", "Ton identité évolue selon les lieux et les gens : choisis bien ton environnement."],
+  heart: ['Cœur', "Ta volonté est fiable : tu peux tenir tes engagements.", "Tu n'as rien à prouver ; évite les promesses faites pour te sentir à la hauteur."],
+  sacral: ['Sacral', "Tu disposes d'une énergie de travail durable.", "Ton énergie n'est pas faite pour le travail continu : arrête-toi avant l'épuisement."],
+  solar: ['Plexus solaire', "Tu vis des vagues émotionnelles ; ta clarté vient avec le temps.", "Tu ressens fort les émotions des autres ; ne les prends pas pour les tiennes."],
+  spleen: ['Rate', "Tu as une intuition et un instinct fiables.", "Tu peux t'accrocher à ce qui ne te fait plus de bien : ose lâcher."],
+  root: ['Racine', "Tu gères la pression de façon stable.", "Tu ressens la pression ambiante : ne te précipite pas pour t'en libérer."]
+};
+
+const CHANNEL_TXT = {
+  '64-47': ['Abstraction', "donner du sens au passé, transformer l'expérience en enseignement"],
+  '61-24': ['Conscience', 'penser en profondeur, trouver des idées originales'],
+  '63-4': ['Logique', 'analyser, questionner, trouver des solutions fiables'],
+  '17-62': ['Acceptation', 'organiser les idées, expliquer avec clarté'],
+  '43-23': ['Structuration', 'traduire des intuitions nouvelles en mots simples'],
+  '11-56': ['Curiosité', 'raconter des histoires, transmettre des idées qui inspirent'],
+  '16-48': ['Longueur d\'onde', 'développer une maîtrise par la pratique répétée'],
+  '20-57': ['Onde cérébrale', 'sentir juste dans l\'instant, conseiller avec intuition'],
+  '20-10': ['Éveil', 'incarner ses convictions, inspirer par l\'exemple'],
+  '20-34': ['Charisme', 'agir vite et seul·e, transformer l\'idée en action'],
+  '31-7': ['Alpha', 'diriger, être la voix d\'un groupe'],
+  '8-1': ['Inspiration', 'créer de façon originale et montrer une autre voie'],
+  '33-13': ['Prodigue', 'écouter, garder la mémoire, raconter des parcours'],
+  '45-21': ['Argent', 'gérer des ressources, piloter un business'],
+  '35-36': ['Transitoire', 'vivre des expériences variées et les partager'],
+  '12-22': ['Ouverture', 'toucher par les mots, l\'art et la présence'],
+  '10-34': ['Exploration', 'suivre ses convictions et avancer à sa façon'],
+  '10-57': ['Forme parfaite', 'sentir ce qui est juste, soigner les détails'],
+  '15-5': ['Rythme', 'installer des routines et des cycles durables'],
+  '2-14': ['Battement', 'trouver sa direction et générer des ressources'],
+  '46-29': ['Découverte', 's\'engager à fond et réussir par la persévérance'],
+  '25-51': ['Initiation', 'oser, se lancer en premier, initier les autres'],
+  '26-44': ['Reddition', 'vendre, marketer, transmettre ce qui marche'],
+  '40-37': ['Communauté', 'créer des accords, fédérer une communauté fidèle'],
+  '27-50': ['Préservation', 'prendre soin, protéger, accompagner'],
+  '59-6': ['Intimité', 'créer des liens profonds et durables'],
+  '34-57': ['Puissance', 'réagir vite avec instinct'],
+  '3-60': ['Mutation', 'innover, apporter du neuf au bon moment'],
+  '42-53': ['Maturation', 'démarrer des cycles et les mener à terme'],
+  '9-52': ['Concentration', 'se focaliser longtemps, travailler en détail'],
+  '18-58': ['Jugement', 'améliorer, corriger, perfectionner'],
+  '28-38': ['Lutte', 'trouver du sens dans les défis, persévérer'],
+  '32-54': ['Transformation', 'avoir de l\'ambition, faire grandir un projet'],
+  '19-49': ['Synthèse', 'sentir les besoins des autres, créer des règles justes'],
+  '39-55': ['Émotion', 'créer avec l\'humeur, toucher par l\'émotion'],
+  '41-30': ['Reconnaissance', 'rêver grand et vivre des expériences intenses']
+};
+
+const RIASEC = {
+  R: ['Réaliste', 'Concret, manuel, tangible'], I: ['Investigateur', 'Comprendre, analyser'], A: ['Artistique', 'Créer, exprimer'],
+  S: ['Social', 'Aider, transmettre'], E: ['Entreprenant', 'Convaincre, lancer'], C: ['Conventionnel', 'Organiser, structurer']
+};
+const RIASEC_Q = [
+  ['R', 'Fabriquer, réparer ou assembler des objets de mes mains'], ['R', 'Travailler en extérieur, avec la nature ou les animaux'], ['R', 'Utiliser des outils, des machines ou du matériel technique'], ['R', 'Voir un résultat concret à la fin de ma journée'], ['R', 'Cuisiner, bricoler, rénover, construire'],
+  ['I', 'Comprendre comment les choses fonctionnent en profondeur'], ['I', 'Analyser des données ou des problèmes complexes'], ['I', 'Faire des recherches, enquêter sur un sujet'], ['I', 'Résoudre des énigmes ou des problèmes logiques'], ['I', 'Apprendre une nouvelle discipline scientifique ou technique'],
+  ['A', 'Créer quelque chose d\'original : texte, image, musique, objet'], ['A', 'Décorer, aménager, choisir des couleurs et des styles'], ['A', 'M\'exprimer librement, sans cadre imposé'], ['A', 'Raconter des histoires ou partager mes idées en public'], ['A', 'Imaginer des concepts, des univers, des marques'],
+  ['S', 'Écouter, conseiller ou soutenir quelqu\'un'], ['S', 'Enseigner, transmettre, expliquer'], ['S', 'Prendre soin du bien-être des autres'], ['S', 'Animer un groupe, créer du lien'], ['S', 'Aider quelqu\'un à progresser ou à se transformer'],
+  ['E', 'Convaincre, négocier, vendre une idée ou un produit'], ['E', 'Prendre des décisions et assumer des responsabilités'], ['E', 'Lancer de nouveaux projets, prendre des initiatives'], ['E', 'Diriger une équipe, fédérer autour d\'un objectif'], ['E', 'Repérer des opportunités et gagner de l\'argent avec'],
+  ['C', 'Organiser, classer, planifier, structurer'], ['C', 'Gérer des budgets, des chiffres, des tableaux'], ['C', 'Suivre une méthode claire, avec précision'], ['C', 'Mettre de l\'ordre dans le chaos (process, outils)'], ['C', 'Vérifier, contrôler, assurer la qualité']
+];
+
+const SKILLS = [
+  ['Communication', [['ecrire', 'Écrire des textes clairs'], ['oral', 'Parler en public ou en vidéo'], ['reseaux', 'Animer des réseaux sociaux'], ['langues', 'Langues étrangères']]],
+  ['Relation', [['conseil', 'Écouter et conseiller'], ['former', 'Former, enseigner'], ['vendre', 'Vendre, négocier'], ['conflits', 'Gérer des conflits']]],
+  ['Création', [['design', 'Design graphique, visuel'], ['photo', 'Photo, vidéo'], ['manuel', 'Artisanat, travail manuel'], ['cuisine', 'Cuisine']]],
+  ['Organisation', [['projet', 'Gestion de projet'], ['admin', 'Administratif, gestion'], ['finance', 'Finances, chiffres'], ['event', 'Événementiel']]],
+  ['Technique', [['digital', 'Outils numériques'], ['nocode', 'Création de site, no-code'], ['data', 'Analyse de données'], ['bricolage', 'Bricolage, technique']]],
+  ['Expertise', [['sante', 'Santé, bien-être, sport'], ['expertise', 'Un domaine métier pointu']]]
+];
+const SKILL_LEVELS = ['Aucune', 'Notions', 'À l\'aise', 'On me demande'];
+
+const VALUES = [['liberte', 'Liberté'], ['securite', 'Sécurité financière'], ['impact', 'Impact positif'], ['creativite', 'Créativité'], ['reconnaissance', 'Reconnaissance'], ['apprentissage', 'Apprentissage'], ['famille', 'Famille et temps libre'], ['aventure', 'Aventure et nouveauté'], ['transmission', 'Transmission'], ['excellence', 'Excellence'], ['lien', 'Lien humain'], ['independance', 'Indépendance'], ['justice', 'Justice'], ['beaute', 'Beauté, esthétique'], ['spiritualite', 'Spiritualité']];
+
+const STYLE_Q = [
+  ['Je préfère travailler', 'Seul·e', 'Avec d\'autres'],
+  ['Je suis plus à l\'aise pour', 'Lancer les choses', 'Les faire durer'],
+  ['Mon énergie au travail est', 'Régulière', 'Par vagues'],
+  ['Je décide mieux', 'Sur le moment', 'Avec du recul'],
+  ['Je trouve mes opportunités', 'En allant les chercher', 'Quand on vient me chercher'],
+  ['Je préfère être', 'Expert·e d\'un domaine', 'Touche-à-tout'],
+  ['Je me sens mieux', 'En face-à-face', 'Derrière un écran'],
+  ['Je préfère vendre', 'Mon temps (prestations)', 'Un produit fait une fois']
+];
+
+const CONSTRAINTS = [
+  ['time', 'Temps disponible par semaine', ['Moins de 5 h', '5 à 10 h', '10 à 20 h', 'Temps plein']],
+  ['budget', 'Budget de départ', ['0 €', 'Moins de 500 €', '500 à 3 000 €', '3 000 à 10 000 €', 'Plus de 10 000 €']],
+  ['revenue', 'Besoin d\'un revenu', ['Immédiatement', 'Sous 6 mois', 'Sous 1 an', 'Pas de pression']],
+  ['risk', 'Rapport au risque', ['Prudent·e, je garde mon emploi', 'Risque mesuré', 'Prêt·e à tout miser']],
+  ['place', 'Ton projet doit être', ['100 % en ligne', 'Local, près de chez moi', 'Les deux me vont']]
+];
+
+const OPEN_Q = [
+  ['passions', 'Sur quels sujets pourrais-tu parler pendant des heures ?'],
+  ['flow', 'Quelles activités te font perdre la notion du temps ?'],
+  ['help', 'Pour quoi les gens viennent-ils naturellement te demander de l\'aide ?'],
+  ['problem', 'Quel problème du monde ou de ton entourage te touche le plus ?']
+];
+
+// t, d, r(iasec), s(kills), v(alues), b(udget min idx), f(ast revenue), a(sync ok), l(oc), m(odel), step, price
+const IDEAS = [
+  ['Coaching individuel sur ta thématique', 'Accompagner des personnes une à une vers un résultat précis, en visio ou en présentiel.', 'SE', ['conseil', 'oral'], ['impact', 'lien', 'transmission'], 0, 1, 0, 'both', 'conseil', 'Propose 3 séances découverte gratuites à ton entourage et demande un retour écrit.', '60 à 150 € la séance'],
+  ['Formation en ligne', 'Transformer ce que tu sais en programme vidéo que les gens suivent à leur rythme.', 'SIA', ['former', 'ecrire', 'digital'], ['transmission', 'liberte', 'apprentissage'], 1, 0, 1, 'online', 'produit', 'Liste les 10 questions qu\'on te pose le plus et transforme-les en plan de modules.', '97 à 497 €'],
+  ['Ateliers en présentiel', 'Animer des ateliers pratiques en petit groupe, dans un lieu partenaire.', 'SAE', ['former', 'oral', 'event'], ['lien', 'transmission'], 1, 1, 0, 'local', 'service', 'Organise un premier atelier test pour 6 personnes dans un lieu prêté.', '25 à 60 € par participant'],
+  ['Média de niche sur les réseaux', 'Créer du contenu régulier sur ton sujet et le monétiser par partenariats et produits.', 'AE', ['ecrire', 'oral', 'reseaux', 'photo'], ['creativite', 'liberte', 'reconnaissance'], 0, 0, 1, 'online', 'contenu', 'Publie 5 contenus en 7 jours sur un même sujet et note ceux qui font réagir.', 'Partenariats, affiliation, produits'],
+  ['Community manager freelance', 'Gérer les réseaux sociaux de petites entreprises et commerçants.', 'AEC', ['reseaux', 'ecrire', 'design'], ['liberte', 'creativite', 'independance'], 0, 1, 0, 'online', 'service', 'Propose un audit gratuit des réseaux de 3 commerçants de ta ville.', '300 à 900 € par mois et par client'],
+  ['Graphiste et identité visuelle', 'Créer logos, chartes et supports pour des marques qui démarrent.', 'AR', ['design', 'digital'], ['creativite', 'beaute', 'independance'], 1, 1, 0, 'online', 'service', 'Crée 3 projets fictifs pour ton portfolio et partage-les.', '400 à 2 000 € par identité'],
+  ['Photographe de marque', 'Réaliser des portraits et photos professionnelles pour entrepreneurs.', 'ARS', ['photo', 'design'], ['creativite', 'beaute', 'lien'], 2, 1, 0, 'local', 'service', 'Propose une séance portrait gratuite à 3 entrepreneurs contre un témoignage.', '150 à 600 € la séance'],
+  ['Rédaction web et copywriting', 'Écrire des pages de vente, articles et e-mails qui convertissent.', 'AIC', ['ecrire', 'digital'], ['liberte', 'independance', 'excellence'], 0, 1, 1, 'online', 'service', 'Réécris la page d\'accueil d\'un entrepreneur que tu suis et envoie-la-lui.', '300 à 800 € la page'],
+  ['Assistante virtuelle', 'Prendre en charge l\'administratif et l\'organisation d\'entrepreneurs débordés.', 'CS', ['admin', 'projet', 'digital'], ['securite', 'liberte', 'lien'], 0, 1, 0, 'online', 'service', 'Liste 5 entrepreneurs débordés de ton réseau et propose 5 h d\'essai.', '25 à 45 € de l\'heure'],
+  ['Consultante en organisation', 'Aider les petites entreprises à simplifier leurs process et leurs outils.', 'CIE', ['projet', 'admin', 'data', 'nocode'], ['excellence', 'impact'], 0, 1, 0, 'both', 'conseil', 'Fais l\'audit gratuit d\'une petite entreprise et chiffre les gains possibles.', '500 à 3 000 € la mission'],
+  ['Création de sites no-code', 'Construire des sites simples et beaux pour indépendants et associations.', 'RIA', ['nocode', 'digital', 'design'], ['liberte', 'creativite'], 1, 1, 0, 'online', 'service', 'Construis un site pour une association locale contre une recommandation.', '800 à 3 000 € le site'],
+  ['Boutique de créations artisanales', 'Fabriquer et vendre tes créations en ligne et sur les marchés.', 'RAE', ['manuel', 'photo', 'vendre'], ['creativite', 'beaute', 'liberte'], 2, 0, 1, 'both', 'commerce', 'Fabrique 10 pièces et teste-les sur un marché ou une boutique en ligne.', 'Marge de 40 à 70 %'],
+  ['Traiteur ou cours de cuisine', 'Cuisiner pour des événements ou transmettre tes recettes en atelier.', 'RSA', ['cuisine', 'event'], ['lien', 'creativite'], 2, 1, 0, 'local', 'service', 'Cuisine un repas pour 8 personnes à prix coûtant et récolte les avis.', '15 à 40 € par personne'],
+  ['Praticienne bien-être', 'Proposer massages, yoga, sophrologie ou autre pratique de soin, après formation.', 'SR', ['sante', 'conseil'], ['impact', 'spiritualite', 'lien'], 2, 0, 0, 'local', 'service', 'Compare 2 formations certifiantes et fais 5 séances bénévoles.', '50 à 90 € la séance'],
+  ['Coach sportif ou bien-être en ligne', 'Accompagner des personnes dans leur forme, en groupe ou en individuel.', 'SRE', ['sante', 'oral', 'reseaux'], ['impact', 'liberte'], 1, 1, 0, 'both', 'service', 'Lance un défi gratuit de 7 jours avec 10 participants.', '30 € par mois en groupe, 60 € en individuel'],
+  ['Conseil dans ton ancien métier', 'Vendre ton expertise métier en missions ponctuelles.', 'IEC', ['expertise', 'conseil', 'oral'], ['independance', 'securite', 'excellence'], 0, 1, 0, 'both', 'conseil', 'Contacte 5 anciens collègues ou clients pour proposer une mission ponctuelle.', '400 à 900 € la journée'],
+  ['Analyste de données freelance', 'Créer tableaux de bord et analyses pour aider les entreprises à décider.', 'IC', ['data', 'digital', 'finance'], ['apprentissage', 'excellence', 'liberte'], 0, 1, 1, 'online', 'service', 'Réalise un tableau de bord gratuit pour une petite entreprise.', '350 à 700 € la journée'],
+  ['Gestion administrative pour indépendants', 'Aider les indépendants à suivre leurs factures, relances et budget.', 'CI', ['finance', 'admin'], ['securite', 'excellence'], 0, 1, 1, 'online', 'service', 'Propose ton aide à 3 indépendants de ton entourage pendant un mois.', '50 à 200 € par mois et par client'],
+  ['Organisatrice d\'événements', 'Concevoir et coordonner des événements privés ou professionnels.', 'ESC', ['event', 'projet', 'vendre'], ['lien', 'aventure'], 1, 1, 0, 'local', 'service', 'Organise un petit événement réseau et calcule ce qu\'il t\'aurait rapporté.', '500 à 3 000 € par événement'],
+  ['Apporteuse d\'affaires', 'Mettre en relation des clients et des prestataires contre commission.', 'E', ['vendre', 'oral', 'conflits'], ['liberte', 'reconnaissance', 'independance'], 0, 1, 0, 'both', 'commerce', 'Choisis un prestataire que tu admires et propose-lui de lui apporter des clients.', '10 à 20 % de commission'],
+  ['Communauté payante', 'Rassembler des personnes autour d\'un thème avec rencontres, contenus et entraide.', 'SEA', ['reseaux', 'oral', 'event'], ['lien', 'transmission', 'impact'], 0, 0, 1, 'online', 'communaute', 'Crée un groupe gratuit sur ton thème et anime-le pendant 4 semaines.', '15 à 49 € par mois'],
+  ['Produits numériques', 'Vendre des modèles, guides ou planners utiles à ton public.', 'AC', ['design', 'ecrire', 'digital'], ['liberte', 'creativite'], 0, 0, 1, 'online', 'produit', 'Crée un premier modèle utile à ton public et vends-le à petit prix.', '9 à 49 € l\'unité'],
+  ['Rénovation et home staging', 'Relooker des intérieurs pour des particuliers ou avant une vente.', 'RA', ['bricolage', 'design', 'manuel'], ['beaute', 'creativite'], 2, 1, 0, 'local', 'service', 'Relooke une pièce chez un proche et fais des photos avant/après.', '300 à 2 000 € par projet'],
+  ['Jardinage et permaculture', 'Entretenir, aménager ou concevoir des jardins nourriciers.', 'RI', ['bricolage', 'manuel'], ['liberte', 'impact'], 2, 1, 0, 'local', 'service', 'Propose l\'entretien de 3 jardins voisins pendant un mois.', '25 à 40 € de l\'heure'],
+  ['Cours particuliers', 'Accompagner élèves ou adultes dans une matière ou une langue.', 'SI', ['former', 'langues', 'expertise'], ['transmission', 'apprentissage'], 0, 1, 0, 'both', 'service', 'Publie une annonce sur 2 plateformes de soutien scolaire.', '20 à 50 € de l\'heure'],
+  ['Traduction', 'Traduire sites, documents et contenus pour des entreprises.', 'IAC', ['langues', 'ecrire'], ['liberte', 'apprentissage', 'independance'], 0, 1, 1, 'online', 'service', 'Traduis bénévolement le site d\'une association pour ton portfolio.', '0,08 à 0,15 € le mot'],
+  ['Podcast ou chaîne vidéo', 'Créer une émission régulière sur ton sujet et la monétiser.', 'AIS', ['oral', 'ecrire', 'photo'], ['creativite', 'reconnaissance', 'transmission'], 1, 0, 1, 'online', 'contenu', 'Enregistre 3 épisodes pilotes et fais-les écouter à 10 personnes de ta cible.', 'Sponsors, produits, affiliation'],
+  ['Conseil en image et stylisme', 'Aider les personnes à trouver un style qui leur ressemble.', 'AS', ['design', 'conseil'], ['beaute', 'lien'], 1, 1, 0, 'both', 'service', 'Fais 3 relookings gratuits contre photos et témoignages.', '80 à 300 € la prestation'],
+  ['Médiation et facilitation', 'Animer des réunions, résoudre des tensions dans les équipes et associations.', 'SE', ['conflits', 'oral', 'conseil'], ['justice', 'lien', 'impact'], 1, 1, 0, 'both', 'conseil', 'Propose d\'animer gratuitement une réunion difficile dans une association.', '600 à 1 500 € la journée'],
+  ['Services aux animaux', 'Garde, promenade et soins pour les animaux de ton quartier.', 'RS', ['manuel'], ['lien', 'liberte'], 0, 1, 0, 'local', 'service', 'Propose tes services à 10 voisins via le panneau d\'affichage et les groupes locaux.', '15 à 30 € la visite']
+];
+
+const MODEL_FIT = {
+  generator: { service: 1, commerce: .8, communaute: .7, produit: .6, contenu: .6, conseil: .6 },
+  mg: { produit: 1, contenu: 1, commerce: .9, service: .8, communaute: .8, conseil: .6 },
+  projector: { conseil: 1, service: .8, contenu: .8, communaute: .7, produit: .6, commerce: .4 },
+  manifestor: { commerce: 1, produit: .9, communaute: .8, contenu: .8, conseil: .7, service: .5 },
+  reflector: { communaute: 1, conseil: .8, contenu: .7, service: .6, produit: .6, commerce: .5 }
+};
+const MODEL_LABEL = { service: 'Prestation', conseil: 'Conseil', produit: 'Produit numérique', contenu: 'Contenu', communaute: 'Communauté', commerce: 'Commerce' };
+
+const BODY_LABELS = [['sun', '☉', 'Soleil'], ['earth', '⊕', 'Terre'], ['northNode', '☊', 'Nœud Nord'], ['southNode', '☋', 'Nœud Sud'], ['moon', '☽', 'Lune'], ['mercury', '☿', 'Mercure'], ['venus', '♀', 'Vénus'], ['mars', '♂', 'Mars'], ['jupiter', '♃', 'Jupiter'], ['saturn', '♄', 'Saturne'], ['uranus', '♅', 'Uranus'], ['neptune', '♆', 'Neptune'], ['pluto', '♇', 'Pluton']];
+
+const ZONES = [['Europe/Paris', 'France, Belgique, Luxembourg, Monaco (Paris)'], ['Europe/Zurich', 'Suisse'], ['America/Toronto', 'Québec, Ontario'], ['Africa/Casablanca', 'Maroc'], ['Africa/Algiers', 'Algérie'], ['Africa/Tunis', 'Tunisie'], ['Africa/Dakar', 'Sénégal'], ['Africa/Abidjan', 'Côte d\'Ivoire'], ['Africa/Douala', 'Cameroun'], ['Africa/Kinshasa', 'RD Congo (Kinshasa)'], ['Indian/Reunion', 'La Réunion'], ['Indian/Mayotte', 'Mayotte'], ['America/Martinique', 'Martinique'], ['America/Guadeloupe', 'Guadeloupe'], ['America/Cayenne', 'Guyane'], ['Pacific/Noumea', 'Nouvelle-Calédonie'], ['Pacific/Tahiti', 'Tahiti'], ['Indian/Mauritius', 'Maurice'], ['Europe/London', 'Royaume-Uni'], ['Europe/Madrid', 'Espagne'], ['Europe/Lisbon', 'Portugal'], ['Europe/Rome', 'Italie'], ['Europe/Berlin', 'Allemagne'], ['America/New_York', 'États-Unis (Est)'], ['America/Los_Angeles', 'États-Unis (Ouest)'], ['UTC', 'Autre (heure UTC)']];
+
+const TYPE_BIZ = {
+  generator: ['Le bâtisseur passionné', "Ton énergie de travail est le moteur de ton business : inépuisable pour ce qui t'allume, elle s'éteint vite pour le reste. Un projet qui ne te passionne pas te mènera à la frustration, même s'il rapporte.", "Chaque mois, fais le tri : garde les tâches qui te donnent de l'élan, délègue ou supprime celles qui te frustrent.", "La frustration : signe que tu t'es engagé·e dans quelque chose qui ne t'allume pas."],
+  mg: ["L'accélérateur multi-passions", "Tu es fait·e pour avancer vite et sur plusieurs fronts. Te forcer à un seul projet linéaire t'éteint ; ta force est de tester, d'ajuster et de combiner tes talents.", "Accepte d'avoir 2 ou 3 offres liées entre elles, et reviens sur les étapes que tu as sautées.", "La frustration ou la colère : souvent quand tu fonces sans avoir répondu à une vraie demande, ou sans prévenir."],
+  projector: ['Le guide stratège', "Tu vois ce que les autres ne voient pas : c'est ta valeur. Mais ton énergie n'est pas constante, donc un business au volume ou aux longues heures t'épuise.", "Vends ta vision et ton expertise plutôt que ton temps, et garde des journées courtes avec du repos.", "L'amertume : signe que tu donnes des conseils sans être reconnu·e ni invité·e."],
+  manifestor: ["L'initiateur", "Tu as la capacité rare de démarrer des choses seul·e. Ton business doit te laisser la liberté d'agir et d'initier, sinon tu étouffes.", "Entoure-toi de personnes qui feront vivre ce que tu lances, et préviens avant chaque grand changement.", "La colère : signe que l'on te freine, ou que tu as agi sans informer."],
+  reflector: ['Le miroir révélateur', "Ta sensibilité à l'environnement fait de toi un excellent évaluateur des personnes et des lieux. Ton business dépend beaucoup de l'entourage que tu choisis.", "Teste ton activité dans plusieurs environnements et garde celui où tu te sens le mieux.", "La déception : signe que tu es dans un environnement qui ne te correspond pas."]
+};
+const STRAT_BIZ = {
+  generator: ["Ne cours pas après les clients. Rends-toi visible (contenu, réseau, offre claire), puis réponds aux demandes qui te font vibrer : ton oui instinctif est ton filtre.", "Crée ton offre en réponse aux questions réelles qu'on te pose, pas à partir d'une idée dans ta tête."],
+  mg: ["Réponds aux opportunités qui t'allument, puis annonce vite à ton public ce que tu lances. Tu peux tester plusieurs canaux en même temps.", "Fais une version simple, vends-la vite, améliore-la ensuite."],
+  projector: ["Ton marketing doit créer des invitations : partage ton regard, tes analyses, des études de cas. Les clients qui viennent te chercher reconnaissent déjà ta valeur.", "Propose d'abord ton offre aux personnes qui t'ont déjà demandé conseil."],
+  manifestor: ["Annonce ce que tu vas faire avant de le faire : ton audience et tes partenaires te suivront plus facilement. Tu peux aller chercher les opportunités toi-même.", "Annonce ton offre, lance-la, puis passe le relais pour l'exécution."],
+  reflector: ["Prends le temps d'observer : les bonnes opportunités se révèlent sur la durée. Appuie-toi sur un réseau choisi avec soin.", "Teste ton offre auprès d'un petit groupe et laisse passer un cycle lunaire avant de la lancer en grand."]
+};
+const AUTH_BIZ = {
+  emotional: "Pour un prix, un client ou un partenariat, dors dessus, plusieurs nuits si besoin. Ne signe jamais dans l'enthousiasme ni dans la déception du moment.",
+  sacral: "Pose-toi des questions fermées : « Est-ce que je veux travailler avec ce client ? ». Un oui franc du corps : vas-y. Un « hum » hésitant : c'est non.",
+  splenic: "Ton premier ressenti face à un client ou une opportunité est le bon. Si quelque chose sonne faux dès le départ, ne cherche pas à te convaincre du contraire.",
+  ego: "Ne t'engage que sur ce que tu veux vraiment et peux tenir. Fixe tes prix selon ta vraie valeur, et ne gaspille pas ta volonté sur des projets qui ne t'intéressent pas.",
+  self: "Avant de lancer une offre ou de valider un prix, explique-le à voix haute à une personne de confiance : ce que tu t'entends dire te montre ce qui est juste.",
+  mental: "Crée un petit cercle de personnes de confiance pour réfléchir à voix haute à tes décisions business. Change de lieu si tu n'arrives pas à trancher.",
+  lunar: "Pour toute grande décision (lancement, investissement, associé), laisse passer environ 28 jours en en parlant autour de toi."
+};
+const LINE_BIZ = {
+  1: "Montre que tu maîtrises ton sujet : contenus de fond, méthode, sources. Tes clients achètent ta solidité.",
+  2: "Laisse ton talent parler, on te remarque sans que tu forces. Garde des temps seul·e pour créer et accepte qu'on vienne te chercher.",
+  3: "Partage tes essais, tes erreurs et ce que tu en as appris : ton authenticité attire. Tu as le droit de pivoter.",
+  4: "Ton réseau est ton premier canal de vente : recommandations, partenariats, bouche-à-oreille. Entretiens tes relations.",
+  5: "On vient vers toi pour des solutions : propose des offres pratiques au résultat clair, et soigne ta réputation.",
+  6: "Inspire par l'exemple : montre ton parcours et ta vision à long terme. Ta crédibilité grandit avec les années."
+};
+
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const KEY = 'boussole-business-v1';
+
+const EXAMPLE = {
+  example: true,
+  birth: { name: 'Camille', date: '1988-06-14', time: '09:30', unknown: false, zone: 'Europe/Paris', city: 'Lyon' },
+  ans: {
+    riasec: [2, 1, 2, 3, 3, 3, 2, 4, 3, 3, 4, 4, 4, 5, 4, 5, 5, 4, 4, 5, 3, 4, 5, 3, 4, 2, 2, 3, 3, 2],
+    skills: { ecrire: 2, oral: 2, reseaux: 2, langues: 1, conseil: 3, former: 2, vendre: 1, conflits: 2, design: 1, photo: 1, manuel: 0, cuisine: 1, projet: 2, admin: 1, finance: 0, event: 1, digital: 2, nocode: 0, data: 0, bricolage: 0, sante: 1, expertise: 2 },
+    open: { passions: 'Le développement personnel, les reconversions, la psychologie', flow: 'Écouter quelqu\'un raconter son parcours et l\'aider à y voir clair', help: 'Mes amies viennent me voir quand elles doivent prendre une décision importante', problem: 'Les gens qui restent dans un travail qui les rend malheureux' },
+    values: ['liberte', 'impact', 'transmission', 'lien', 'creativite'],
+    style: ['b', 'a', 'b', 'b', 'b', 'a', 'a', 'a'],
+    cons: { time: 1, budget: 1, revenue: 1, risk: 0, place: 2 },
+    ideas: 'Accompagner des femmes en reconversion', excl: 'Vente à domicile'
+  }
+};
+const blankAns = () => ({ riasec: Array(30).fill(0), skills: {}, open: {}, values: [], style: Array(8).fill(''), cons: {}, ideas: '', excl: '' });
+
+let S = load() || JSON.parse(JSON.stringify(EXAMPLE));
+let step = 0;
+function load() { try { const v = localStorage.getItem(KEY); return v ? JSON.parse(v) : null; } catch (e) { return null; } }
+function save() { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) { } }
+
+/* ---------- chart ---------- */
+function computeChart() {
+  const b = S.birth;
+  if (!b.date) return null;
+  const [y, m, d] = b.date.split('-').map(Number);
+  const [h, mi] = (b.unknown || !b.time ? '12:00' : b.time).split(':').map(Number);
+  const utc = HD.localToUtc(y, m, d, h, mi, b.zone || 'Europe/Paris');
+  return HD.chart(utc);
+}
+
+const POS = { head: [180, 52], ajna: [180, 128], throat: [180, 210], g: [180, 300], heart: [248, 338], sacral: [180, 420], spleen: [64, 398], solar: [296, 398], root: [180, 500] };
+function centerShape(c, on) {
+  const [x, y] = POS[c];
+  const fill = on ? 'var(--center-on)' : 'var(--surface)', st = on ? 'var(--ink)' : 'var(--muted)';
+  const a = `fill="${fill}" stroke="${st}" stroke-width="1.5" stroke-linejoin="round"`;
+  const name = CENTER_TXT[c][0];
+  let shape;
+  if (c === 'head') shape = `<polygon ${a} points="${x},${y - 30} ${x - 32},${y + 22} ${x + 32},${y + 22}"/>`;
+  else if (c === 'ajna') shape = `<polygon ${a} points="${x - 32},${y - 22} ${x + 32},${y - 22} ${x},${y + 30}"/>`;
+  else if (c === 'g') shape = `<polygon ${a} points="${x},${y - 36} ${x + 36},${y} ${x},${y + 36} ${x - 36},${y}"/>`;
+  else if (c === 'heart') shape = `<polygon ${a} points="${x},${y - 18} ${x + 22},${y + 16} ${x - 22},${y + 16}"/>`;
+  else if (c === 'spleen') shape = `<polygon ${a} points="${x - 24},${y - 36} ${x + 32},${y} ${x - 24},${y + 36}"/>`;
+  else if (c === 'solar') shape = `<polygon ${a} points="${x + 24},${y - 36} ${x - 32},${y} ${x + 24},${y + 36}"/>`;
+  else { const s = c === 'throat' ? 25 : 28; shape = `<rect ${a} x="${x - s}" y="${y - s}" width="${2 * s}" height="${2 * s}" rx="6"/>`; }
+  return `<g><title>${name} : ${on ? 'défini' : 'ouvert'}</title>${shape}</g>`;
+}
+function bodygraph(ch) {
+  const groups = {};
+  HD.CHANNELS.forEach(([a, b]) => { const ca = HD.GATE_CENTER[a], cb = HD.GATE_CENTER[b]; const k = [ca, cb].sort().join('|'); (groups[k] ||= []).push([a, b]); });
+  let lines = '';
+  for (const k in groups) {
+    const list = groups[k];
+    list.forEach(([a, b], i) => {
+      const [x1, y1] = POS[HD.GATE_CENTER[a]], [x2, y2] = POS[HD.GATE_CENTER[b]];
+      const len = Math.hypot(x2 - x1, y2 - y1), nx = -(y2 - y1) / len, ny = (x2 - x1) / len;
+      const sign = HD.GATE_CENTER[a] < HD.GATE_CENTER[b] ? 1 : -1;
+      const off = (i - (list.length - 1) / 2) * 11 * sign;
+      const ax = x1 + nx * off, ay = y1 + ny * off, bx = x2 + nx * off, by = y2 + ny * off, mx = (ax + bx) / 2, my = (ay + by) / 2;
+      const seg = (g, sx, sy) => {
+        const s = ch.gates[g]; const p = `M${sx.toFixed(1)} ${sy.toFixed(1)}L${mx.toFixed(1)} ${my.toFixed(1)}`;
+        if (!s) return `<path d="${p}" stroke="var(--line-off)" stroke-width="5" stroke-linecap="round"/>`;
+        const t = `<title>Porte ${g} : ${s.p && s.d ? 'Design et Personnalité' : s.d ? 'Design' : 'Personnalité'}</title>`;
+        if (s.p && s.d) return `<g>${t}<path d="${p}" stroke="var(--design)" stroke-width="6" stroke-linecap="round"/><path d="${p}" stroke="var(--ink)" stroke-width="6" stroke-dasharray="5 5"/></g>`;
+        return `<g>${t}<path d="${p}" stroke="${s.d ? 'var(--design)' : 'var(--ink)'}" stroke-width="6" stroke-linecap="round"/></g>`;
+      };
+      lines += seg(a, ax, ay) + seg(b, bx, by);
+    });
+  }
+  const centers = Object.keys(POS).map(c => centerShape(c, ch.defined.includes(c))).join('');
+  return `<svg viewBox="0 0 360 540" role="img" aria-label="Bodygraph : ${ch.defined.length} centres définis sur 9"><g fill="none">${lines}</g>${centers}</svg>`;
+}
+
+function renderChart() {
+  const ch = computeChart();
+  S.chart = ch ? { type: ch.type, authority: ch.authority, profile: ch.profile, defined: ch.defined, channels: ch.channels } : null;
+  const out = $('#chartOut');
+  if (!ch) { out.innerHTML = '<p class="muted">Indique ta date de naissance pour calculer ta charte.</p>'; $('#chartDetails').innerHTML = ''; return; }
+  const T = TYPES[ch.type], A = AUTH[ch.authority], b = S.birth;
+  const [l1, l2] = ch.profile.split('/');
+  const born = new Date(b.date + 'T12:00:00').toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
+  out.innerHTML = `
+    <div class="who"><h3>${esc(b.name || 'Ta charte')}</h3>${S.example ? '<span class="tag ex">Exemple</span>' : ''}<span class="muted" style="font-size:.88rem">${born}${b.unknown ? ' · heure inconnue' : ' · ' + esc(b.time)}${b.city ? ' · ' + esc(b.city) : ''}</span></div>
+    <div class="result">
+      <div class="body-wrap">${bodygraph(ch)}
+        <div class="legend"><span><i style="background:var(--ink)"></i>Personnalité (conscient)</span><span><i style="background:var(--design)"></i>Design (inconscient)</span></div>
+      </div>
+      <dl class="facts">
+        <div class="fact wide"><dt>Type</dt><dd>${T.name}</dd></div>
+        <div class="fact"><dt>Stratégie</dt><dd>${T.strat}</dd></div>
+        <div class="fact"><dt>Autorité</dt><dd>${b.unknown ? 'À confirmer' : A[0]}</dd></div>
+        <div class="fact"><dt>Profil</dt><dd>${b.unknown ? 'À confirmer' : `${ch.profile} · ${LINES[l1][0]} / ${LINES[l2][0]}`}</dd></div>
+        <div class="fact"><dt>Définition</dt><dd>${DEFS[ch.definition]}</dd></div>
+        <div class="fact"><dt>Signature</dt><dd>${T.sig}</dd></div>
+        <div class="fact"><dt>Thème du non-soi</dt><dd>${T.ns}</dd></div>
+        <div class="fact wide"><dt>Croix d'incarnation (portes)</dt><dd class="mono" style="font-size:1rem">${ch.cross.p.join('/')} | ${ch.cross.d.join('/')}</dd></div>
+      </dl>
+    </div>
+    ${b.unknown ? '<p class="hint" style="margin-top:12px">Sans heure de naissance, la Lune et parfois le type peuvent changer : seuls les éléments les plus stables sont à retenir.</p>' : ''}`;
+
+  const chans = ch.channels.map(([a, c]) => { const k = CHANNEL_TXT[`${a}-${c}`] || CHANNEL_TXT[`${c}-${a}`]; return `<div><span class="mono">${a}–${c}</span><span><b>${k[0]}</b> : ${k[1]}</span></div>`; }).join('') || '<p class="muted">Aucun canal défini : tu captes et amplifies l\'énergie des autres.</p>';
+  const centers = Object.keys(CENTER_TXT).map(c => { const on = ch.defined.includes(c), t = CENTER_TXT[c]; return `<div class="center ${on ? 'on' : ''}"><b>${t[0]}<small>${on ? 'Défini' : 'Ouvert'}</small></b><span>${on ? t[1] : t[2]}</span></div>`; }).join('');
+  const rows = BODY_LABELS.map(([k, sym, n]) => `<tr><td class="d mono">${ch.des[k].gate}.${ch.des[k].line}</td><td>${sym} ${n}</td><td class="mono">${ch.pers[k].gate}.${ch.pers[k].line}</td></tr>`).join('');
+  $('#chartDetails').innerHTML = `
+    <div class="details">
+      <div class="block full hdbiz-head"><p class="eyebrow">Ton Human Design au service de ton business</p><h4>Tes 4 clés pour entreprendre à ta façon</h4><p class="muted">Chaque carte explique ce que cet élément change concrètement dans ta manière de travailler, de trouver des clients, de décider et de vendre.</p></div>
+      ${hdCards(ch, S.birth.unknown).map(c => `<div class="block key"><div class="key-top"><span class="key-n">${c.n}</span><div><p class="eyebrow">${c.label}</p><h4>${c.title}</h4></div></div><p class="k-ess">${c.what}</p><div class="k-rows"><div><span class="k-lab">Business</span><p>${lead(c.why)}</p></div><div><span class="k-lab">À faire</span><p>${lead(c.evolve)}</p></div>${c.trap ? `<div><span class="k-lab warn">Alerte</span><p>${c.trap}</p></div>` : ''}</div></div>`).join('')}
+      <div class="block full"><p class="eyebrow">Tes talents innés</p><h4>${ch.channels.length} canal${ch.channels.length > 1 ? 'aux' : ''} défini${ch.channels.length > 1 ? 's' : ''}</h4><div class="chan">${chans}</div></div>
+      <div class="block full"><p class="eyebrow">Tes 9 centres</p><div class="centers">${centers}</div></div>
+      <div class="block full"><details><summary>Positions planétaires (portes et lignes)</summary><div class="table-scroll" style="margin-top:10px"><table><thead><tr><th>Design</th><th>Planète</th><th>Personnalité</th></tr></thead><tbody>${rows}</tbody></table></div></details></div>
+    </div>`;
+}
+
+/* ---------- wizard ---------- */
+const MODS = [
+  { k: 'riasec', t: 'Tes intérêts', d: 'À quel point ces activités te plaisent-elles, même si tu ne sais pas encore les faire ? (1 = pas du tout, 5 = énormément)' },
+  { k: 'skills', t: 'Tes compétences', d: 'Indique ton niveau actuel pour chaque compétence.' },
+  { k: 'open', t: 'Ton énergie', d: 'Quelques mots suffisent. Ces réponses nourrissent les idées personnalisées.' },
+  { k: 'values', t: 'Tes valeurs', d: 'Choisis 5 valeurs, de la plus importante à la moins importante : l\'ordre de tes clics fait le classement.' },
+  { k: 'style', t: 'Ton style de travail', d: 'Choisis la proposition qui te ressemble le plus.' },
+  { k: 'cons', t: 'Tes contraintes', d: 'Elles servent à écarter les idées irréalistes pour toi aujourd\'hui.' },
+  { k: 'ideas', t: 'Tes idées', d: 'Tes envies actuelles, et ce que tu ne veux surtout pas faire.' }
+];
+function modDone(i) {
+  const a = S.ans;
+  switch (MODS[i].k) {
+    case 'riasec': return a.riasec.every(v => v > 0);
+    case 'skills': return SKILLS.every(([, l]) => l.every(([k]) => a.skills[k] !== undefined));
+    case 'open': return OPEN_Q.some(([k]) => (a.open[k] || '').trim());
+    case 'values': return a.values.length === 5;
+    case 'style': return a.style.every(Boolean);
+    case 'cons': return CONSTRAINTS.every(([k]) => a.cons[k] !== undefined);
+    case 'ideas': return true;
+  }
+}
+function renderWizard() {
+  const a = S.ans, m = MODS[step];
+  const doneCount = MODS.filter((_, i) => modDone(i)).length;
+  let body = '';
+  if (m.k === 'riasec') {
+    body = `<div class="scale-note"><span>1 Pas du tout</span><span>5 Énormément</span></div><div class="likert">` + RIASEC_Q.map(([, q], i) =>
+      `<div class="lk"><span>${q}</span><div class="dots" role="group" aria-label="${esc(q)}">${[1, 2, 3, 4, 5].map(v => `<button type="button" data-r="${i}" data-v="${v}" class="${a.riasec[i] === v ? 'on' : ''}" aria-pressed="${a.riasec[i] === v}">${v}</button>`).join('')}</div></div>`).join('') + '</div>';
+  } else if (m.k === 'skills') {
+    body = SKILLS.map(([g, l]) => `<div class="skill-group"><h4>${g}</h4>${l.map(([k, n]) => `<div class="sk"><span>${n}</span><div class="seg" role="group" aria-label="${esc(n)}">${SKILL_LEVELS.map((lv, v) => `<button type="button" data-s="${k}" data-v="${v}" class="${a.skills[k] === v ? 'on' : ''}" aria-pressed="${a.skills[k] === v}">${lv}</button>`).join('')}</div></div>`).join('')}</div>`).join('');
+  } else if (m.k === 'open') {
+    body = `<div class="qgrid">${OPEN_Q.map(([k, q]) => `<label for="o-${k}">${q}<textarea id="o-${k}" data-o="${k}">${esc(a.open[k] || '')}</textarea></label>`).join('')}</div>`;
+  } else if (m.k === 'values') {
+    body = `<div class="chips">${VALUES.map(([k, n]) => { const i = a.values.indexOf(k); return `<button type="button" class="chip ${i > -1 ? 'on' : ''}" data-val="${k}" aria-pressed="${i > -1}">${i > -1 ? `<span class="n">${i + 1}</span>` : ''}${n}</button>`; }).join('')}</div><p class="hint" style="margin-top:10px">${a.values.length}/5 choisies. Clique à nouveau sur une valeur pour la retirer.</p>`;
+  } else if (m.k === 'style') {
+    body = STYLE_Q.map(([q, x, y], i) => `<div class="pair"><span>${q}</span><div class="seg" role="group" aria-label="${esc(q)}"><button type="button" data-st="${i}" data-v="a" class="${a.style[i] === 'a' ? 'on' : ''}" aria-pressed="${a.style[i] === 'a'}">${x}</button><button type="button" data-st="${i}" data-v="b" class="${a.style[i] === 'b' ? 'on' : ''}" aria-pressed="${a.style[i] === 'b'}">${y}</button></div></div>`).join('');
+  } else if (m.k === 'cons') {
+    body = CONSTRAINTS.map(([k, q, opts]) => `<div class="pair"><span>${q}</span><div class="chips">${opts.map((o, v) => `<button type="button" class="chip ${a.cons[k] === v ? 'on' : ''}" data-c="${k}" data-v="${v}" aria-pressed="${a.cons[k] === v}">${o}</button>`).join('')}</div></div>`).join('');
+  } else {
+    body = `<div class="qgrid"><label for="fIdeas">As-tu déjà des idées de projet ? Liste-les, même farfelues.<textarea id="fIdeas" data-f="ideas">${esc(a.ideas)}</textarea></label><label for="fExcl">Y a-t-il un domaine dans lequel tu ne veux surtout pas travailler ?<input type="text" id="fExcl" data-f="excl" value="${esc(a.excl)}"></label></div>`;
+  }
+  $('#wizard').innerHTML = `
+    <div class="progress" role="tablist">${MODS.map((x, i) => `<button type="button" data-step="${i}" class="${i === step ? 'cur' : ''} ${modDone(i) ? 'done' : ''}" role="tab" aria-selected="${i === step}">${i + 1}. ${x.t}</button>`).join('')}</div>
+    <div class="bar" aria-hidden="true"><span style="width:${doneCount / MODS.length * 100}%"></span></div>
+    <div class="mod-head"><h3>${m.t}</h3><p class="muted">${m.d}</p></div>
+    <div>${body}</div>
+    <div class="wiz-nav">
+      <button type="button" class="btn ghost" id="prev" ${step === 0 ? 'disabled' : ''}>Précédent</button>
+      ${step < MODS.length - 1 ? '<button type="button" class="btn" id="next">Module suivant</button>' : '<button type="button" class="btn" id="finish">Voir mes pistes</button>'}
+    </div>`;
+}
+function leaveExample() {
+  if (!S.example) return;
+  S.example = false; S.ans = blankAns();
+  renderNotice();
+}
+$('#wizard').addEventListener('click', e => {
+  const t = e.target.closest('button'); if (!t) return;
+  const a = S.ans;
+  if (t.dataset.step !== undefined) { step = +t.dataset.step; renderWizard(); return; }
+  if (t.id === 'prev') { step--; renderWizard(); $('#bilan').scrollIntoView(); return; }
+  if (t.id === 'next') { step++; renderWizard(); $('#bilan').scrollIntoView(); return; }
+  if (t.id === 'finish') { renderCompass(); $('#pistes').scrollIntoView(); return; }
+  const wasEx = S.example;
+  if (wasEx) leaveExample();
+  if (t.dataset.r !== undefined) a.riasec[+t.dataset.r] = +t.dataset.v;
+  else if (t.dataset.s) a.skills[t.dataset.s] = +t.dataset.v;
+  else if (t.dataset.val) { const k = t.dataset.val, i = a.values.indexOf(k); if (i > -1) a.values.splice(i, 1); else if (a.values.length < 5) a.values.push(k); }
+  else if (t.dataset.st !== undefined) a.style[+t.dataset.st] = t.dataset.v;
+  else if (t.dataset.c) a.cons[t.dataset.c] = +t.dataset.v;
+  save();
+  const y = window.scrollY; renderWizard(); renderCompass(); window.scrollTo(0, y);
+});
+$('#wizard').addEventListener('input', e => {
+  const t = e.target;
+  if (S.example) { const v = t.value; leaveExample(); renderWizard(); renderCompass(); const n = document.getElementById(t.id); if (n) { n.value = v; n.focus(); } }
+  const el = document.getElementById(t.id) || t;
+  if (el.dataset.o) S.ans.open[el.dataset.o] = el.value;
+  if (el.dataset.f) S.ans[el.dataset.f] = el.value;
+  save();
+});
+$('#wizard').addEventListener('change', () => renderCompass());
+
+/* ---------- scoring ---------- */
+function riasecScores() {
+  const s = { R: 0, I: 0, A: 0, S: 0, E: 0, C: 0 };
+  RIASEC_Q.forEach(([l], i) => { s[l] += S.ans.riasec[i] || 0; });
+  return s;
+}
+function scoreIdeas() {
+  const a = S.ans, rs = riasecScores();
+  const type = S.chart?.type;
+  const c = { time: a.cons.time ?? 2, budget: a.cons.budget ?? 2, revenue: a.cons.revenue ?? 3, place: a.cons.place ?? 2 };
+  const exclWords = (a.excl || '').toLowerCase().split(/[^a-zà-ÿ]+/).filter(w => w.length > 3);
+  const rw = [1, .8, .6, .4, .3];
+  return IDEAS.map(([t, d, r, sk, vals, bmin, fast, async, loc, model, stepTxt, price]) => {
+    if (bmin > c.budget) return null;
+    if (c.place === 0 && loc === 'local') return null;
+    const txt = (t + ' ' + d).toLowerCase();
+    if (exclWords.some(w => txt.includes(w.slice(0, Math.max(4, w.length - 1))))) return null;
+    const skill = sk.reduce((s, k) => s + (a.skills[k] || 0) / 3, 0) / sk.length;
+    const inter = r.split('').reduce((s, l) => s + Math.max(0, rs[l] - 5) / 20, 0) / r.length;
+    let val = 0; a.values.forEach((v, i) => { if (vals.includes(v)) val += rw[i]; }); val = Math.min(1, val / 1.6);
+    let sty = type ? MODEL_FIT[type][model] : .7;
+    if (a.style[7] === 'a' && (model === 'service' || model === 'conseil')) sty += .15;
+    if (a.style[7] === 'b' && ['produit', 'contenu', 'communaute'].includes(model)) sty += .15;
+    if (a.style[6] === 'a' && loc !== 'online') sty += .05;
+    if (a.style[6] === 'b' && loc === 'online') sty += .05;
+    sty = Math.min(1, sty);
+    let feas = 1;
+    if (c.time === 0 && !async) feas *= .4;
+    if (c.revenue === 0 && !fast) feas *= .5;
+    if (c.place === 1 && loc === 'online') feas *= .6;
+    const parts = { 'Compétences': skill, 'Intérêts': inter, 'Valeurs': val, 'Style': sty, 'Faisabilité': feas };
+    const total = Math.round(30 * skill + 25 * inter + 15 * val + 15 * sty + 15 * feas);
+    return { t, d, r, model, stepTxt, price, parts, total, fast, async, loc };
+  }).filter(Boolean).sort((x, y) => y.total - x.total);
+}
+
+function renderNotice() {
+  const done = MODS.filter((_, i) => modDone(i)).length;
+  if (!S.example && done < MODS.length) { $('#exampleNotice').innerHTML = `<div class="notice" style="margin-bottom:16px"><span>Ton bilan est complété à ${done}/${MODS.length} modules : tes pistes s'affinent à chaque réponse.</span><a class="btn ghost" href="#bilan">Continuer mon bilan</a></div>`; return; }
+  $('#exampleNotice').innerHTML = S.example ? `<div class="notice" style="margin-bottom:16px"><span><span class="tag ex">Exemple</span> Ces pistes sont celles de Camille, un profil fictif. Remplis ta charte et ton bilan pour voir les tiennes.</span><a class="btn ghost" href="#bilan">Commencer mon bilan</a></div>` : '';
+}
+
+function renderCompass() {
+  renderNotice();
+  if (!unlocked()) { LAST_RULE = scoreIdeas().slice(0, 4); $('#compass').innerHTML = paywallHTML(); $('#compass').classList.add('is-locked'); if ($('#recapBox')) renderRecap(); return; }
+  $('#compass').classList.remove('is-locked');
+  const a = S.ans, rs = riasecScores();
+  const answered = a.riasec.filter(Boolean).length;
+  const order = Object.keys(rs).sort((x, y) => rs[y] - rs[x]);
+  const code = answered >= 12 ? order.slice(0, 3).join('') : '···';
+  const top = new Set(order.slice(0, 3));
+  const bars = Object.keys(RIASEC).map(l => `<div class="rb ${top.has(l) && answered >= 12 ? 'top' : ''}"><span>${RIASEC[l][0]}</span><div class="track"><span style="width:${Math.max(0, rs[l] - 5) / 20 * 100}%"></span></div><span class="v">${rs[l] || 0}</span></div>`).join('');
+  const strong = SKILLS.flatMap(([, l]) => l).filter(([k]) => (a.skills[k] || 0) >= 2).sort((x, y) => (a.skills[y[0]] || 0) - (a.skills[x[0]] || 0));
+  const vals = a.values.map(v => VALUES.find(x => x[0] === v)[1]);
+  const T = S.chart ? TYPES[S.chart.type] : null;
+  const ideas = scoreIdeas().slice(0, 4);
+  const ideaCards = ideas.map((x, i) => `
+    <article class="idea">
+      <div class="idea-top"><div><p class="eyebrow">Piste ${i + 1}</p><h4>${x.t}</h4></div><div class="score"><b class="mono">${x.total}</b><small>sur 100</small></div></div>
+      <p>${x.d}</p>
+      <div class="meta"><span class="pill">${MODEL_LABEL[x.model]}</span><span class="pill">${x.price}</span><span class="pill">${x.loc === 'online' ? 'En ligne' : x.loc === 'local' ? 'Local' : 'En ligne ou local'}</span>${x.fast ? '<span class="pill">Revenu rapide possible</span>' : ''}</div>
+      <div class="breakdown">${Object.entries(x.parts).map(([k, v]) => `<div>${k}<i><span style="width:${Math.round(v * 100)}%"></span></i></div>`).join('')}</div>
+      ${T ? `<p class="why"><b>Avec ton type ${T.name} :</b> ${fitTip(S.chart.type, x.model)}</p>` : ''}
+      <p class="firststep"><b>Premier pas cette semaine :</b> ${x.stepTxt}</p>
+      ${pickBtn(x.t, `rule:${i}`)}
+    </article>`).join('');
+  LAST_RULE = ideas;
+  $('#compass').innerHTML = `
+    <aside class="card profile-card">
+      <div><p class="eyebrow">Ton code d'intérêts</p><div class="holland"><b>${code}</b><span class="muted">${answered < 30 ? `${answered}/30 réponses` : order.slice(0, 3).map(l => RIASEC[l][0]).join(' · ')}</span></div></div>
+      <div class="rbars">${bars}</div>
+      <div class="mini"><h4>Compétences fortes</h4><div>${strong.length ? strong.map(([, n]) => `<span class="pill">${n}</span>`).join('') : '<span class="muted">À compléter dans le module 2.</span>'}</div></div>
+      <div class="mini"><h4>Valeurs prioritaires</h4><div>${vals.length ? vals.map((v, i) => `<span class="pill">${i + 1}. ${v}</span>`).join('') : '<span class="muted">À compléter dans le module 4.</span>'}</div></div>
+      <div class="mini"><h4>Ton fonctionnement</h4><div>${T ? `<span class="pill">${T.name}</span><span class="pill">${S.birth.unknown ? 'Autorité à confirmer' : 'Autorité ' + AUTH[S.chart.authority][0].toLowerCase()}</span><span class="pill">Profil ${S.chart.profile}</span>` : '<span class="muted">Calcule ta charte à l\'étape 1.</span>'}</div></div>
+    </aside>
+    <div class="ideas">
+      ${ideaCards || '<div class="card"><p>Aucune piste ne correspond à tes contraintes actuelles. Essaie d\'élargir le budget ou le lieu dans le module 6.</p></div>'}
+      <div class="ai-box" id="aiBox">
+        <div><p class="eyebrow">Aller plus loin</p><h3 style="font-size:1.25rem;font-weight:400;margin-top:4px">Des idées 100 % sur mesure</h3><p class="muted" style="margin-top:4px">Notre IA lit toutes tes réponses, y compris tes textes libres, et propose 4 projets inédits avec offre, clientèle et prix.</p></div>
+        <div><button type="button" class="btn" id="aiGo">Générer mes idées sur mesure</button></div>
+        <p class="ai-status" id="aiStatus" aria-live="polite"></p>
+        <div class="ideas" id="aiOut"></div>
+      </div>
+    </div>`;
+  setupAI();
+  if ($('#recapBox')) renderRecap();
+}
+function fitTip(type, model) {
+  const t = {
+    generator: { service: 'une prestation régulière nourrit ton énergie durable, à condition que le métier t\'allume.', conseil: 'garde des formats réguliers que tu aimes animer, plutôt que des missions ponctuelles épuisantes.', produit: 'crée le produit en répondant aux demandes concrètes de ton public.', contenu: 'publie sur ce qui te passionne vraiment, la régularité viendra seule.', communaute: 'anime un rendez-vous récurrent que tu prends plaisir à tenir.', commerce: 'vends ce que tu aimes fabriquer ou recommander.' },
+    mg: { service: 'propose plusieurs formats et ajuste vite selon les retours.', conseil: 'garde des missions courtes et variées pour éviter l\'ennui.', produit: 'teste vite plusieurs petits produits et garde ceux qui marchent.', contenu: 'ta polyvalence est un atout : plusieurs formats, plusieurs canaux.', communaute: 'tu peux lancer vite, préviens tes membres quand tu fais évoluer le format.', commerce: 'lance, teste, ajuste : ton rythme rapide est un avantage.' },
+    projector: { service: 'limite le nombre de clients et vends ton regard plus que ton temps.', conseil: 'c\'est ton terrain naturel : guide, audite, conseille peu de clients bien payés.', produit: 'appuie-toi sur ta méthode et laisse le produit travailler à ta place.', contenu: 'montre ton expertise pour être reconnu·e et invité·e.', communaute: 'sois le guide de la communauté plutôt que son animateur à plein temps.', commerce: 'délègue la logistique pour garder ton énergie pour la stratégie.' },
+    manifestor: { service: 'cadre bien tes disponibilités et informe tes clients de ton rythme.', conseil: 'interviens au démarrage des projets, là où ton impulsion compte.', produit: 'tu lances, d\'autres peuvent ensuite faire vivre le produit.', contenu: 'annonce tes projets à ton audience : elle te suivra.', communaute: 'initie le mouvement puis confie l\'animation à d\'autres.', commerce: 'fonde la marque et délègue l\'exécution au quotidien.' },
+    reflector: { service: 'choisis des clients et des lieux qui te font du bien.', conseil: 'ton regard sur la santé d\'un groupe est rare, valorise-le.', produit: 'prends un cycle lunaire pour valider l\'idée avant de te lancer.', contenu: 'parle de ce que tu observes chez les autres : c\'est ton talent.', communaute: 'tu es fait·e pour sentir et refléter un collectif.', commerce: 'entoure-toi bien et laisse mûrir chaque décision.' }
+  };
+  return t[type][model];
+}
+
+/* ---------- Claude ---------- */
+let sampleFn = null, aiCtl = null, aiCache = null;
+sampleFn = { json: async (prompt, opts = {}) => {
+  let r;
+  try { r = await fetch('/api/claude', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ prompt, token: S.token || '' }), signal: opts.signal }); }
+  catch (e) { throw { code: e && e.name === 'AbortError' ? 'cancelled' : 'upstream_error' }; }
+  if (r.status === 402) throw { code: 'locked' };
+  if (r.status === 429) throw { code: 'rate_limited' };
+  if (!r.ok) throw { code: 'upstream_error' };
+  const d = await r.json(); if (d.data === undefined) throw { code: 'invalid_json' }; return d.data;
+} };
+function setupAI() {
+  const box = $('#aiBox'); if (!box) return;
+  box.hidden = !sampleFn;
+  if (aiCache) renderAI(aiCache);
+  const go = $('#aiGo'); if (go) go.onclick = runAI;
+}
+function profileText() {
+  const a = S.ans, rs = riasecScores();
+  const order = Object.keys(rs).sort((x, y) => rs[y] - rs[x]);
+  const ch = S.chart;
+  const skills = SKILLS.flatMap(([, l]) => l).map(([k, n]) => `${n}: ${SKILL_LEVELS[a.skills[k] || 0]}`).join('; ');
+  const cons = CONSTRAINTS.map(([k, q, o]) => `${q}: ${a.cons[k] !== undefined ? o[a.cons[k]] : 'non renseigné'}`).join('; ');
+  const style = STYLE_Q.map(([q, x, y], i) => `${q}: ${a.style[i] === 'a' ? x : a.style[i] === 'b' ? y : '?'}`).join('; ');
+  return [
+    ch ? `Human Design: type ${TYPES[ch.type].name}, stratégie « ${TYPES[ch.type].strat} », autorité ${S.birth.unknown ? 'inconnue (heure manquante)' : AUTH[ch.authority][0]}, profil ${ch.profile}, centres définis: ${ch.defined.map(c => CENTER_TXT[c][0]).join(', ') || 'aucun'}, canaux: ${ch.channels.map(([x, y]) => (CHANNEL_TXT[`${x}-${y}`] || CHANNEL_TXT[`${y}-${x}`])[0]).join(', ') || 'aucun'}.` : 'Human Design: non calculé.',
+    `Intérêts RIASEC (sur 25): ${order.map(l => `${RIASEC[l][0]} ${rs[l]}`).join(', ')}.`,
+    `Compétences: ${skills}.`,
+    `Valeurs (ordre d'importance): ${a.values.map(v => VALUES.find(x => x[0] === v)[1]).join(', ') || 'non renseignées'}.`,
+    `Style: ${style}.`, `Contraintes: ${cons}.`,
+    ...OPEN_Q.map(([k, q]) => `${q} ${a.open[k] || '—'}`),
+    `Idées déjà envisagées: ${a.ideas || '—'}.`, `Domaines exclus: ${a.excl || '—'}.`
+  ].join('\n');
+}
+async function runAI() {
+  if (!sampleFn) return;
+  const go = $('#aiGo'), st = $('#aiStatus');
+  aiCtl?.abort(); aiCtl = new AbortController();
+  go.disabled = true; st.textContent = 'Analyse de ton profil en cours… (cela peut prendre une minute)';
+  const prompt = `Tu es conseiller en création d'entreprise, bienveillant et concret. Voici le profil d'une personne qui cherche son « business passion » :\n\n${profileText()}\n\nPropose 4 idées de business réalistes, variées et vraiment personnalisées (appuie-toi sur ses textes libres, ses compétences fortes et ses intérêts). Respecte toutes ses contraintes de budget, de temps, de revenu et de lieu, et n'utilise jamais un domaine exclu. Le Human Design sert seulement à adapter la manière de travailler et de vendre ; présente-le comme une piste de réflexion, jamais comme une certitude.\n\nRéponds uniquement avec un tableau JSON de 4 objets, en français, tutoiement, avec ces clés : "titre" (court), "concept" (1 phrase), "clients" (qui achète), "offre" (l'offre de départ et son prix indicatif en euros), "pourquoi" (1 à 2 phrases reliant l'idée à son profil), "risque" (1 phrase), "premier_pas" (une action réalisable en 7 jours, sans argent), "score" (entier de 0 à 100 pour l'alignement).`;
+  try {
+    const res = await sampleFn.json(prompt, { signal: aiCtl.signal, cache: false });
+    if (!Array.isArray(res)) throw { code: 'invalid_json' };
+    aiCache = res; st.textContent = ''; renderAI(res);
+  } catch (e) {
+    const msg = { locked: 'Les idées sur mesure sont incluses dans l\'accès complet.', not_granted: 'Tu n\'as pas autorisé cette page à utiliser Claude.', sampling_disabled: 'Claude n\'est pas disponible pour ce compte.', rate_limited: 'Trop de demandes pour le moment. Réessaie dans quelques minutes.', invalid_json: 'La réponse était incomplète. Clique à nouveau pour réessayer.', cancelled: '' };
+    st.textContent = msg[e.code] ?? 'La génération a été interrompue. Clique à nouveau pour réessayer.';
+    if (['not_granted', 'sampling_disabled', 'not_declared', 'capability_disabled'].includes(e.code)) go.hidden = true;
+  } finally { go.disabled = false; }
+}
+function renderAI(list) {
+  const out = $('#aiOut'); if (!out) return;
+  out.innerHTML = list.slice(0, 4).map((x, i) => `
+    <article class="idea">
+      <div class="idea-top"><div><p class="eyebrow">Idée sur mesure ${i + 1}</p><h4>${esc(x.titre)}</h4></div><div class="score"><b class="mono">${esc(Math.round(Number(x.score) || 0))}</b><small>sur 100</small></div></div>
+      <p>${esc(x.concept)}</p>
+      <p class="why"><b>Clients :</b> ${esc(x.clients)}</p>
+      <p class="why"><b>Offre de départ :</b> ${esc(x.offre)}</p>
+      <p class="why"><b>Pourquoi toi :</b> ${esc(x.pourquoi)}</p>
+      <p class="why muted"><b>Point de vigilance :</b> ${esc(x.risque)}</p>
+      <p class="firststep"><b>Premier pas cette semaine :</b> ${esc(x.premier_pas)}</p>
+      ${pickBtn(String(x.titre), `ai:${i}`)}
+    </article>`).join('');
+  const go = $('#aiGo'); if (go) go.textContent = 'Proposer d\'autres idées';
+}
+
+/* ---------- Human Design : 4 clés business ---------- */
+function hdCards(ch, unknown) {
+  const T = TYPES[ch.type], TB = TYPE_BIZ[ch.type], SB = STRAT_BIZ[ch.type], A = AUTH[ch.authority];
+  const [l1, l2] = ch.profile.split('/');
+  return [
+    { n: 1, label: 'Ton type', title: `${T.name} · ${TB[0]}`, what: T.desc, why: TB[1], evolve: TB[2], trap: TB[3] },
+    { n: 2, label: 'Ta stratégie', title: T.strat, what: "Ta stratégie est ta façon naturelle d'entrer dans les projets et de rencontrer les bonnes opportunités, sans forcer.", why: SB[0], evolve: SB[1] },
+    unknown
+      ? { n: 3, label: 'Ton autorité', title: 'À confirmer', what: "Ton autorité dépend de ton heure de naissance. Retrouve-la sur ton acte de naissance pour la connaître.", why: "En attendant, ne prends aucune grande décision business dans l'urgence : laisse-toi au moins une nuit.", evolve: "Complète ton heure de naissance dès que possible." }
+      : { n: 3, label: 'Ton autorité', title: A[0], what: A[1], why: AUTH_BIZ[ch.authority], evolve: "Applique cette méthode à chaque décision importante : nouvelle offre, prix, client, associé, investissement." },
+    unknown
+      ? { n: 4, label: 'Ton profil', title: 'À confirmer', what: "Ton profil dépend de ton heure de naissance.", why: "Il indique comment tu attires tes clients et ce qu'ils attendent de toi.", evolve: "Complète ton heure de naissance pour le découvrir." }
+      : { n: 4, label: 'Ton profil', title: `${ch.profile} · ${LINES[l1][0]} / ${LINES[l2][0]}`, what: `Ton profil décrit ton rôle et la façon dont les autres te perçoivent : ${LINES[l1][0].toLowerCase()} côté conscient, ${LINES[l2][0].toLowerCase()} côté inconscient.`, why: `${LINE_BIZ[l1]} ${LINE_BIZ[l2]}`, evolve: `${LINES[l1][1]} ${LINES[l2][1]}` }
+  ];
+}
+
+/* ---------- offre et récap ---------- */
+let LAST_RULE = [];
+function pickBtn(title, ref) {
+  const chosen = S.offer && S.offer.title0 === title;
+  return `<div><button type="button" class="btn ${chosen ? '' : 'ghost'}" data-pick="${ref}" aria-pressed="${chosen}">${chosen ? 'Piste choisie ✓' : 'Choisir cette piste'}</button></div>`;
+}
+function offerFromRule(x) {
+  return { title0: x.t, name: x.t, client: '', promise: x.d, format: `${MODEL_LABEL[x.model]}, ${x.loc === 'online' ? 'en ligne' : x.loc === 'local' ? 'en local' : 'en ligne ou en local'}`, price: x.price, step: x.stepTxt, score: x.total };
+}
+function offerFromAI(x) {
+  return { title0: String(x.titre), name: String(x.titre || ''), client: String(x.clients || ''), promise: String(x.concept || ''), format: String(x.offre || ''), price: '', step: String(x.premier_pas || ''), score: Math.round(Number(x.score) || 0) };
+}
+document.addEventListener('click', e => {
+  const t = e.target.closest('[data-pick]'); if (!t) return;
+  const [src, i] = t.dataset.pick.split(':');
+  const x = src === 'rule' ? LAST_RULE[+i] : aiCache?.[+i];
+  if (!x) return;
+  S.offer = src === 'rule' ? offerFromRule(x) : offerFromAI(x);
+  save(); renderCompass(); renderRecap();
+  $('#recap').scrollIntoView();
+});
+function currentOffer() {
+  if (S.offer) return S.offer;
+  if (S.example && LAST_RULE[0]) return Object.assign(offerFromRule(LAST_RULE[0]), { client: 'Femmes de 30 à 45 ans en reconversion professionnelle' });
+  return null;
+}
+const OFFER_FIELDS = [
+  ['name', "Nom de ton offre", "Ex. : Le cap de la reconversion", false],
+  ['client', 'Pour qui ? (ton client idéal)', 'Ex. : femmes de 30 à 45 ans qui veulent quitter leur emploi', false],
+  ['promise', 'Le résultat que tu promets', 'Ex. : repartir avec un projet clair en 6 semaines', true],
+  ['format', 'Format et durée', 'Ex. : 6 séances individuelles en visio', false],
+  ['price', 'Prix de lancement', 'Ex. : 390 € les 6 séances', false],
+  ['step', 'Ton premier pas cette semaine', '', true]
+];
+function plan(o) {
+  const ch = S.chart, unk = S.birth.unknown;
+  const decide = ch && !unk ? AUTH_BIZ[ch.authority] : "Laisse-toi au moins une nuit avant de valider.";
+  const launch = ch ? STRAT_BIZ[ch.type][1] : "Présente ton offre simplement, à des personnes réelles.";
+  const find = ch ? STRAT_BIZ[ch.type][0] : "Parle de ton offre autour de toi et sur un réseau social.";
+  const evolve = ch ? TYPE_BIZ[ch.type][2] : "Garde ce qui te donne de l'énergie, change le reste.";
+  return [
+    ['Semaine 1', 'Clarifier et valider', `Écris ton offre en une phrase et valide-la avec ton autorité. ${decide}`],
+    ['Semaine 2', 'Tester', `${o.step || 'Présente ton offre à 10 personnes de ta cible.'} ${launch}`],
+    ['Semaine 3', 'Trouver tes 3 premiers clients', `Propose ton offre au prix de lancement. ${find}`],
+    ['Semaine 4', 'Ajuster et décider la suite', `Recueille les retours, ajuste l'offre et le prix. ${evolve}`]
+  ];
+}
+function recapData() {
+  const o = currentOffer(); if (!o) return null;
+  const a = S.ans, rs = riasecScores(), ch = S.chart, unk = S.birth.unknown;
+  const order = Object.keys(rs).sort((x, y) => rs[y] - rs[x]);
+  return {
+    o, ch, unk,
+    name: S.birth.name || '',
+    date: new Date().toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' }),
+    code: a.riasec.filter(Boolean).length >= 12 ? order.slice(0, 3).map(l => RIASEC[l][0]).join(' · ') : '',
+    skills: SKILLS.flatMap(([, l]) => l).filter(([k]) => (a.skills[k] || 0) >= 2).map(([, n]) => n),
+    values: a.values.map(v => VALUES.find(x => x[0] === v)[1]),
+    keys: ch ? hdCards(ch, unk) : [],
+    ex: S.experts || {},
+    plan: plan(o)
+  };
+}
+function recapDocHTML(d) {
+  const o = d.o;
+  return `
+  <header class="rc-head"><p class="rc-eyebrow">Ma Boussole Business · récap du ${d.date}</p><h2>${d.name ? esc(d.name) + ', ton' : 'Ton'} business passion</h2><p class="rc-angle">${esc(o.name || 'Ton offre')}${o.client ? ' pour ' + esc(o.client.charAt(0).toLowerCase() + o.client.slice(1)) : ''}</p></header>
+  ${d.ex.synth ? `<section class="rc-sec"><h3>Ta vision</h3><p class="rc-vision">${esc(d.ex.synth.vision)}</p><p>${esc(d.ex.synth.pourquoi_toi)}</p>${(d.ex.synth.priorites || []).length ? `<p class="rc-w" style="margin-top:10px">Tes 3 priorités</p><ol class="rc-plan">${li(d.ex.synth.priorites)}</ol>` : ''}</section>` : ''}
+  <section class="rc-sec"><h3>Ton offre de lancement</h3><dl class="rc-dl">
+    <div><dt>Pour qui</dt><dd>${esc(o.client) || '<span class="rc-empty">À préciser</span>'}</dd></div>
+    <div><dt>Résultat promis</dt><dd>${esc(o.promise) || '<span class="rc-empty">À préciser</span>'}</dd></div>
+    <div><dt>Format</dt><dd>${esc(o.format) || '<span class="rc-empty">À préciser</span>'}</dd></div>
+    <div><dt>Prix de lancement</dt><dd>${esc(o.price) || '<span class="rc-empty">À préciser</span>'}</dd></div>
+  </dl></section>
+  ${d.ex.mkt ? `<section class="rc-sec"><h3>Ton positionnement</h3><p class="rc-vision">${esc(d.ex.mkt.positionnement)}</p>${d.ex.mkt.pitch ? `<p><b>Ton pitch :</b> ${esc(d.ex.mkt.pitch)}</p>` : ''}${(d.ex.mkt.canaux || []).length ? `<p><b>Tes canaux :</b> ${(d.ex.mkt.canaux || []).map(c => esc(c.canal)).join(', ')}</p>` : ''}</section>` : ''}
+  ${d.keys.length ? `<section class="rc-sec"><h3>Ton Human Design au service de ton business</h3><div class="rc-keys">${d.keys.map(k => `<div class="rc-key"><p class="rc-k-label">${k.label}</p><p class="rc-k-title">${k.title}</p><p>${k.why}</p></div>`).join('')}</div></section>` : ''}
+  <section class="rc-sec"><h3>Tes ressources</h3><dl class="rc-dl">
+    ${d.code ? `<div><dt>Intérêts dominants</dt><dd>${d.code}</dd></div>` : ''}
+    <div><dt>Compétences fortes</dt><dd>${d.skills.join(', ') || '<span class="rc-empty">Bilan à compléter</span>'}</dd></div>
+    <div><dt>Valeurs</dt><dd>${d.values.join(', ') || '<span class="rc-empty">Bilan à compléter</span>'}</dd></div>
+  </dl></section>
+  <section class="rc-sec"><h3>Tes 30 premiers jours</h3><ol class="rc-plan">${d.plan.map(([w, t, x]) => `<li><p class="rc-w">${w} · <b>${t}</b></p><p>${esc(x)}</p></li>`).join('')}</ol></section>
+  ${d.ex.synth && (d.ex.synth.feuille_de_route || []).length ? `<section class="rc-sec"><h3>Ta feuille de route sur 90 jours</h3><div class="rc-keys">${d.ex.synth.feuille_de_route.map(m => `<div class="rc-key"><p class="rc-k-label">${esc(m.mois)}</p><p class="rc-k-title">${esc(m.objectif)}</p><ul class="rc-ul">${li(m.actions)}</ul></div>`).join('')}</div>${d.ex.synth.indicateur ? `<p style="margin-top:10px"><b>Ton indicateur de réussite :</b> ${esc(d.ex.synth.indicateur)}</p>` : ''}</section>` : ''}
+  ${d.ex.mind?.phrase_ancre ? `<p class="rc-vision" style="margin-top:16px">« ${esc(d.ex.mind.phrase_ancre)} »</p>` : ''}
+  <p class="rc-foot">Le Human Design est une grille de lecture de soi, pas une science validée : garde ce qui te parle et teste-le dans la réalité.</p>`;
+}
+function recapText(d) {
+  const o = d.o, L = [];
+  L.push(`MON RÉCAP BUSINESS PASSION — ${d.date}`, '');
+  if (d.ex.synth) { L.push('MA VISION', d.ex.synth.vision || '', d.ex.synth.pourquoi_toi || ''); (d.ex.synth.priorites || []).forEach((p, i) => L.push(`${i + 1}. ${p}`)); L.push(''); }
+  L.push(`Mon angle : ${o.name}${o.client ? ' pour ' + o.client : ''}`, '');
+  L.push('MON OFFRE DE LANCEMENT', `- Pour qui : ${o.client || 'à préciser'}`, `- Résultat promis : ${o.promise || 'à préciser'}`, `- Format : ${o.format || 'à préciser'}`, `- Prix de lancement : ${o.price || 'à préciser'}`, '');
+  if (d.keys.length) { L.push('MON HUMAN DESIGN AU SERVICE DE MON BUSINESS'); d.keys.forEach(k => L.push(`- ${k.label} : ${k.title}. ${k.why}`)); L.push(''); }
+  L.push('MES RESSOURCES');
+  if (d.code) L.push(`- Intérêts dominants : ${d.code}`);
+  L.push(`- Compétences fortes : ${d.skills.join(', ') || 'à compléter'}`, `- Valeurs : ${d.values.join(', ') || 'à compléter'}`, '');
+  if (d.ex.mkt) { L.push('', 'MON POSITIONNEMENT', d.ex.mkt.positionnement || ''); if (d.ex.mkt.pitch) L.push(`Pitch : ${d.ex.mkt.pitch}`); }
+  L.push('', 'MES 30 PREMIERS JOURS'); d.plan.forEach(([w, t, x]) => L.push(`- ${w} — ${t} : ${x}`));
+  if (d.ex.synth && (d.ex.synth.feuille_de_route || []).length) { L.push('', 'MA FEUILLE DE ROUTE SUR 90 JOURS'); d.ex.synth.feuille_de_route.forEach(m => { L.push(`${m.mois} — ${m.objectif}`); (m.actions || []).forEach(x => L.push(`  - ${x}`)); }); if (d.ex.synth.indicateur) L.push(`Indicateur de réussite : ${d.ex.synth.indicateur}`); }
+  return L.join('\n');
+}
+const RECAP_CSS = `body{margin:0;background:#F4EDE1;color:#3A2819;font-family:Georgia,'Times New Roman',serif;line-height:1.55}
+.doc{max-width:760px;margin:0 auto;padding:40px 24px}
+.rc-head{border-bottom:2px solid #8A5A35;padding-bottom:18px;margin-bottom:8px}
+.rc-eyebrow,.rc-k-label,dt,.rc-w{font-family:system-ui,-apple-system,'Segoe UI',sans-serif;font-size:12px;text-transform:uppercase;letter-spacing:.12em;color:#7A614B;font-weight:600;margin:0}
+h2{font-size:32px;font-weight:400;margin:10px 0 6px}
+.rc-angle{font-size:20px;font-style:italic;color:#8A5A35;margin:0}
+.rc-sec{padding:18px 0;border-bottom:1px solid #D8C6AC;break-inside:avoid}
+h3{font-size:19px;margin:0 0 12px}
+.rc-dl{margin:0;display:grid;gap:10px}
+.rc-dl div{display:grid;grid-template-columns:170px 1fr;gap:12px}
+dd{margin:0}
+.rc-keys{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.rc-key{background:#FBF7F1;border:1px solid #D8C6AC;border-radius:12px;padding:12px 14px}
+.rc-key p{margin:0}
+.rc-k-title{font-size:16px;font-weight:600;margin:4px 0 6px!important}
+.rc-key p:last-child{font-size:14px}
+.rc-plan{margin:0;padding-left:20px;display:grid;gap:10px}
+.rc-plan p{margin:0}
+.rc-empty{color:#7A614B;font-style:italic}
+.rc-foot{font-size:13px;color:#7A614B;margin-top:18px}
+.rc-vision{font-size:19px;font-style:italic;color:#8A5A35;margin:0 0 8px}
+.rc-ul{margin:6px 0 0;padding-left:18px;font-size:14px}
+@media (max-width:560px){.rc-dl div,.rc-keys{grid-template-columns:1fr}}
+@media print{body{background:#fff}.doc{padding:0}}`;
+
+let downloadsApi = null;
+downloadsApi = { save: async ({ filename, data }) => { const url = URL.createObjectURL(new Blob([data], { type: 'text/html' })); const l = document.createElement('a'); l.href = url; l.download = filename; document.body.appendChild(l); l.click(); l.remove(); setTimeout(() => URL.revokeObjectURL(url), 4000); return { status: 'saved' }; } };
+
+function renderRecap() {
+  const box = $('#recapBox');
+  $('#recap').hidden = !unlocked(); document.querySelector('a[href="#recap"].navl')?.toggleAttribute('hidden', !unlocked());
+  if (!unlocked()) { box.innerHTML = ''; return; }
+  const o = currentOffer();
+  if (!o) {
+    box.innerHTML = `<div class="card empty"><h3>Choisis d'abord une piste</h3><p class="muted">À l'étape 3, clique sur « Choisir cette piste » sous l'idée qui t'attire le plus. Tu pourras ensuite construire ton offre et recevoir ton récap.</p><div><a class="btn ghost" href="#pistes">Voir mes pistes</a></div></div>`;
+    return;
+  }
+  box.innerHTML = `
+    <div class="recap-grid">
+      <div class="card offer-form">
+        <div><p class="eyebrow">Construis ton offre</p><h3>Ton angle clair</h3><p class="muted" style="margin-top:4px">Pré-rempli à partir de ta piste. Modifie chaque champ avec tes mots : ton récap se met à jour en direct.</p></div>
+        ${OFFER_FIELDS.map(([k, l, ph, big]) => `<label for="of-${k}">${l}${big ? `<textarea id="of-${k}" data-of="${k}" placeholder="${esc(ph)}">${esc(o[k])}</textarea>` : `<input type="text" id="of-${k}" data-of="${k}" placeholder="${esc(ph)}" value="${esc(o[k])}">`}</label>`).join('')}
+      </div>
+      <div class="recap-side">
+        <div class="card recap-doc" id="recapDoc"></div>
+        <div class="card recap-actions" id="recapActions"></div>
+      </div>
+    </div>`;
+  renderRecapDoc(); renderRecapActions();
+}
+function renderRecapDoc() {
+  const d = recapData(); const el = $('#recapDoc'); if (!d || !el) return;
+  el.innerHTML = (S.example ? '<p style="margin-bottom:10px"><span class="tag ex">Exemple</span></p>' : '') + recapDocHTML(d);
+}
+function renderRecapActions() {
+  const el = $('#recapActions'); if (!el) return;
+  el.innerHTML = `
+    <div><p class="eyebrow">Garder ton récap</p><h3>Reçois-le, imprime-le ou enregistre-le</h3></div>
+    <form id="rcMailForm" class="mail-form" novalidate>
+      <label for="rcMail">Ton adresse e-mail<input type="email" id="rcMail" autocomplete="email" placeholder="prenom@exemple.fr" value="${esc(S.email || '')}"></label>
+      <div class="actions"><button type="submit" class="btn">Recevoir mon récap par e-mail</button><button type="button" class="btn ghost" id="rcDownload">Télécharger</button><button type="button" class="btn ghost" id="rcCopy">Copier le texte</button></div>
+    </form>
+    <p class="ai-status" id="rcStatus" aria-live="polite"></p>
+    <ul class="howto">
+      <li><b>Par e-mail</b> : ton récap complet arrive dans ta boîte, avec le fichier en pièce jointe.</li>
+      <li><b>Télécharger</b> : tu obtiens un fichier à ouvrir dans ton navigateur, pour l'imprimer ou l'enregistrer en PDF.</li>
+      <li><b>Sur cet appareil</b> : ton offre et tes réponses restent enregistrées ; rouvre simplement cette page pour les retrouver.</li>
+    </ul>
+    <textarea id="rcText" class="copy-area" readonly hidden aria-label="Texte du récap"></textarea>`;
+}
+function recapFileHTML(d) {
+  return `<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Récap business passion${d.name ? ' — ' + esc(d.name) : ''}</title><style>${RECAP_CSS}</style></head><body><main class="doc">${recapDocHTML(d)}</main></body></html>`;
+}
+document.addEventListener('submit', async e => {
+  if (e.target.id !== 'rcMailForm') return;
+  e.preventDefault();
+  const d = recapData(); if (!d) return;
+  const v = $('#rcMail').value.trim(), st = $('#rcStatus');
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)) { st.textContent = 'Indique une adresse e-mail valide.'; return; }
+  if (!S.paid) { st.textContent = 'L\'envoi par e-mail est inclus dans l\'accès complet.'; return; }
+  S.email = v; save(); st.textContent = 'Envoi en cours…';
+  try { await api('/api/send-email', { type: 'recap', email: v, name: d.name, token: S.token, html: recapFileHTML(d) }); st.textContent = `Ton récap est parti à ${v}. Pense à vérifier tes courriers indésirables.`; }
+  catch (err) { st.textContent = 'L\'envoi n\'a pas fonctionné. Réessaie, ou télécharge ton récap.'; }
+});
+
+$('#recap').addEventListener('input', e => {
+  const k = e.target.dataset.of; if (!k) return;
+  if (!S.offer) S.offer = Object.assign({}, currentOffer());
+  if (S.example) { S.example = false; renderNotice(); }
+  S.offer[k] = e.target.value; save(); renderRecapDoc();
+});
+$('#recap').addEventListener('click', async e => {
+  const t = e.target.closest('button'); if (!t) return;
+  const d = recapData(); if (!d) return;
+  const st = $('#rcStatus');
+  if (t.id === 'rcCopy') {
+    const txt = recapText(d);
+    try { await navigator.clipboard.writeText(txt); st.textContent = 'Texte copié. Colle-le dans un nouvel e-mail adressé à toi-même.'; }
+    catch (err) { const ta = $('#rcText'); ta.hidden = false; ta.value = txt; ta.focus(); ta.select(); st.textContent = 'Sélectionne le texte ci-dessous et copie-le (Ctrl+C ou appui long).'; }
+  }
+  if (t.id === 'rcDownload' && downloadsApi) {
+    const slug = (d.name || 'mon').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'mon';
+    const doc = `<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Récap business passion${d.name ? ' — ' + esc(d.name) : ''}</title><style>${RECAP_CSS}</style></head><body><main class="doc">${recapDocHTML(d)}</main></body></html>`;
+    st.textContent = 'Confirme le téléchargement dans la fenêtre qui s\'ouvre…';
+    try { await downloadsApi.save({ filename: `recap-business-passion-${slug}.html`, data: doc }); st.textContent = 'Récap téléchargé. Ouvre-le dans ton navigateur pour l\'imprimer ou l\'enregistrer en PDF.'; }
+    catch (err) { st.textContent = err?.code === 'declined' ? 'Téléchargement annulé.' : 'Le téléchargement n\'est pas disponible ici. Utilise plutôt « Copier le texte ».'; if (['unavailable', 'not_granted', 'capability_disabled'].includes(err?.code)) { downloadsApi = null; renderRecapActions(); } }
+  }
+});
+
+/* ---------- comité d'experts ---------- */
+const AGENTS = [
+  { k: 'hd', ini: 'HD', n: 'Analyste Human Design', d: "Traduit ta charte en mode d'emploi d'entrepreneur : forces, pièges, rythme, façon de vendre.",
+    role: "analyste Human Design expérimenté·e. Traduis sa charte en mode d'emploi entrepreneurial : forces, pièges, rythme de travail idéal, façon d'attirer et de vendre, environnement idéal. Appuie-toi précisément sur son type, sa stratégie, son autorité, son profil, ses centres définis et ouverts et ses canaux.",
+    schema: '{"synthese": "2 à 3 phrases", "forces": ["3 forces business"], "pieges": ["3 pièges à éviter"], "rythme": "son rythme de travail idéal", "vente": "comment attirer et vendre", "environnement": "son environnement de travail idéal"}' },
+  { k: 'orient', ini: 'OR', n: "Conseillère en orientation", d: 'Révèle ta zone de génie, tes talents et tes compétences transférables.',
+    role: "conseiller·ère en orientation et en bilan professionnel. Analyse ses intérêts (RIASEC), ses compétences, ses valeurs et ses réponses libres pour identifier sa zone de génie, ses talents, ses compétences transférables et ses motivations profondes.",
+    schema: '{"synthese": "2 à 3 phrases", "zone_de_genie": "1 phrase", "talents": ["3 talents"], "competences_transferables": ["3 compétences"], "motivations": ["3 motivations profondes"], "a_eviter": "ce qui l\'éteint, 1 phrase"}' },
+  { k: 'strat', ini: 'ST', n: 'Stratège business', d: 'Conçoit ton offre signature, ton prix et ton modèle de revenus.',
+    role: "stratège business spécialisé·e dans le lancement d'activités d'indépendants. À partir des analyses précédentes et de la piste choisie, conçois son offre signature : client précis, problème, promesse, format, prix de lancement réaliste en euros, modèle de revenus, test de validation sans argent et évolution à 12 mois.",
+    schema: '{"synthese": "2 à 3 phrases", "offre": {"nom": "nom court et parlant", "client": "client idéal précis", "probleme": "le problème résolu", "promesse": "le résultat promis", "format": "format et durée", "prix": "prix de lancement en euros"}, "modele_revenus": "1 à 2 phrases", "test_validation": "1 test à faire en 14 jours sans argent", "evolution": "comment l\'activité grandit à 12 mois"}' },
+  { k: 'mkt', ini: 'MK', n: 'Experte marketing', d: 'Définit ton positionnement, ton pitch et tes meilleurs canaux pour trouver des clients.',
+    role: "expert·e en marketing et en positionnement pour indépendants. Définis son positionnement, un pitch prêt à dire, 3 canaux d'acquisition adaptés à son Human Design (stratégie et profil), à ses compétences et à ses contraintes, et 5 idées de contenus.",
+    schema: '{"synthese": "2 à 3 phrases", "positionnement": "1 phrase : j\'aide [qui] à [résultat] grâce à [méthode]", "pitch": "2 à 3 phrases à dire à l\'oral", "canaux": [{"canal": "nom", "pourquoi": "1 phrase", "action": "1 action concrète"}], "idees_contenus": ["5 idées de contenus"]}' },
+  { k: 'mind', ini: 'MI', n: 'Coach mindset', d: 'Anticipe tes blocages probables et te donne de quoi les dépasser.',
+    role: "coach en posture entrepreneuriale. Identifie ses 3 blocages les plus probables (d'après ses projets passés, son rapport au risque, ses centres ouverts, ses valeurs) avec une parade concrète pour chacun, un rituel hebdomadaire simple et une phrase ancre.",
+    schema: '{"synthese": "2 à 3 phrases", "blocages": [{"blocage": "1 phrase", "parade": "1 phrase concrète"}], "rituel": "1 rituel hebdomadaire", "phrase_ancre": "1 phrase courte à se répéter"}' },
+  { k: 'synth', ini: 'VS', n: 'Directrice de synthèse', d: 'Rassemble les 5 rapports en une vision claire et une feuille de route sur 90 jours.',
+    role: "directeur·rice de synthèse du comité. Rassemble les 5 rapports en une vision claire, cohérente et motivante : sa vision en une phrase, pourquoi cette personne est faite pour ce projet, 3 priorités, une feuille de route sur 90 jours (3 mois, 3 actions concrètes par mois), l'indicateur de réussite à suivre et un message d'encouragement.",
+    schema: '{"vision": "1 phrase inspirante et concrète", "pourquoi_toi": "2 à 3 phrases", "priorites": ["3 priorités"], "feuille_de_route": [{"mois": "Mois 1", "objectif": "1 phrase", "actions": ["3 actions"]}], "indicateur": "l\'indicateur de réussite à 90 jours", "message": "2 phrases d\'encouragement"}' }
+];
+const PHASES = [['hd', 'orient'], ['strat'], ['mkt', 'mind'], ['synth']];
+let teamCtl = null, teamStatus = {}, teamRunning = false;
+
+function offerContext() {
+  const o = S.offer || currentOffer();
+  if (o) return `PISTE CHOISIE : ${o.name}. Pour : ${o.client || 'à préciser'}. Promesse : ${o.promise || '—'}. Format : ${o.format || '—'}. Prix envisagé : ${o.price || '—'}.`;
+  return `PISTES LES MIEUX CLASSÉES : ${LAST_RULE.map(x => `${x.t} (${x.total}/100)`).join(' ; ')}.`;
+}
+function agentPrompt(ag) {
+  const prev = AGENTS.filter(a => a.k !== ag.k && S.experts?.[a.k] && PHASES.findIndex(p => p.includes(a.k)) < PHASES.findIndex(p => p.includes(ag.k)))
+    .map(a => `RAPPORT DE ${a.n.toUpperCase()} :\n${JSON.stringify(S.experts[a.k])}`).join('\n\n').slice(0, 14000);
+  return `Tu fais partie d'un comité d'experts qui aide une personne à trouver et lancer son business passion. Ton rôle : ${ag.role}\n\nÉcris en français, en tutoyant, avec des phrases courtes, concrètes et personnalisées : appuie-toi sur ses réponses réelles, jamais sur des généralités. Le Human Design est une grille de réflexion, jamais une certitude : formule-le avec nuance. Respecte toutes ses contraintes (budget, temps, besoin de revenu, lieu) et ses domaines exclus.\n\nPROFIL :\n${profileText()}\n\n${offerContext()}${prev ? '\n\n' + prev : ''}\n\nRéponds uniquement avec un objet JSON de cette forme : ${ag.schema}`;
+}
+
+function li(arr) { return (Array.isArray(arr) ? arr : []).map(x => `<li>${esc(x)}</li>`).join(''); }
+function reportHTML(k, r) {
+  if (!r) return '';
+  const p = (lab, v) => v ? `<p><b>${lab} :</b> ${esc(v)}</p>` : '';
+  switch (k) {
+    case 'hd': return `<p class="lead-s">${esc(r.synthese)}</p><div class="two"><div><h5>Tes forces</h5><ul>${li(r.forces)}</ul></div><div><h5>Tes pièges</h5><ul>${li(r.pieges)}</ul></div></div>${p('Ton rythme idéal', r.rythme)}${p('Comment tu attires et vends', r.vente)}${p('Ton environnement idéal', r.environnement)}`;
+    case 'orient': return `<p class="lead-s">${esc(r.synthese)}</p><p class="genie">${esc(r.zone_de_genie)}</p><div class="three"><div><h5>Talents</h5><ul>${li(r.talents)}</ul></div><div><h5>Compétences transférables</h5><ul>${li(r.competences_transferables)}</ul></div><div><h5>Motivations</h5><ul>${li(r.motivations)}</ul></div></div>${p('Ce qui t\'éteint', r.a_eviter)}`;
+    case 'strat': { const o = r.offre || {}; return `<p class="lead-s">${esc(r.synthese)}</p><div class="offer-box"><p class="eyebrow">Ton offre signature</p><h5 class="offer-name">${esc(o.nom)}</h5><dl class="rc-dl"><div><dt>Pour qui</dt><dd>${esc(o.client)}</dd></div><div><dt>Problème</dt><dd>${esc(o.probleme)}</dd></div><div><dt>Promesse</dt><dd>${esc(o.promesse)}</dd></div><div><dt>Format</dt><dd>${esc(o.format)}</dd></div><div><dt>Prix de lancement</dt><dd>${esc(o.prix)}</dd></div></dl><div><button type="button" class="btn" id="useOffer">Utiliser cette offre pour mon récap</button></div></div>${p('Modèle de revenus', r.modele_revenus)}${p('Test de validation (14 jours)', r.test_validation)}${p('Dans 12 mois', r.evolution)}`; }
+    case 'mkt': return `<p class="lead-s">${esc(r.synthese)}</p><p class="genie">${esc(r.positionnement)}</p>${r.pitch ? `<blockquote class="pitch">${esc(r.pitch)}</blockquote>` : ''}<h5>Tes 3 canaux</h5><div class="chan-cards">${(r.canaux || []).map(c => `<div><b>${esc(c.canal)}</b><p>${esc(c.pourquoi)}</p><p class="muted"><b>Action :</b> ${esc(c.action)}</p></div>`).join('')}</div><h5>Idées de contenus</h5><ul>${li(r.idees_contenus)}</ul>`;
+    case 'mind': return `<p class="lead-s">${esc(r.synthese)}</p><div class="blocks">${(r.blocages || []).map(b => `<div><p><b>${esc(b.blocage)}</b></p><p>→ ${esc(b.parade)}</p></div>`).join('')}</div>${p('Ton rituel hebdomadaire', r.rituel)}${r.phrase_ancre ? `<p class="genie">« ${esc(r.phrase_ancre)} »</p>` : ''}`;
+  }
+  return '';
+}
+function visionHTML(v) {
+  return `<div class="vision"><p class="eyebrow">Ta vision</p><h3 class="vision-line">${esc(v.vision)}</h3><p class="vision-why">${esc(v.pourquoi_toi)}</p>
+    <div class="prios">${(v.priorites || []).map((x, i) => `<div><span class="key-n">${i + 1}</span><p>${esc(x)}</p></div>`).join('')}</div>
+    <h4 class="road-title">Ta feuille de route sur 90 jours</h4>
+    <div class="road">${(v.feuille_de_route || []).map(m => `<div class="month"><p class="eyebrow">${esc(m.mois)}</p><p class="m-goal">${esc(m.objectif)}</p><ul>${li(m.actions)}</ul></div>`).join('')}</div>
+    ${v.indicateur ? `<p class="kpi"><b>Ton indicateur de réussite :</b> ${esc(v.indicateur)}</p>` : ''}
+    ${v.message ? `<p class="encourage">${esc(v.message)}</p>` : ''}</div>`;
+}
+function renderTeam() {
+  const box = $('#teamBox'); if (!box) return;
+  $('#comite').hidden = !unlocked(); document.querySelector('a[href="#comite"].navl')?.toggleAttribute('hidden', !unlocked());
+  if (!unlocked()) { box.innerHTML = ''; return; }
+  const ex = S.experts || {};
+  const done = AGENTS.filter(a => ex[a.k]).length;
+  const st = k => teamStatus[k] || (ex[k] ? 'done' : 'idle');
+  const label = { idle: 'En attente', run: 'Analyse en cours…', done: 'Rapport prêt', err: 'Interrompu' };
+  const avail = !!sampleFn;
+  box.innerHTML = `
+    <div class="card team-card">
+      <div class="roster">${AGENTS.map(a => `<div class="agent ${st(a.k)}"><span class="ini">${a.ini}</span><div><b>${a.n}</b><p>${a.d}</p><span class="state">${label[st(a.k)]}</span></div></div>`).join('')}</div>
+      <div class="team-actions">
+        ${avail ? `<button type="button" class="btn" id="teamGo" ${teamRunning ? 'disabled' : ''}>${done === 0 ? 'Lancer l\'analyse du comité' : done < AGENTS.length ? 'Compléter l\'analyse' : 'Refaire toute l\'analyse'}</button>${teamRunning ? '<button type="button" class="btn ghost" id="teamStop">Arrêter</button>' : ''}` : '<p class="muted">Le comité d\'experts est momentanément indisponible.</p>'}
+        <p class="ai-status" id="teamMsg" aria-live="polite">${teamRunning ? 'Les experts travaillent l\'un après l\'autre, chacun lit les rapports précédents. Compte 3 à 5 minutes.' : S.example ? 'Remplis ton bilan et choisis une piste avant de lancer le comité : plus tes réponses sont précises, plus l\'analyse est juste.' : ex.at ? `Dernière analyse : ${esc(ex.at)}.` : 'Conseil : choisis d\'abord une piste à l\'étape 3, le comité construira ton offre autour.'}</p>
+      </div>
+    </div>
+    ${ex.synth ? `<div class="card">${visionHTML(ex.synth)}</div>` : ''}
+    ${AGENTS.filter(a => a.k !== 'synth' && ex[a.k]).map(a => `<details class="card report" ${a.k === 'strat' ? 'open' : ''}><summary><span class="ini">${a.ini}</span><span><b>${a.n}</b><br><span class="muted">${a.d}</span></span></summary><div class="report-body">${reportHTML(a.k, ex[a.k])}</div></details>`).join('')}`;
+}
+async function runTeam(full) {
+  if (!sampleFn || teamRunning) return;
+  if (full || AGENTS.every(a => S.experts?.[a.k])) S.experts = {};
+  S.experts ||= {};
+  teamRunning = true; teamStatus = {}; teamCtl = new AbortController();
+  renderTeam();
+  try {
+    for (const phase of PHASES) {
+      const todo = phase.filter(k => !S.experts[k]);
+      todo.forEach(k => teamStatus[k] = 'run'); renderTeam();
+      await Promise.all(todo.map(async k => {
+        const ag = AGENTS.find(a => a.k === k);
+        try {
+          const r = await sampleFn.json(agentPrompt(ag), { signal: teamCtl.signal, cache: false });
+          if (!r || typeof r !== 'object' || Array.isArray(r)) throw { code: 'invalid_json' };
+          S.experts[k] = r; teamStatus[k] = 'done'; save(); renderTeam();
+        } catch (e) { teamStatus[k] = 'err'; throw e; }
+      }));
+    }
+    S.experts.at = new Date().toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
+    save(); teamRunning = false; renderTeam(); renderRecap();
+    $('#teamMsg').textContent = 'Analyse terminée. Ta vision et ta feuille de route sont aussi ajoutées à ton récap.';
+  } catch (e) {
+    teamCtl.abort(); teamRunning = false; renderTeam();
+    const msg = { locked: 'Le comité d\'experts est inclus dans l\'accès complet.', not_granted: 'Accès refusé.', rate_limited: 'Trop de demandes pour le moment. Réessaie dans quelques minutes : les rapports déjà prêts sont conservés.', cancelled: 'Analyse arrêtée. Les rapports déjà prêts sont conservés.', invalid_json: 'Un rapport est arrivé incomplet. Clique sur « Compléter l\'analyse » pour reprendre là où tu en étais.' };
+    $('#teamMsg').textContent = msg[e?.code] ?? 'L\'analyse a été interrompue. Clique sur « Compléter l\'analyse » pour reprendre là où tu en étais.';
+  }
+}
+document.addEventListener('click', e => {
+  const t = e.target.closest('button'); if (!t) return;
+  if (t.id === 'teamGo') runTeam(AGENTS.every(a => S.experts?.[a.k]));
+  if (t.id === 'teamStop') teamCtl?.abort();
+  if (t.id === 'useOffer') {
+    const o = S.experts?.strat?.offre; if (!o) return;
+    if (S.example) S.example = false;
+    S.offer = { title0: String(o.nom || ''), name: String(o.nom || ''), client: String(o.client || ''), promise: String(o.promesse || ''), format: String(o.format || ''), price: String(o.prix || ''), step: String(S.experts.strat.test_validation || ''), score: 0 };
+    save(); renderCompass(); renderRecap(); $('#recap').scrollIntoView();
+  }
+});
+
+/* ---------- accès payant (SumUp), e-mails (Brevo) et carte ---------- */
+const PRICE = '22 €';
+let isOwner = false;
+const unlocked = () => S.example || S.paid;
+const lead = s => { const i = s.search(/\.\s/); return i > 0 ? `<b>${s.slice(0, i + 1)}</b>${s.slice(i + 1)}` : `<b>${s}</b>`; };
+const slugOf = n => (n || 'mon').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'mon';
+
+async function api(path, body) {
+  const r = await fetch(path, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+  let d = {}; try { d = await r.json(); } catch (e) { }
+  if (!r.ok) throw { status: r.status, message: d.error || 'Erreur' };
+  return d;
+}
+
+function paywallHTML() {
+  const rs = riasecScores(), order = Object.keys(rs).sort((x, y) => rs[y] - rs[x]);
+  const done = MODS.filter((_, i) => modDone(i)).length;
+  return `
+    <div class="paywall">
+      <div class="card pw-left">
+        <p class="eyebrow">${done < 7 ? `Bilan complété à ${done}/7 : termine-le pour des pistes plus justes` : 'Ton profil est prêt'}</p>
+        <h3>${S.birth.name ? esc(S.birth.name) + ', tes' : 'Tes'} pistes de business t'attendent</h3>
+        <div class="pw-stats">
+          <div><b>${S.chart ? TYPES[S.chart.type].name : '—'}</b><span>ton type</span></div>
+          <div><b class="mono">${S.ans.riasec.filter(Boolean).length >= 12 ? order.slice(0, 3).join('') : '···'}</b><span>ton code d'intérêts</span></div>
+          <div><b class="mono">${done}/7</b><span>modules du bilan</span></div>
+        </div>
+        <ul class="pw-list">
+          <li><b>4 pistes de business</b> classées sur 100 selon ton profil</li>
+          <li><b>Des idées 100 % sur mesure</b> générées à partir de tes réponses</li>
+          <li><b>Ton comité de 6 experts</b> : Human Design, orientation, stratégie, marketing, mindset, synthèse</li>
+          <li><b>Ton offre signature</b>, ta vision et ta feuille de route sur 90 jours</li>
+          <li><b>Ton récap complet</b> envoyé par e-mail, à imprimer ou à enregistrer</li>
+        </ul>
+        <div class="pw-blur" aria-hidden="true">${[1, 2].map(i => `<div class="idea"><p class="eyebrow">Piste ${i}</p><h4>████████ ██████</h4><p>████ ██████ ████ ████████ ██ ██████.</p></div>`).join('')}</div>
+      </div>
+      <div class="card pw-right">
+        <p class="eyebrow">Accès complet</p>
+        <p class="pw-price">${PRICE}</p>
+        <p class="muted">Paiement unique et sécurisé par SumUp · accès immédiat</p>
+        <label class="check" for="fCgv" style="align-items:flex-start"><input type="checkbox" id="fCgv" style="margin-top:4px"> <span class="hint">J'accepte les <a href="/cgv.html" target="_blank">conditions générales de vente</a>. Je demande l'accès immédiat au contenu et je renonce à mon droit de rétractation.</span></label>
+        <button class="btn" type="button" id="payGo">Débloquer mes résultats</button>
+        <p class="hint" id="payMsg" role="alert"></p>
+      </div>
+    </div>`;
+}
+document.addEventListener('click', async e => {
+  if (e.target.id !== 'payGo') return;
+  const msg = $('#payMsg'), btn = e.target;
+  if (!$('#fCgv').checked) { msg.textContent = 'Coche la case des conditions générales de vente pour continuer.'; return; }
+  btn.disabled = true; msg.textContent = 'Ouverture du paiement sécurisé…';
+  try {
+    const d = await api('/api/checkout', { email: S.email || '' });
+    S.pendingCheckout = d.id; save();
+    location.href = d.url;
+  } catch (err) { btn.disabled = false; msg.textContent = 'Le paiement n\'a pas pu s\'ouvrir. Réessaie dans un instant.'; }
+});
+async function verifyReturn() {
+  const id = S.pendingCheckout; if (!id) return;
+  try {
+    const d = await api('/api/verify', { id });
+    if (d.paid) {
+      S.paid = true; S.example = false; S.token = d.token; delete S.pendingCheckout; save();
+      renderCompass(); renderTeam(); renderRecap();
+      setTimeout(() => $('#pistes').scrollIntoView(), 200);
+    } else if (d.status === 'FAILED' || d.status === 'EXPIRED') { delete S.pendingCheckout; save(); }
+  } catch (e) { }
+}
+
+function chartCardHTML() {
+  const ch = computeChart(); if (!ch) return '';
+  const T = TYPES[ch.type], b = S.birth;
+  const svg = bodygraph(ch).replace(/var\(--center-on\)/g, '#DDBE93').replace(/var\(--surface\)/g, '#FBF7F1').replace(/var\(--ink\)/g, '#3A2819').replace(/var\(--muted\)/g, '#7A614B').replace(/var\(--design\)/g, '#C08C4E').replace(/var\(--line-off\)/g, '#E4D6C1');
+  const keys = hdCards(ch, b.unknown);
+  return `<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Ma carte Human Design${b.name ? ' — ' + esc(b.name) : ''}</title><style>${RECAP_CSS}.grid{display:grid;grid-template-columns:240px 1fr;gap:24px;align-items:start}.grid svg{width:100%;height:auto}@media(max-width:560px){.grid{grid-template-columns:1fr}}</style></head><body><main class="doc">
+  <header class="rc-head"><p class="rc-eyebrow">Ma Boussole Business · ma carte Human Design</p><h2>${b.name ? esc(b.name) + ', ' : ''}${T.name}</h2><p class="rc-angle">${T.strat}</p></header>
+  <section class="rc-sec grid"><div>${svg}</div><dl class="rc-dl">
+    <div><dt>Type</dt><dd>${T.name}</dd></div><div><dt>Stratégie</dt><dd>${T.strat}</dd></div>
+    <div><dt>Autorité</dt><dd>${b.unknown ? 'À confirmer' : AUTH[ch.authority][0]}</dd></div><div><dt>Profil</dt><dd>${b.unknown ? 'À confirmer' : ch.profile}</dd></div>
+    <div><dt>Définition</dt><dd>${DEFS[ch.definition]}</dd></div><div><dt>Signature</dt><dd>${T.sig}</dd></div>
+    <div><dt>Centres définis</dt><dd>${ch.defined.map(c => CENTER_TXT[c][0]).join(', ') || 'Aucun'}</dd></div>
+  </dl></section>
+  <section class="rc-sec"><h3>Tes 4 clés pour entreprendre</h3><div class="rc-keys">${keys.map(k => `<div class="rc-key"><p class="rc-k-label">${k.label}</p><p class="rc-k-title">${k.title}</p><p>${k.why}</p></div>`).join('')}</div></section>
+  <p class="rc-foot">Le Human Design est une grille de lecture de soi, pas une science validée.</p></main></body></html>`;
+}
+function renderMail() {
+  const box = $('#mailBox'); if (!box) return;
+  if (!S.chart) { box.innerHTML = ''; return; }
+  box.innerHTML = `
+    <div class="card mail">
+      <div><p class="eyebrow">Garde ta carte</p><h3>Reçois ta carte Human Design par e-mail</h3><p class="muted">Ta charte et tes 4 clés pour entreprendre, dans ta boîte mail en quelques secondes.</p></div>
+      <form id="mailForm" class="mail-form" novalidate>
+        <label for="fMail">Ton adresse e-mail<input type="email" id="fMail" autocomplete="email" placeholder="prenom@exemple.fr" value="${esc(S.email || '')}"></label>
+        <label class="check" for="fOptin"><input type="checkbox" id="fOptin"> <span class="hint">J'accepte de recevoir les conseils de Ma Boussole Business (désinscription en un clic).</span></label>
+        <div class="mail-btns"><button class="btn" type="submit">Recevoir ma carte</button><a class="btn ghost" href="#bilan">Passer à mon bilan</a></div>
+        <p class="hint" id="mailMsg" role="status"></p>
+        <p class="hint">Tes données sont traitées selon notre <a href="/confidentialite.html" target="_blank">politique de confidentialité</a>.</p>
+      </form>
+    </div>`;
+}
+document.addEventListener('submit', async e => {
+  if (e.target.id !== 'mailForm') return;
+  e.preventDefault();
+  const v = $('#fMail').value.trim(), msg = $('#mailMsg'), btn = e.target.querySelector('button[type=submit]');
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)) { msg.textContent = 'Indique une adresse e-mail valide, par exemple prenom@exemple.fr.'; return; }
+  S.email = v; save(); btn.disabled = true; msg.textContent = 'Envoi en cours…';
+  try {
+    await api('/api/send-email', { type: 'carte', email: v, name: S.birth.name || '', optin: $('#fOptin').checked, html: chartCardHTML() });
+    msg.textContent = `Ta carte est partie à ${v}. Pense à vérifier tes courriers indésirables.`;
+  } catch (err) { msg.textContent = 'L\'envoi n\'a pas fonctionné. Vérifie ton adresse et réessaie.'; }
+  finally { btn.disabled = false; }
+});
+
+/* ---------- form ---------- */
+function initForm() {
+  $('#fZone').innerHTML = ZONES.map(([z, n]) => `<option value="${z}">${n}</option>`).join('');
+  const b = S.birth;
+  $('#fName').value = b.name || ''; $('#fDate').value = b.date || ''; $('#fTime').value = b.time || ''; $('#fCity').value = b.city || '';
+  $('#fUnknown').checked = !!b.unknown; $('#fZone').value = b.zone || 'Europe/Paris'; $('#fTime').disabled = !!b.unknown;
+  $('#fUnknown').addEventListener('change', e => { $('#fTime').disabled = e.target.checked; });
+  $('#birthForm').addEventListener('submit', e => {
+    e.preventDefault();
+    const err = $('#formErr');
+    const date = $('#fDate').value, time = $('#fTime').value, unknown = $('#fUnknown').checked;
+    if (!date) { err.hidden = false; err.textContent = 'Indique ta date de naissance.'; return; }
+    const yr = +date.slice(0, 4);
+    if (yr < 1900 || yr > 2030) { err.hidden = false; err.textContent = 'Indique une année entre 1900 et 2030.'; return; }
+    if (!unknown && !time) { err.hidden = false; err.textContent = 'Indique ton heure de naissance, ou coche « Je ne connais pas mon heure ».'; return; }
+    err.hidden = true;
+    if (S.example) { S.example = false; S.ans = blankAns(); }
+    S.birth = { name: $('#fName').value.trim(), date, time, unknown, zone: $('#fZone').value, city: $('#fCity').value.trim() };
+    renderChart(); save(); renderMail(); renderWizard(); renderCompass(); renderTeam();
+    $('#chartOut').scrollIntoView({ block: 'start' });
+  });
+}
+
+initForm(); renderChart(); renderMail(); renderWizard(); renderCompass(); renderTeam(); renderRecap(); verifyReturn();
+
+</script>
+</body>
+</html>

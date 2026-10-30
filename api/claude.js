@@ -1,4 +1,5 @@
-import { checkToken } from '../lib/token.js';
+import { checkToken, tokenId } from '../lib/token.js';
+import { db, dbOn } from '../lib/db.js';
 
 // Relais vers l'API Claude : la clé reste secrète côté serveur, et seuls les clients qui ont payé y ont accès.
 function parseJSON(text) {
@@ -15,6 +16,11 @@ export default async function handler(req, res) {
   const { prompt, token } = req.body || {};
   if (!checkToken(token)) return res.status(402).json({ error: 'Accès complet requis' });
   if (typeof prompt !== 'string' || prompt.length < 20 || prompt.length > 60000) return res.status(400).json({ error: 'Demande invalide' });
+  // Plafond d'appels IA par achat (comité complet = 6 appels), pour protéger le budget API.
+  if (dbOn()) {
+    const ok = await db('rpc/boussole_use_ai', { method: 'POST', body: { p_checkout: tokenId(token), p_limit: Number(process.env.AI_CALLS_LIMIT || 60) } });
+    if (ok === false) return res.status(429).json({ error: 'Limite atteinte', code: 'quota' });
+  }
   try {
     const r = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',

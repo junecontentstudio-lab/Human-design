@@ -67,7 +67,7 @@ a{color:var(--accent)}
 .chart-grid > *{min-width:0}
 form{display:grid;gap:14px}
 label{display:grid;gap:6px;font-size:.88rem;font-weight:600}
-input[type=text],input[type=date],input[type=time],select,textarea{font:inherit;font-weight:400;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px 12px;width:100%}
+input[type=text],input[type=email],input[type=date],input[type=time],select,textarea{font:inherit;font-weight:400;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px 12px;width:100%}
 textarea{min-height:84px;resize:vertical}
 .row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .check{display:flex;align-items:center;gap:8px;font-weight:400}
@@ -283,7 +283,6 @@ footer .wrap{display:grid;gap:6px}
 .mail-btns{display:flex;gap:10px;flex-wrap:wrap}
 .owner-note{grid-column:1/-1;border:1px dashed var(--design);border-radius:12px;padding:10px 12px;font-size:.84rem;color:var(--muted)}
 .owner-note b{color:var(--ink)}
-.compass.is-locked{grid-template-columns:1fr}
 .paywall{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:14px;align-items:start}
 .pw-left,.pw-right{display:grid;gap:14px}
 .pw-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
@@ -318,6 +317,71 @@ footer .wrap{display:grid;gap:6px}
   .breakdown{grid-template-columns:repeat(2,minmax(0,1fr))}
   .nav{display:none}
 }
+
+/* parcours gratuit → payant */
+.ladder{display:grid;gap:10px}
+.rung{border-radius:16px;padding:14px;display:grid;gap:10px}
+.rung.free{background:var(--sand)}
+.rung.paid{border:1px dashed var(--design);background:var(--surface)}
+.price-tag{color:var(--accent)}
+.pw-mini{margin:0;padding-left:18px;display:grid;gap:4px;font-size:.9rem}
+.ex-bar{background:var(--design);color:var(--accent-ink)}
+.ex-bar .wrap{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;padding-block:8px;font-size:.9rem}
+.ex-bar .btn{padding:6px 14px;background:var(--accent-ink);color:var(--ink)}
+.next-card{display:flex;gap:16px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-top:18px}
+.next-card h3{font-size:1.25rem;font-weight:400}
+/* quiz */
+.quiz{display:grid;gap:18px;min-height:340px;align-content:start}
+.q-top{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.q-title{font-size:clamp(1.3rem,3vw,1.7rem);font-weight:400}
+.qslide{display:grid;gap:16px;animation:slidein .35s ease both}
+.qopts{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px}
+.qopt{font:inherit;text-align:left;color:var(--ink);padding:14px 16px;border:1px solid var(--line);border-radius:14px;background:var(--bg);cursor:pointer;display:grid;gap:3px;transition:transform .15s ease,border-color .15s ease,background .15s ease}
+.qopt:hover{transform:translateY(-2px);border-color:var(--design)}
+.qopt b{font-weight:600}
+.qopt small{color:var(--muted);font-size:.84rem}
+.qopt.on{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.qopt.on small{color:inherit;opacity:.85}
+.qopt .n{font-family:var(--mono);font-size:.75rem}
+.q-nav{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:center}
+.q-done{display:grid;gap:14px;justify-items:start;animation:slidein .35s ease both}
+.q-done h3{font-size:1.6rem;font-weight:400}
+.linkbtn{font:inherit;background:none;border:0;padding:0;color:var(--accent);text-decoration:underline;cursor:pointer}
+/* résultats gratuits */
+.gate{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:14px;align-items:start}
+.gate h3,.res h3{font-size:1.35rem;font-weight:400;margin-top:4px}
+.teaser{display:grid;gap:12px}
+.teaser .blur{filter:blur(6px);user-select:none;opacity:.7}
+.big-arch{font-family:var(--display);font-style:italic;font-size:clamp(1.8rem,4.4vw,2.7rem);line-height:1.1;color:var(--accent);font-weight:400}
+.res{display:grid;gap:14px}
+.arch{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:18px;align-items:start;animation:rise .6s ease both}
+.arch ul{margin:0;padding-left:18px;display:grid;gap:4px}
+.res-ideas{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:14px;align-items:start}
+.res-ideas .idea{animation:rise .6s .15s ease both}
+.locked-ideas{display:grid;gap:10px}
+.locked-idea{border:1px dashed var(--line);border-radius:14px;padding:14px;display:grid;gap:6px;background:var(--surface)}
+.locked-idea h4{margin:0;font-family:var(--display);font-weight:600;font-size:1.05rem}
+.locked-idea p{filter:blur(4px);user-select:none;font-size:.9rem}
+.sent{font-size:.9rem;color:var(--muted)}
+/* offre */
+.faq{display:grid;gap:8px}
+.faq details{border-top:1px solid var(--line);padding-top:8px}
+.faq p{font-size:.9rem;color:var(--muted);margin-top:6px}
+.restore{display:grid;gap:6px;border-top:1px solid var(--line);padding-top:14px}
+.restore .code-row input{font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+.active-card{display:flex;gap:14px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.live{font-size:.88rem;color:var(--muted);display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.live b{color:var(--ink)}
+.toast{position:fixed;left:50%;bottom:84px;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:999px;font-size:.9rem;z-index:30;animation:rise .3s ease both;max-width:calc(100vw - 32px)}
+/* barre d'étape suivante */
+.nextbar{position:fixed;left:50%;bottom:calc(14px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:20;background:var(--accent);color:var(--accent-ink);text-decoration:none;font-weight:600;padding:12px 22px;border-radius:999px;box-shadow:0 8px 24px rgba(58,40,25,.22);white-space:nowrap;max-width:calc(100vw - 32px);overflow:hidden;text-overflow:ellipsis}
+.reveal .facts .fact{animation:rise .5s ease both;animation-delay:calc(var(--i,0) * 70ms)}
+.reveal .body-wrap svg > g:not([fill]){animation:fadein .6s ease both}
+@keyframes slidein{from{opacity:0;transform:translateX(16px)}to{opacity:1;transform:none}}
+@keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@keyframes fadein{from{opacity:0}to{opacity:1}}
+@media (max-width:900px){.gate,.arch,.res-ideas{grid-template-columns:1fr}}
+@media (prefers-reduced-motion: reduce){ *{animation:none!important} }
 @media (prefers-reduced-motion: reduce){ *{transition:none!important;scroll-behavior:auto!important} }
 html{scroll-behavior:smooth}
 </style>
@@ -330,37 +394,42 @@ html{scroll-behavior:smooth}
       Ma Boussole Business
     </div>
     <nav class="nav" aria-label="Sections">
-      <a href="#charte">Ta charte</a><a href="#bilan">Ton bilan</a><a href="#pistes">Tes pistes</a><a href="#comite" class="navl">Ton comité</a><a href="#recap" class="navl">Ton récap</a>
+      <a href="#charte">Ta charte</a><a href="#quiz">Ton quiz</a><a href="#resultats">Ton profil</a><a href="#offre" class="nav-offer">Version complète</a><a href="#bilan" class="navl">Ton bilan</a><a href="#pistes" class="navl">Tes pistes</a><a href="#comite" class="navl">Ton comité</a><a href="#recap" class="navl">Ton récap</a>
     </nav>
   </div>
+  <div id="exampleBar"></div>
 </header>
 
 <section class="hero">
   <div class="wrap">
     <div>
-      <p class="eyebrow">Human Design · bilan d'orientation · idées de business</p>
+      <p class="eyebrow">Human Design · orientation · idées de business</p>
       <h1 style="margin-top:14px">Découvre ton Human Design et trouve ton <em>business passion</em></h1>
-      <p class="lead">Calcule ta charte, réponds à un bilan de 20 minutes sur tes intérêts, tes compétences et tes envies, puis reçois des idées de projets faites pour ta façon de fonctionner.</p>
+      <p class="lead">En 5 minutes et gratuitement : ta charte, ton archétype d'entrepreneur·e et ta première piste de business, pensée pour ta façon de fonctionner.</p>
       <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:22px">
-        <a class="btn" href="#charte">Calculer ma charte</a>
-        <a class="btn ghost" href="#pistes">Voir un exemple de résultat</a>
+        <a class="btn" href="#charte">Commencer gratuitement</a>
+        <button type="button" class="btn ghost" data-example="on">Voir l'exemple de Camille</button>
       </div>
+      <p class="hint" style="margin-top:12px">Sans inscription pour commencer · tes réponses restent dans ton navigateur</p>
     </div>
-    <ol class="steps">
-      <li><div><b>Ta charte</b><span>Type, stratégie, autorité, profil, centres et talents.</span></div></li>
-      <li><div><b>Ton bilan</b><span>7 courts modules : intérêts, compétences, valeurs, contraintes…</span></div></li>
-      <li><div><b>Tes pistes</b><span>4 idées classées par alignement, avec un premier pas.</span></div></li>
-      <li><div><b>Ton comité d'experts</b><span>6 experts IA analysent ton profil et construisent ta vision.</span></div></li>
-      <li><div><b>Ton récap</b><span>Ton offre de lancement et ton plan sur 30 jours, à garder.</span></div></li>
-    </ol>
+    <div class="ladder">
+      <div class="rung free"><p class="eyebrow">Gratuit · 5 min</p><ol class="steps">
+        <li><div><b>Ta charte Human Design</b><span>Type, stratégie, autorité, profil et tes 4 clés pour entreprendre.</span></div></li>
+        <li><div><b>Ton quiz express</b><span>8 questions en un clic chacune.</span></div></li>
+        <li><div><b>Ton profil d'entrepreneur·e</b><span>Ton archétype et ta piste n°1, envoyés par e-mail.</span></div></li>
+      </ol></div>
+      <div class="rung paid"><p class="eyebrow">Version complète · <span class="price-tag">22 €</span></p><ul class="pw-mini">
+        <li>Bilan approfondi en 7 modules</li><li>4 pistes classées sur 100 + idées sur mesure par IA</li><li>Comité de 6 experts, offre et plan sur 90 jours</li>
+      </ul></div>
+    </div>
   </div>
 </section>
 
 <section class="chapter" id="charte">
   <div class="wrap">
     <div class="chapter-head">
-      <div><p class="eyebrow">Étape 1</p><h2>Ton mode de fonctionnement</h2></div>
-      <p class="muted">Gratuit. Il te faut ta date, ton heure et ton lieu de naissance : plus l'heure est précise, plus ton profil et ton autorité sont fiables.</p>
+      <div><p class="eyebrow">Étape 1 · gratuit</p><h2>Ton mode de fonctionnement</h2></div>
+      <p class="muted">Il te faut ta date, ton heure et ton lieu de naissance : plus l'heure est précise, plus ton profil et ton autorité sont fiables.</p>
     </div>
     <div class="band">
       <div class="chart-grid">
@@ -381,16 +450,46 @@ html{scroll-behavior:smooth}
         <div class="card" id="chartOut"></div>
       </div>
     </div>
-    <div id="mailBox"></div>
     <div id="chartDetails"></div>
+    <div id="chartNext"></div>
+  </div>
+</section>
+
+<section class="chapter" id="quiz">
+  <div class="wrap">
+    <div class="chapter-head">
+      <div><p class="eyebrow">Étape 2 · gratuit · 2 minutes</p><h2>Ton quiz express</h2></div>
+      <p class="muted">8 questions, un clic par réponse. Suis ton premier élan : il n'y a pas de bonne réponse.</p>
+    </div>
+    <div class="band"><div class="card quiz" id="quizBox"></div></div>
+  </div>
+</section>
+
+<section class="chapter" id="resultats">
+  <div class="wrap">
+    <div class="chapter-head">
+      <div><p class="eyebrow">Étape 3 · gratuit</p><h2>Ton profil d'entrepreneur·e</h2></div>
+      <p class="muted">Ton archétype, ta piste de business n°1 et ton premier pas, croisés avec ta charte.</p>
+    </div>
+    <div id="resultsBox"></div>
+  </div>
+</section>
+
+<section class="chapter" id="offre">
+  <div class="wrap">
+    <div class="chapter-head">
+      <div><p class="eyebrow">Version complète</p><h2>Passe de la piste au projet</h2></div>
+      <p class="muted">Un bilan approfondi, des pistes affinées, un comité d'experts et un plan d'action concret pour lancer ton activité.</p>
+    </div>
+    <div id="offerBox"></div>
   </div>
 </section>
 
 <section class="chapter" id="bilan">
   <div class="wrap">
     <div class="chapter-head">
-      <div><p class="eyebrow">Étape 2</p><h2>Ton bilan d'orientation</h2></div>
-      <p class="muted">Gratuit · environ 20 minutes. Réponds spontanément : il n'y a pas de bonne réponse, et tes réponses restent dans ton navigateur.</p>
+      <div><p class="eyebrow">Version complète · étape 4</p><h2>Ton bilan approfondi</h2></div>
+      <p class="muted">Environ 20 minutes, à ton rythme : tout est enregistré au fur et à mesure. Plus tu complètes de modules, plus tes pistes s'affinent.</p>
     </div>
     <div class="band"><div class="card wizard" id="wizard"></div></div>
   </div>
@@ -399,7 +498,7 @@ html{scroll-behavior:smooth}
 <section class="chapter" id="pistes">
   <div class="wrap">
     <div class="chapter-head">
-      <div><p class="eyebrow">Étape 3</p><h2>Tes pistes de business passion</h2></div>
+      <div><p class="eyebrow">Version complète · étape 5</p><h2>Tes pistes de business passion</h2></div>
       <p class="muted">Chaque idée est notée sur 100 : compétences 30, intérêts 25, valeurs 15, style de fonctionnement 15, faisabilité 15.</p>
     </div>
     <div id="exampleNotice"></div>
@@ -410,7 +509,7 @@ html{scroll-behavior:smooth}
 <section class="chapter" id="comite">
   <div class="wrap">
     <div class="chapter-head">
-      <div><p class="eyebrow">Étape 4</p><h2>Ton comité d'experts</h2></div>
+      <div><p class="eyebrow">Version complète · étape 6</p><h2>Ton comité d'experts</h2></div>
       <p class="muted">Six experts IA, chacun dans son domaine, analysent ton profil à tour de rôle. Chacun lit les rapports des précédents, puis la directrice de synthèse en tire ta vision et ta feuille de route.</p>
     </div>
     <div class="band team" id="teamBox"></div>
@@ -420,7 +519,7 @@ html{scroll-behavior:smooth}
 <section class="chapter" id="recap">
   <div class="wrap">
     <div class="chapter-head">
-      <div><p class="eyebrow">Étape 5</p><h2>Ton offre et ton récap</h2></div>
+      <div><p class="eyebrow">Version complète · étape 7</p><h2>Ton offre et ton récap</h2></div>
       <p class="muted">Transforme ta piste en offre claire, puis garde ton récap : à télécharger, à imprimer ou à t'envoyer par e-mail.</p>
     </div>
     <div class="band" id="recapBox"></div>
@@ -429,11 +528,13 @@ html{scroll-behavior:smooth}
 
 <footer>
   <div class="wrap">
-    <p>Le Human Design est une grille de lecture de soi, pas une science validée. Ce bilan donne des pistes de réflexion ; il ne remplace ni un conseil professionnel, ni un bilan de compétences officiel.</p>
+    <p>Le Human Design est une grille de lecture de soi, pas une science validée. Ce bilan donne des pistes de réflexion ; il ne remplace pas un accompagnement professionnel personnalisé.</p>
     <p>Charte calculée dans ton navigateur avec des éphémérides simplifiées (précision d'environ une minute d'arc).</p>
     <p class="legal-links"><a href="/mentions-legales.html">Mentions légales</a> · <a href="/cgv.html">CGV</a> · <a href="/confidentialite.html">Confidentialité</a></p>
   </div>
 </footer>
+
+<a class="nextbar" id="nextBar" href="#charte" hidden></a>
 
 <script>
 /*ENGINE*/

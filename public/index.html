@@ -67,7 +67,7 @@ a{color:var(--accent)}
 .chart-grid > *{min-width:0}
 form{display:grid;gap:14px}
 label{display:grid;gap:6px;font-size:.88rem;font-weight:600}
-input[type=text],input[type=date],input[type=time],select,textarea{font:inherit;font-weight:400;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px 12px;width:100%}
+input[type=text],input[type=email],input[type=date],input[type=time],select,textarea{font:inherit;font-weight:400;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px 12px;width:100%}
 textarea{min-height:84px;resize:vertical}
 .row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .check{display:flex;align-items:center;gap:8px;font-weight:400}
@@ -283,7 +283,6 @@ footer .wrap{display:grid;gap:6px}
 .mail-btns{display:flex;gap:10px;flex-wrap:wrap}
 .owner-note{grid-column:1/-1;border:1px dashed var(--design);border-radius:12px;padding:10px 12px;font-size:.84rem;color:var(--muted)}
 .owner-note b{color:var(--ink)}
-.compass.is-locked{grid-template-columns:1fr}
 .paywall{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:14px;align-items:start}
 .pw-left,.pw-right{display:grid;gap:14px}
 .pw-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
@@ -318,6 +317,71 @@ footer .wrap{display:grid;gap:6px}
   .breakdown{grid-template-columns:repeat(2,minmax(0,1fr))}
   .nav{display:none}
 }
+
+/* parcours gratuit → payant */
+.ladder{display:grid;gap:10px}
+.rung{border-radius:16px;padding:14px;display:grid;gap:10px}
+.rung.free{background:var(--sand)}
+.rung.paid{border:1px dashed var(--design);background:var(--surface)}
+.price-tag{color:var(--accent)}
+.pw-mini{margin:0;padding-left:18px;display:grid;gap:4px;font-size:.9rem}
+.ex-bar{background:var(--design);color:var(--accent-ink)}
+.ex-bar .wrap{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;padding-block:8px;font-size:.9rem}
+.ex-bar .btn{padding:6px 14px;background:var(--accent-ink);color:var(--ink)}
+.next-card{display:flex;gap:16px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-top:18px}
+.next-card h3{font-size:1.25rem;font-weight:400}
+/* quiz */
+.quiz{display:grid;gap:18px;min-height:340px;align-content:start}
+.q-top{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.q-title{font-size:clamp(1.3rem,3vw,1.7rem);font-weight:400}
+.qslide{display:grid;gap:16px;animation:slidein .35s ease both}
+.qopts{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px}
+.qopt{font:inherit;text-align:left;color:var(--ink);padding:14px 16px;border:1px solid var(--line);border-radius:14px;background:var(--bg);cursor:pointer;display:grid;gap:3px;transition:transform .15s ease,border-color .15s ease,background .15s ease}
+.qopt:hover{transform:translateY(-2px);border-color:var(--design)}
+.qopt b{font-weight:600}
+.qopt small{color:var(--muted);font-size:.84rem}
+.qopt.on{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.qopt.on small{color:inherit;opacity:.85}
+.qopt .n{font-family:var(--mono);font-size:.75rem}
+.q-nav{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:center}
+.q-done{display:grid;gap:14px;justify-items:start;animation:slidein .35s ease both}
+.q-done h3{font-size:1.6rem;font-weight:400}
+.linkbtn{font:inherit;background:none;border:0;padding:0;color:var(--accent);text-decoration:underline;cursor:pointer}
+/* résultats gratuits */
+.gate{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:14px;align-items:start}
+.gate h3,.res h3{font-size:1.35rem;font-weight:400;margin-top:4px}
+.teaser{display:grid;gap:12px}
+.teaser .blur{filter:blur(6px);user-select:none;opacity:.7}
+.big-arch{font-family:var(--display);font-style:italic;font-size:clamp(1.8rem,4.4vw,2.7rem);line-height:1.1;color:var(--accent);font-weight:400}
+.res{display:grid;gap:14px}
+.arch{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:18px;align-items:start;animation:rise .6s ease both}
+.arch ul{margin:0;padding-left:18px;display:grid;gap:4px}
+.res-ideas{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:14px;align-items:start}
+.res-ideas .idea{animation:rise .6s .15s ease both}
+.locked-ideas{display:grid;gap:10px}
+.locked-idea{border:1px dashed var(--line);border-radius:14px;padding:14px;display:grid;gap:6px;background:var(--surface)}
+.locked-idea h4{margin:0;font-family:var(--display);font-weight:600;font-size:1.05rem}
+.locked-idea p{filter:blur(4px);user-select:none;font-size:.9rem}
+.sent{font-size:.9rem;color:var(--muted)}
+/* offre */
+.faq{display:grid;gap:8px}
+.faq details{border-top:1px solid var(--line);padding-top:8px}
+.faq p{font-size:.9rem;color:var(--muted);margin-top:6px}
+.restore{display:grid;gap:6px;border-top:1px solid var(--line);padding-top:14px}
+.restore .code-row input{font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+.active-card{display:flex;gap:14px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.live{font-size:.88rem;color:var(--muted);display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.live b{color:var(--ink)}
+.toast{position:fixed;left:50%;bottom:84px;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:999px;font-size:.9rem;z-index:30;animation:rise .3s ease both;max-width:calc(100vw - 32px)}
+/* barre d'étape suivante */
+.nextbar{position:fixed;left:50%;bottom:calc(14px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:20;background:var(--accent);color:var(--accent-ink);text-decoration:none;font-weight:600;padding:12px 22px;border-radius:999px;box-shadow:0 8px 24px rgba(58,40,25,.22);white-space:nowrap;max-width:calc(100vw - 32px);overflow:hidden;text-overflow:ellipsis}
+.reveal .facts .fact{animation:rise .5s ease both;animation-delay:calc(var(--i,0) * 70ms)}
+.reveal .body-wrap svg > g:not([fill]){animation:fadein .6s ease both}
+@keyframes slidein{from{opacity:0;transform:translateX(16px)}to{opacity:1;transform:none}}
+@keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@keyframes fadein{from{opacity:0}to{opacity:1}}
+@media (max-width:900px){.gate,.arch,.res-ideas{grid-template-columns:1fr}}
+@media (prefers-reduced-motion: reduce){ *{animation:none!important} }
 @media (prefers-reduced-motion: reduce){ *{transition:none!important;scroll-behavior:auto!important} }
 html{scroll-behavior:smooth}
 </style>
@@ -330,37 +394,42 @@ html{scroll-behavior:smooth}
       Ma Boussole Business
     </div>
     <nav class="nav" aria-label="Sections">
-      <a href="#charte">Ta charte</a><a href="#bilan">Ton bilan</a><a href="#pistes">Tes pistes</a><a href="#comite" class="navl">Ton comité</a><a href="#recap" class="navl">Ton récap</a>
+      <a href="#charte">Ta charte</a><a href="#quiz">Ton quiz</a><a href="#resultats">Ton profil</a><a href="#offre" class="nav-offer">Version complète</a><a href="#bilan" class="navl">Ton bilan</a><a href="#pistes" class="navl">Tes pistes</a><a href="#comite" class="navl">Ton comité</a><a href="#recap" class="navl">Ton récap</a>
     </nav>
   </div>
+  <div id="exampleBar"></div>
 </header>
 
 <section class="hero">
   <div class="wrap">
     <div>
-      <p class="eyebrow">Human Design · bilan d'orientation · idées de business</p>
+      <p class="eyebrow">Human Design · orientation · idées de business</p>
       <h1 style="margin-top:14px">Découvre ton Human Design et trouve ton <em>business passion</em></h1>
-      <p class="lead">Calcule ta charte, réponds à un bilan de 20 minutes sur tes intérêts, tes compétences et tes envies, puis reçois des idées de projets faites pour ta façon de fonctionner.</p>
+      <p class="lead">En 5 minutes et gratuitement : ta charte, ton archétype d'entrepreneur·e et ta première piste de business, pensée pour ta façon de fonctionner.</p>
       <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:22px">
-        <a class="btn" href="#charte">Calculer ma charte</a>
-        <a class="btn ghost" href="#pistes">Voir un exemple de résultat</a>
+        <a class="btn" href="#charte">Commencer gratuitement</a>
+        <button type="button" class="btn ghost" data-example="on">Voir l'exemple de Camille</button>
       </div>
+      <p class="hint" style="margin-top:12px">Sans inscription pour commencer · tes réponses restent dans ton navigateur</p>
     </div>
-    <ol class="steps">
-      <li><div><b>Ta charte</b><span>Type, stratégie, autorité, profil, centres et talents.</span></div></li>
-      <li><div><b>Ton bilan</b><span>7 courts modules : intérêts, compétences, valeurs, contraintes…</span></div></li>
-      <li><div><b>Tes pistes</b><span>4 idées classées par alignement, avec un premier pas.</span></div></li>
-      <li><div><b>Ton comité d'experts</b><span>6 experts IA analysent ton profil et construisent ta vision.</span></div></li>
-      <li><div><b>Ton récap</b><span>Ton offre de lancement et ton plan sur 30 jours, à garder.</span></div></li>
-    </ol>
+    <div class="ladder">
+      <div class="rung free"><p class="eyebrow">Gratuit · 5 min</p><ol class="steps">
+        <li><div><b>Ta charte Human Design</b><span>Type, stratégie, autorité, profil et tes 4 clés pour entreprendre.</span></div></li>
+        <li><div><b>Ton quiz express</b><span>8 questions en un clic chacune.</span></div></li>
+        <li><div><b>Ton profil d'entrepreneur·e</b><span>Ton archétype et ta piste n°1, envoyés par e-mail.</span></div></li>
+      </ol></div>
+      <div class="rung paid"><p class="eyebrow">Version complète · <span class="price-tag">22 €</span></p><ul class="pw-mini">
+        <li>Bilan approfondi en 7 modules</li><li>4 pistes classées sur 100 + idées sur mesure par IA</li><li>Comité de 6 experts, offre et plan sur 90 jours</li>
+      </ul></div>
+    </div>
   </div>
 </section>
 
 <section class="chapter" id="charte">
   <div class="wrap">
     <div class="chapter-head">
-      <div><p class="eyebrow">Étape 1</p><h2>Ton mode de fonctionnement</h2></div>
-      <p class="muted">Gratuit. Il te faut ta date, ton heure et ton lieu de naissance : plus l'heure est précise, plus ton profil et ton autorité sont fiables.</p>
+      <div><p class="eyebrow">Étape 1 · gratuit</p><h2>Ton mode de fonctionnement</h2></div>
+      <p class="muted">Il te faut ta date, ton heure et ton lieu de naissance : plus l'heure est précise, plus ton profil et ton autorité sont fiables.</p>
     </div>
     <div class="band">
       <div class="chart-grid">
@@ -381,16 +450,46 @@ html{scroll-behavior:smooth}
         <div class="card" id="chartOut"></div>
       </div>
     </div>
-    <div id="mailBox"></div>
     <div id="chartDetails"></div>
+    <div id="chartNext"></div>
+  </div>
+</section>
+
+<section class="chapter" id="quiz">
+  <div class="wrap">
+    <div class="chapter-head">
+      <div><p class="eyebrow">Étape 2 · gratuit · 2 minutes</p><h2>Ton quiz express</h2></div>
+      <p class="muted">8 questions, un clic par réponse. Suis ton premier élan : il n'y a pas de bonne réponse.</p>
+    </div>
+    <div class="band"><div class="card quiz" id="quizBox"></div></div>
+  </div>
+</section>
+
+<section class="chapter" id="resultats">
+  <div class="wrap">
+    <div class="chapter-head">
+      <div><p class="eyebrow">Étape 3 · gratuit</p><h2>Ton profil d'entrepreneur·e</h2></div>
+      <p class="muted">Ton archétype, ta piste de business n°1 et ton premier pas, croisés avec ta charte.</p>
+    </div>
+    <div id="resultsBox"></div>
+  </div>
+</section>
+
+<section class="chapter" id="offre">
+  <div class="wrap">
+    <div class="chapter-head">
+      <div><p class="eyebrow">Version complète</p><h2>Passe de la piste au projet</h2></div>
+      <p class="muted">Un bilan approfondi, des pistes affinées, un comité d'experts et un plan d'action concret pour lancer ton activité.</p>
+    </div>
+    <div id="offerBox"></div>
   </div>
 </section>
 
 <section class="chapter" id="bilan">
   <div class="wrap">
     <div class="chapter-head">
-      <div><p class="eyebrow">Étape 2</p><h2>Ton bilan d'orientation</h2></div>
-      <p class="muted">Gratuit · environ 20 minutes. Réponds spontanément : il n'y a pas de bonne réponse, et tes réponses restent dans ton navigateur.</p>
+      <div><p class="eyebrow">Version complète · étape 4</p><h2>Ton bilan approfondi</h2></div>
+      <p class="muted">Environ 20 minutes, à ton rythme : tout est enregistré au fur et à mesure. Plus tu complètes de modules, plus tes pistes s'affinent.</p>
     </div>
     <div class="band"><div class="card wizard" id="wizard"></div></div>
   </div>
@@ -399,7 +498,7 @@ html{scroll-behavior:smooth}
 <section class="chapter" id="pistes">
   <div class="wrap">
     <div class="chapter-head">
-      <div><p class="eyebrow">Étape 3</p><h2>Tes pistes de business passion</h2></div>
+      <div><p class="eyebrow">Version complète · étape 5</p><h2>Tes pistes de business passion</h2></div>
       <p class="muted">Chaque idée est notée sur 100 : compétences 30, intérêts 25, valeurs 15, style de fonctionnement 15, faisabilité 15.</p>
     </div>
     <div id="exampleNotice"></div>
@@ -410,7 +509,7 @@ html{scroll-behavior:smooth}
 <section class="chapter" id="comite">
   <div class="wrap">
     <div class="chapter-head">
-      <div><p class="eyebrow">Étape 4</p><h2>Ton comité d'experts</h2></div>
+      <div><p class="eyebrow">Version complète · étape 6</p><h2>Ton comité d'experts</h2></div>
       <p class="muted">Six experts IA, chacun dans son domaine, analysent ton profil à tour de rôle. Chacun lit les rapports des précédents, puis la directrice de synthèse en tire ta vision et ta feuille de route.</p>
     </div>
     <div class="band team" id="teamBox"></div>
@@ -420,7 +519,7 @@ html{scroll-behavior:smooth}
 <section class="chapter" id="recap">
   <div class="wrap">
     <div class="chapter-head">
-      <div><p class="eyebrow">Étape 5</p><h2>Ton offre et ton récap</h2></div>
+      <div><p class="eyebrow">Version complète · étape 7</p><h2>Ton offre et ton récap</h2></div>
       <p class="muted">Transforme ta piste en offre claire, puis garde ton récap : à télécharger, à imprimer ou à t'envoyer par e-mail.</p>
     </div>
     <div class="band" id="recapBox"></div>
@@ -429,11 +528,13 @@ html{scroll-behavior:smooth}
 
 <footer>
   <div class="wrap">
-    <p>Le Human Design est une grille de lecture de soi, pas une science validée. Ce bilan donne des pistes de réflexion ; il ne remplace ni un conseil professionnel, ni un bilan de compétences officiel.</p>
+    <p>Le Human Design est une grille de lecture de soi, pas une science validée. Ce bilan donne des pistes de réflexion ; il ne remplace pas un accompagnement professionnel personnalisé.</p>
     <p>Charte calculée dans ton navigateur avec des éphémérides simplifiées (précision d'environ une minute d'arc).</p>
     <p class="legal-links"><a href="/mentions-legales.html">Mentions légales</a> · <a href="/cgv.html">CGV</a> · <a href="/confidentialite.html">Confidentialité</a></p>
   </div>
 </footer>
+
+<a class="nextbar" id="nextBar" href="#charte" hidden></a>
 
 <script>
 // Human Design chart engine — low-precision ephemeris (Schlyter) + bodygraph logic
@@ -828,6 +929,50 @@ const LINE_BIZ = {
   6: "Inspire par l'exemple : montre ton parcours et ta vision à long terme. Ta crédibilité grandit avec les années."
 };
 
+// Quiz express gratuit (bloc 1) : 8 questions, une par écran. Les réponses alimentent un premier calcul des pistes.
+const QUIZ = [
+  { k: 'pull', t: 'Un samedi libre, sans obligation. Tu choisis spontanément de…', type: 'one', opts: [
+    ['R', 'Fabriquer, jardiner, bricoler', 'Voir un résultat concret de tes mains'],
+    ['I', 'Lire, te documenter, comprendre', 'Creuser un sujet jusqu\'au fond'],
+    ['A', 'Créer : écrire, dessiner, décorer', 'Exprimer quelque chose de toi'],
+    ['S', 'Voir des proches, écouter, aider', 'Être utile à quelqu\'un'],
+    ['E', 'Lancer un projet, organiser une sortie', 'Embarquer les autres dans ton idée'],
+    ['C', 'Ranger, planifier, faire le point', 'Mettre de l\'ordre et repartir léger·e']] },
+  { k: 'ask', t: 'Le plus souvent, on vient te demander…', type: 'one', opts: [
+    ['R', 'Un coup de main concret', 'Réparer, installer, fabriquer'],
+    ['I', 'Ton analyse', 'Comprendre un problème, trouver une solution'],
+    ['A', 'Ton œil créatif', 'Une idée, un visuel, une ambiance'],
+    ['S', 'Une oreille, un conseil', 'Y voir plus clair dans une situation'],
+    ['E', 'De prendre les choses en main', 'Décider, convaincre, mener le groupe'],
+    ['C', 'D\'organiser', 'Un planning, un budget, un dossier']] },
+  { k: 'skills', t: 'Tes 3 super-pouvoirs', d: 'Choisis les 3 qui te ressemblent le plus.', type: 'multi', n: 3, opts: [
+    ['conseil,oral', 'Écouter et conseiller'], ['former,ecrire', 'Expliquer, transmettre'], ['ecrire,reseaux', 'Écrire, raconter'],
+    ['design,photo', 'Créer du beau'], ['manuel,cuisine,bricolage', 'Faire de mes mains'], ['projet,admin,event', 'Organiser, piloter'],
+    ['vendre,oral', 'Convaincre, vendre'], ['digital,nocode,data', 'Le numérique, les outils'], ['sante', 'Santé, bien-être, sport'], ['expertise,finance', 'Un savoir métier pointu']] },
+  { k: 'values', t: 'Ce qui compte le plus pour toi', d: 'Choisis 3 valeurs, de la plus importante à la moins importante.', type: 'multi', n: 3, opts: [
+    ['liberte', 'Liberté'], ['securite', 'Sécurité financière'], ['impact', 'Impact positif'], ['creativite', 'Créativité'], ['lien', 'Lien humain'],
+    ['transmission', 'Transmission'], ['famille', 'Famille et temps libre'], ['reconnaissance', 'Reconnaissance'], ['aventure', 'Aventure et nouveauté']] },
+  { k: 'sell', t: 'Pour gagner ta vie, tu préfères…', type: 'one', opts: [
+    ['a', 'Vendre ton temps et ta présence', 'Séances, prestations, accompagnement'],
+    ['b', 'Créer une fois, vendre souvent', 'Formation, produit, contenu']] },
+  { k: 'place', t: 'Ton projet idéal se vit…', type: 'one', opts: [
+    ['0', '100 % en ligne', 'Depuis chez toi ou en voyage'], ['1', 'Près de chez toi', 'En face-à-face, dans ta ville'], ['2', 'Les deux me vont', 'Un mélange des deux']] },
+  { k: 'time', t: 'Combien de temps peux-tu y consacrer chaque semaine ?', type: 'one', opts: [
+    ['0', 'Moins de 5 h', 'À côté d\'un emploi bien rempli'], ['1', '5 à 10 h', 'Quelques soirées ou un jour off'], ['2', '10 à 20 h', 'Un vrai mi-temps'], ['3', 'Temps plein', 'C\'est mon projet principal']] },
+  { k: 'revenue', t: 'Ce projet doit te rapporter…', type: 'one', opts: [
+    ['0', 'Tout de suite', 'J\'ai besoin d\'un revenu rapidement'], ['1', 'Sous 6 mois', 'Je peux tenir un peu'], ['2', 'Sous 1 an', 'Je construis tranquillement'], ['3', 'Pas de pression', 'C\'est d\'abord un projet de cœur']] }
+];
+
+// Archétype d'entrepreneur·e : dominante d'intérêts du quiz, nuancée par le type Human Design.
+const ARCHETYPES = {
+  R: { short: 'Artisan·e', name: 'Artisan·e du concret', line: 'Tu transformes les idées en résultats que l\'on peut toucher.', forces: ['Le sens du travail bien fait', 'Des résultats visibles qui rassurent tes clients', 'Une crédibilité immédiate : on voit ce que tu sais faire'], biz: 'Les offres tangibles te vont : savoir-faire, fabrication, prestations techniques, ateliers pratiques.' },
+  I: { short: 'Expert·e', name: 'Expert·e éclaireur·se', line: 'Tu comprends en profondeur et tu rends clair ce qui est compliqué.', forces: ['Une vraie profondeur sur ton sujet', 'La capacité de résoudre des problèmes difficiles', 'Une parole fiable, qu\'on a envie de suivre'], biz: 'Vends ta compréhension : audit, conseil, formation, contenus de fond, méthode.' },
+  A: { short: 'Créatif·ve', name: 'Créatif·ve inspirant·e', line: 'Tu crées des choses qui touchent et qui donnent envie.', forces: ['Un univers à toi, reconnaissable', 'Le talent de rendre les choses belles et désirables', 'Une communication naturellement attirante'], biz: 'Ton univers est ton offre : création sur mesure, produits, contenus, ateliers créatifs.' },
+  S: { short: 'Guide', name: 'Guide bienveillant·e', line: 'Tu aides les autres à avancer, et ils le sentent.', forces: ['Une écoute qui met en confiance', 'Le don de faire progresser les gens', 'Des clients fidèles qui te recommandent'], biz: 'L\'accompagnement est ton terrain : coaching, soin, formation, communauté.' },
+  E: { short: 'Initiateur·rice', name: 'Initiateur·rice', line: 'Tu lances, tu fédères, tu fais bouger les choses.', forces: ['L\'audace de te lancer avant d\'être prêt·e', 'Le talent de convaincre et d\'embarquer', 'Une énergie qui crée des opportunités'], biz: 'Les projets à impulser te vont : événements, offres à fort enjeu, marque, communauté que tu animes.' },
+  C: { short: 'Architecte', name: 'Architecte organisé·e', line: 'Tu mets de l\'ordre, et tout devient plus simple autour de toi.', forces: ['La rigueur qui rassure', 'Le talent de créer des méthodes et des systèmes', 'Une fiabilité rare, très recherchée'], biz: 'Vends de la clarté et du temps gagné : organisation, assistance, outils, méthodes clés en main.' }
+};
+
 const $ = s => document.querySelector(s);
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const KEY = 'boussole-business-v1';
@@ -843,11 +988,14 @@ const EXAMPLE = {
     style: ['b', 'a', 'b', 'b', 'b', 'a', 'a', 'a'],
     cons: { time: 1, budget: 1, revenue: 1, risk: 0, place: 2 },
     ideas: 'Accompagner des femmes en reconversion', excl: 'Vente à domicile'
-  }
+  },
+  quick: { pull: 'S', ask: 'S', skills: ['conseil,oral', 'former,ecrire', 'ecrire,reseaux'], values: ['liberte', 'impact', 'transmission'], sell: 'a', place: '2', time: '1', revenue: '1' }
 };
 const blankAns = () => ({ riasec: Array(30).fill(0), skills: {}, open: {}, values: [], style: Array(8).fill(''), cons: {}, ideas: '', excl: '' });
+const blankState = () => ({ birth: { name: '', date: '', time: '', unknown: false, zone: 'Europe/Paris', city: '' }, ans: blankAns(), quick: {} });
 
-let S = load() || JSON.parse(JSON.stringify(EXAMPLE));
+let S = load() || blankState();
+S.quick ||= {};
 let step = 0;
 function load() { try { const v = localStorage.getItem(KEY); return v ? JSON.parse(v) : null; } catch (e) { return null; } }
 function save() { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) { } }
@@ -919,14 +1067,14 @@ function renderChart() {
         <div class="legend"><span><i style="background:var(--ink)"></i>Personnalité (conscient)</span><span><i style="background:var(--design)"></i>Design (inconscient)</span></div>
       </div>
       <dl class="facts">
-        <div class="fact wide"><dt>Type</dt><dd>${T.name}</dd></div>
-        <div class="fact"><dt>Stratégie</dt><dd>${T.strat}</dd></div>
-        <div class="fact"><dt>Autorité</dt><dd>${b.unknown ? 'À confirmer' : A[0]}</dd></div>
-        <div class="fact"><dt>Profil</dt><dd>${b.unknown ? 'À confirmer' : `${ch.profile} · ${LINES[l1][0]} / ${LINES[l2][0]}`}</dd></div>
-        <div class="fact"><dt>Définition</dt><dd>${DEFS[ch.definition]}</dd></div>
-        <div class="fact"><dt>Signature</dt><dd>${T.sig}</dd></div>
-        <div class="fact"><dt>Thème du non-soi</dt><dd>${T.ns}</dd></div>
-        <div class="fact wide"><dt>Croix d'incarnation (portes)</dt><dd class="mono" style="font-size:1rem">${ch.cross.p.join('/')} | ${ch.cross.d.join('/')}</dd></div>
+        <div class="fact wide" style="--i:0"><dt>Type</dt><dd>${T.name}</dd></div>
+        <div class="fact" style="--i:1"><dt>Stratégie</dt><dd>${T.strat}</dd></div>
+        <div class="fact" style="--i:2"><dt>Autorité</dt><dd>${b.unknown ? 'À confirmer' : A[0]}</dd></div>
+        <div class="fact" style="--i:3"><dt>Profil</dt><dd>${b.unknown ? 'À confirmer' : `${ch.profile} · ${LINES[l1][0]} / ${LINES[l2][0]}`}</dd></div>
+        <div class="fact" style="--i:4"><dt>Définition</dt><dd>${DEFS[ch.definition]}</dd></div>
+        <div class="fact" style="--i:5"><dt>Signature</dt><dd>${T.sig}</dd></div>
+        <div class="fact" style="--i:6"><dt>Thème du non-soi</dt><dd>${T.ns}</dd></div>
+        <div class="fact wide" style="--i:7"><dt>Croix d'incarnation (portes)</dt><dd class="mono" style="font-size:1rem">${ch.cross.p.join('/')} | ${ch.cross.d.join('/')}</dd></div>
       </dl>
     </div>
     ${b.unknown ? '<p class="hint" style="margin-top:12px">Sans heure de naissance, la Lune et parfois le type peuvent changer : seuls les éléments les plus stables sont à retenir.</p>' : ''}`;
@@ -989,6 +1137,7 @@ function renderWizard() {
   $('#wizard').innerHTML = `
     <div class="progress" role="tablist">${MODS.map((x, i) => `<button type="button" data-step="${i}" class="${i === step ? 'cur' : ''} ${modDone(i) ? 'done' : ''}" role="tab" aria-selected="${i === step}">${i + 1}. ${x.t}</button>`).join('')}</div>
     <div class="bar" aria-hidden="true"><span style="width:${doneCount / MODS.length * 100}%"></span></div>
+    <p class="live">${liveInsight()}</p>
     <div class="mod-head"><h3>${m.t}</h3><p class="muted">${m.d}</p></div>
     <div>${body}</div>
     <div class="wiz-nav">
@@ -996,10 +1145,15 @@ function renderWizard() {
       ${step < MODS.length - 1 ? '<button type="button" class="btn" id="next">Module suivant</button>' : '<button type="button" class="btn" id="finish">Voir mes pistes</button>'}
     </div>`;
 }
-function leaveExample() {
-  if (!S.example) return;
-  S.example = false; S.ans = blankAns();
-  renderNotice();
+function liveInsight() {
+  const a = S.ans, n = a.riasec.filter(Boolean).length;
+  const rs = riasecScores(a), code = Object.keys(rs).sort((x, y) => rs[y] - rs[x]).slice(0, 3).join('');
+  const strong = SKILLS.flatMap(([, l]) => l).filter(([k]) => (a.skills[k] || 0) >= 2).length;
+  const bits = [];
+  if (n >= 12) bits.push(`Code d'intérêts : <b class="mono">${code}</b>`);
+  if (strong) bits.push(`<b>${strong}</b> compétence${strong > 1 ? 's' : ''} forte${strong > 1 ? 's' : ''}`);
+  if (a.values.length) bits.push(`Valeur n°1 : <b>${VALUES.find(x => x[0] === a.values[0])[1]}</b>`);
+  return bits.length ? `Ton profil se dessine · ${bits.join(' · ')}` : 'Ton profil se dessine au fil de tes réponses : chaque module affine tes pistes.';
 }
 $('#wizard').addEventListener('click', e => {
   const t = e.target.closest('button'); if (!t) return;
@@ -1008,34 +1162,49 @@ $('#wizard').addEventListener('click', e => {
   if (t.id === 'prev') { step--; renderWizard(); $('#bilan').scrollIntoView(); return; }
   if (t.id === 'next') { step++; renderWizard(); $('#bilan').scrollIntoView(); return; }
   if (t.id === 'finish') { renderCompass(); $('#pistes').scrollIntoView(); return; }
-  const wasEx = S.example;
-  if (wasEx) leaveExample();
+  if (!t.dataset.r && !t.dataset.s && !t.dataset.val && t.dataset.st === undefined && !t.dataset.c) return;
+  if (S.example) { toast('C\'est l\'exemple de Camille : quitte l\'exemple pour remplir ton propre bilan.'); return; }
+  const wasDone = modDone(step);
   if (t.dataset.r !== undefined) a.riasec[+t.dataset.r] = +t.dataset.v;
   else if (t.dataset.s) a.skills[t.dataset.s] = +t.dataset.v;
   else if (t.dataset.val) { const k = t.dataset.val, i = a.values.indexOf(k); if (i > -1) a.values.splice(i, 1); else if (a.values.length < 5) a.values.push(k); }
   else if (t.dataset.st !== undefined) a.style[+t.dataset.st] = t.dataset.v;
   else if (t.dataset.c) a.cons[t.dataset.c] = +t.dataset.v;
   save();
-  const y = window.scrollY; renderWizard(); renderCompass(); window.scrollTo(0, y);
+  if (!wasDone && modDone(step)) toast(`Module « ${MODS[step].t} » terminé ✓`);
+  const y = window.scrollY; renderWizard(); renderCompass(); updateNextBar(); window.scrollTo(0, y);
 });
 $('#wizard').addEventListener('input', e => {
   const t = e.target;
-  if (S.example) { const v = t.value; leaveExample(); renderWizard(); renderCompass(); const n = document.getElementById(t.id); if (n) { n.value = v; n.focus(); } }
-  const el = document.getElementById(t.id) || t;
-  if (el.dataset.o) S.ans.open[el.dataset.o] = el.value;
-  if (el.dataset.f) S.ans[el.dataset.f] = el.value;
+  if (S.example) return;
+  if (t.dataset.o) S.ans.open[t.dataset.o] = t.value;
+  if (t.dataset.f) S.ans[t.dataset.f] = t.value;
   save();
 });
 $('#wizard').addEventListener('change', () => renderCompass());
 
 /* ---------- scoring ---------- */
-function riasecScores() {
+function riasecScores(a = activeAns()) {
   const s = { R: 0, I: 0, A: 0, S: 0, E: 0, C: 0 };
-  RIASEC_Q.forEach(([l], i) => { s[l] += S.ans.riasec[i] || 0; });
+  RIASEC_Q.forEach(([l], i) => { s[l] += a.riasec[i] || 0; });
   return s;
 }
+// Réponses du quiz express traduites dans le format du bilan, pour un premier calcul des pistes.
+function quickAns() {
+  const q = S.quick || {}, num = v => v === undefined ? undefined : +v;
+  const riasec = RIASEC_Q.map(([l]) => !q.pull ? 0 : l === q.pull ? 5 : l === q.ask ? 4 : 2);
+  const skills = {}; SKILLS.forEach(([, l]) => l.forEach(([k]) => { skills[k] = 1; }));
+  (q.skills || []).forEach(s => s.split(',').forEach(k => { skills[k] = 3; }));
+  const style = Array(8).fill(''); if (q.sell) style[7] = q.sell;
+  return { riasec, skills, open: {}, values: (q.values || []).slice(), style, cons: { time: num(q.time), budget: 1, revenue: num(q.revenue), risk: 1, place: num(q.place) }, ideas: '', excl: '' };
+}
+// Chaque module terminé du bilan approfondi remplace la partie correspondante du quiz express.
+function activeAns() {
+  const q = quickAns(), a = S.ans;
+  return { riasec: modDone(0) ? a.riasec : q.riasec, skills: modDone(1) ? a.skills : q.skills, open: a.open, values: modDone(3) ? a.values : q.values, style: modDone(4) ? a.style : q.style, cons: modDone(5) ? a.cons : q.cons, ideas: a.ideas, excl: a.excl };
+}
 function scoreIdeas() {
-  const a = S.ans, rs = riasecScores();
+  const a = activeAns(), rs = riasecScores(a);
   const type = S.chart?.type;
   const c = { time: a.cons.time ?? 2, budget: a.cons.budget ?? 2, revenue: a.cons.revenue ?? 3, place: a.cons.place ?? 2 };
   const exclWords = (a.excl || '').toLowerCase().split(/[^a-zà-ÿ]+/).filter(w => w.length > 3);
@@ -1066,15 +1235,14 @@ function scoreIdeas() {
 
 function renderNotice() {
   const done = MODS.filter((_, i) => modDone(i)).length;
-  if (!S.example && done < MODS.length) { $('#exampleNotice').innerHTML = `<div class="notice" style="margin-bottom:16px"><span>Ton bilan est complété à ${done}/${MODS.length} modules : tes pistes s'affinent à chaque réponse.</span><a class="btn ghost" href="#bilan">Continuer mon bilan</a></div>`; return; }
-  $('#exampleNotice').innerHTML = S.example ? `<div class="notice" style="margin-bottom:16px"><span><span class="tag ex">Exemple</span> Ces pistes sont celles de Camille, un profil fictif. Remplis ta charte et ton bilan pour voir les tiennes.</span><a class="btn ghost" href="#bilan">Commencer mon bilan</a></div>` : '';
+  if (!S.example && done < MODS.length) { $('#exampleNotice').innerHTML = `<div class="notice" style="margin-bottom:16px"><span>Tes pistes s'appuient sur ton quiz express et sur ${done}/${MODS.length} modules de ton bilan approfondi : elles s'affinent à chaque module terminé.</span><a class="btn ghost" href="#bilan">Continuer mon bilan</a></div>`; return; }
+  $('#exampleNotice').innerHTML = S.example ? `<div class="notice" style="margin-bottom:16px"><span><span class="tag ex">Exemple</span> Ces pistes sont celles de Camille, un profil fictif.</span><button type="button" class="btn ghost" data-example="off">Revenir à mon parcours</button></div>` : '';
 }
 
 function renderCompass() {
   renderNotice();
-  if (!unlocked()) { LAST_RULE = scoreIdeas().slice(0, 4); $('#compass').innerHTML = paywallHTML(); $('#compass').classList.add('is-locked'); if ($('#recapBox')) renderRecap(); return; }
-  $('#compass').classList.remove('is-locked');
-  const a = S.ans, rs = riasecScores();
+  if (!unlocked()) { LAST_RULE = scoreIdeas().slice(0, 4); $('#compass').innerHTML = ''; if ($('#recapBox')) renderRecap(); return; }
+  const a = activeAns(), rs = riasecScores(a);
   const answered = a.riasec.filter(Boolean).length;
   const order = Object.keys(rs).sort((x, y) => rs[y] - rs[x]);
   const code = answered >= 12 ? order.slice(0, 3).join('') : '···';
@@ -1133,7 +1301,7 @@ sampleFn = { json: async (prompt, opts = {}) => {
   try { r = await fetch('/api/claude', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ prompt, token: S.token || '' }), signal: opts.signal }); }
   catch (e) { throw { code: e && e.name === 'AbortError' ? 'cancelled' : 'upstream_error' }; }
   if (r.status === 402) throw { code: 'locked' };
-  if (r.status === 429) throw { code: 'rate_limited' };
+  if (r.status === 429) { let d = {}; try { d = await r.json(); } catch (e) { } throw { code: d.code === 'quota' ? 'quota' : 'rate_limited' }; }
   if (!r.ok) throw { code: 'upstream_error' };
   const d = await r.json(); if (d.data === undefined) throw { code: 'invalid_json' }; return d.data;
 } };
@@ -1144,7 +1312,7 @@ function setupAI() {
   const go = $('#aiGo'); if (go) go.onclick = runAI;
 }
 function profileText() {
-  const a = S.ans, rs = riasecScores();
+  const a = activeAns(), rs = riasecScores(a);
   const order = Object.keys(rs).sort((x, y) => rs[y] - rs[x]);
   const ch = S.chart;
   const skills = SKILLS.flatMap(([, l]) => l).map(([k, n]) => `${n}: ${SKILL_LEVELS[a.skills[k] || 0]}`).join('; ');
@@ -1171,7 +1339,7 @@ async function runAI() {
     if (!Array.isArray(res)) throw { code: 'invalid_json' };
     aiCache = res; st.textContent = ''; renderAI(res);
   } catch (e) {
-    const msg = { locked: 'Les idées sur mesure sont incluses dans l\'accès complet.', not_granted: 'Tu n\'as pas autorisé cette page à utiliser Claude.', sampling_disabled: 'Claude n\'est pas disponible pour ce compte.', rate_limited: 'Trop de demandes pour le moment. Réessaie dans quelques minutes.', invalid_json: 'La réponse était incomplète. Clique à nouveau pour réessayer.', cancelled: '' };
+    const msg = { locked: 'Les idées sur mesure sont incluses dans l\'accès complet.', not_granted: 'Tu n\'as pas autorisé cette page à utiliser Claude.', sampling_disabled: 'Claude n\'est pas disponible pour ce compte.', rate_limited: 'Trop de demandes pour le moment. Réessaie dans quelques minutes.', quota: 'Tu as utilisé toutes les générations incluses dans ton accès. Écris-nous si tu en as besoin de plus.', invalid_json: 'La réponse était incomplète. Clique à nouveau pour réessayer.', cancelled: '' };
     st.textContent = msg[e.code] ?? 'La génération a été interrompue. Clique à nouveau pour réessayer.';
     if (['not_granted', 'sampling_disabled', 'not_declared', 'capability_disabled'].includes(e.code)) go.hidden = true;
   } finally { go.disabled = false; }
@@ -1257,7 +1425,7 @@ function plan(o) {
 }
 function recapData() {
   const o = currentOffer(); if (!o) return null;
-  const a = S.ans, rs = riasecScores(), ch = S.chart, unk = S.birth.unknown;
+  const a = activeAns(), rs = riasecScores(a), ch = S.chart, unk = S.birth.unknown;
   const order = Object.keys(rs).sort((x, y) => rs[y] - rs[x]);
   return {
     o, ch, unk,
@@ -1343,7 +1511,7 @@ function renderRecap() {
   if (!unlocked()) { box.innerHTML = ''; return; }
   const o = currentOffer();
   if (!o) {
-    box.innerHTML = `<div class="card empty"><h3>Choisis d'abord une piste</h3><p class="muted">À l'étape 3, clique sur « Choisir cette piste » sous l'idée qui t'attire le plus. Tu pourras ensuite construire ton offre et recevoir ton récap.</p><div><a class="btn ghost" href="#pistes">Voir mes pistes</a></div></div>`;
+    box.innerHTML = `<div class="card empty"><h3>Choisis d'abord une piste</h3><p class="muted">À l'étape 5, clique sur « Choisir cette piste » sous l'idée qui t'attire le plus. Tu pourras ensuite construire ton offre et recevoir ton récap.</p><div><a class="btn ghost" href="#pistes">Voir mes pistes</a></div></div>`;
     return;
   }
   box.innerHTML = `
@@ -1397,7 +1565,6 @@ document.addEventListener('submit', async e => {
 $('#recap').addEventListener('input', e => {
   const k = e.target.dataset.of; if (!k) return;
   if (!S.offer) S.offer = Object.assign({}, currentOffer());
-  if (S.example) { S.example = false; renderNotice(); }
   S.offer[k] = e.target.value; save(); renderRecapDoc();
 });
 $('#recap').addEventListener('click', async e => {
@@ -1488,7 +1655,7 @@ function renderTeam() {
       <div class="roster">${AGENTS.map(a => `<div class="agent ${st(a.k)}"><span class="ini">${a.ini}</span><div><b>${a.n}</b><p>${a.d}</p><span class="state">${label[st(a.k)]}</span></div></div>`).join('')}</div>
       <div class="team-actions">
         ${avail ? `<button type="button" class="btn" id="teamGo" ${teamRunning ? 'disabled' : ''}>${done === 0 ? 'Lancer l\'analyse du comité' : done < AGENTS.length ? 'Compléter l\'analyse' : 'Refaire toute l\'analyse'}</button>${teamRunning ? '<button type="button" class="btn ghost" id="teamStop">Arrêter</button>' : ''}` : '<p class="muted">Le comité d\'experts est momentanément indisponible.</p>'}
-        <p class="ai-status" id="teamMsg" aria-live="polite">${teamRunning ? 'Les experts travaillent l\'un après l\'autre, chacun lit les rapports précédents. Compte 3 à 5 minutes.' : S.example ? 'Remplis ton bilan et choisis une piste avant de lancer le comité : plus tes réponses sont précises, plus l\'analyse est juste.' : ex.at ? `Dernière analyse : ${esc(ex.at)}.` : 'Conseil : choisis d\'abord une piste à l\'étape 3, le comité construira ton offre autour.'}</p>
+        <p class="ai-status" id="teamMsg" aria-live="polite">${teamRunning ? 'Les experts travaillent l\'un après l\'autre, chacun lit les rapports précédents. Compte 3 à 5 minutes.' : S.example ? 'Remplis ton bilan et choisis une piste avant de lancer le comité : plus tes réponses sont précises, plus l\'analyse est juste.' : ex.at ? `Dernière analyse : ${esc(ex.at)}.` : 'Conseil : choisis d\'abord une piste à l\'étape 5, le comité construira ton offre autour.'}</p>
       </div>
     </div>
     ${ex.synth ? `<div class="card">${visionHTML(ex.synth)}</div>` : ''}
@@ -1518,7 +1685,7 @@ async function runTeam(full) {
     $('#teamMsg').textContent = 'Analyse terminée. Ta vision et ta feuille de route sont aussi ajoutées à ton récap.';
   } catch (e) {
     teamCtl.abort(); teamRunning = false; renderTeam();
-    const msg = { locked: 'Le comité d\'experts est inclus dans l\'accès complet.', not_granted: 'Accès refusé.', rate_limited: 'Trop de demandes pour le moment. Réessaie dans quelques minutes : les rapports déjà prêts sont conservés.', cancelled: 'Analyse arrêtée. Les rapports déjà prêts sont conservés.', invalid_json: 'Un rapport est arrivé incomplet. Clique sur « Compléter l\'analyse » pour reprendre là où tu en étais.' };
+    const msg = { locked: 'Le comité d\'experts est inclus dans l\'accès complet.', not_granted: 'Accès refusé.', rate_limited: 'Trop de demandes pour le moment. Réessaie dans quelques minutes : les rapports déjà prêts sont conservés.', quota: 'Tu as utilisé toutes les analyses incluses dans ton accès. Écris-nous si tu en as besoin de plus.', cancelled: 'Analyse arrêtée. Les rapports déjà prêts sont conservés.', invalid_json: 'Un rapport est arrivé incomplet. Clique sur « Compléter l\'analyse » pour reprendre là où tu en étais.' };
     $('#teamMsg').textContent = msg[e?.code] ?? 'L\'analyse a été interrompue. Clique sur « Compléter l\'analyse » pour reprendre là où tu en étais.';
   }
 }
@@ -1528,18 +1695,22 @@ document.addEventListener('click', e => {
   if (t.id === 'teamStop') teamCtl?.abort();
   if (t.id === 'useOffer') {
     const o = S.experts?.strat?.offre; if (!o) return;
-    if (S.example) S.example = false;
     S.offer = { title0: String(o.nom || ''), name: String(o.nom || ''), client: String(o.client || ''), promise: String(o.promesse || ''), format: String(o.format || ''), price: String(o.prix || ''), step: String(S.experts.strat.test_validation || ''), score: 0 };
     save(); renderCompass(); renderRecap(); $('#recap').scrollIntoView();
   }
 });
 
-/* ---------- accès payant (SumUp), e-mails (Brevo) et carte ---------- */
+
+/* ---------- parcours gratuit : quiz express, profil et e-mail ---------- */
 const PRICE = '22 €';
-let isOwner = false;
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const unlocked = () => S.example || S.paid;
 const lead = s => { const i = s.search(/\.\s/); return i > 0 ? `<b>${s.slice(0, i + 1)}</b>${s.slice(i + 1)}` : `<b>${s}</b>`; };
-const slugOf = n => (n || 'mon').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'mon';
+const answeredQ = q => q.type === 'multi' ? (S.quick[q.k] || []).length === q.n : S.quick[q.k] !== undefined;
+const quizDone = () => QUIZ.every(answeredQ);
+const freeOpen = () => S.example || !!S.email;
+let qStep = 0, qTimer = null;
+const resetQuizStep = () => { qStep = quizDone() ? QUIZ.length : Math.max(0, QUIZ.findIndex(q => !answeredQ(q))); };
 
 async function api(path, body) {
   const r = await fetch(path, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
@@ -1547,112 +1718,351 @@ async function api(path, body) {
   if (!r.ok) throw { status: r.status, message: d.error || 'Erreur' };
   return d;
 }
+function toast(msg) {
+  document.querySelector('.toast')?.remove();
+  const t = document.createElement('div'); t.className = 'toast'; t.setAttribute('role', 'status'); t.textContent = msg;
+  document.body.appendChild(t); setTimeout(() => t.remove(), 3600);
+}
 
-function paywallHTML() {
-  const rs = riasecScores(), order = Object.keys(rs).sort((x, y) => rs[y] - rs[x]);
-  const done = MODS.filter((_, i) => modDone(i)).length;
+function renderChartNext() {
+  const box = $('#chartNext');
+  if (!S.chart) { box.innerHTML = ''; return; }
+  const done = quizDone();
+  box.innerHTML = `<div class="card next-card"><div><p class="eyebrow">Prochaine étape</p><h3>${done ? 'Ton profil d\'entrepreneur·e est prêt' : 'Croise ta charte avec tes envies : 8 questions, 2 minutes'}</h3></div><a class="btn" href="${done ? '#resultats' : '#quiz'}">${done ? 'Voir mon profil' : 'Faire mon quiz express'}</a></div>`;
+}
+
+function renderQuiz(anim) {
+  const box = $('#quizBox');
+  if (qStep >= QUIZ.length) {
+    box.innerHTML = `
+      <div class="bar" aria-hidden="true"><span style="width:100%"></span></div>
+      <div class="q-done"><p class="eyebrow">Quiz terminé ✓</p><h3>${S.birth.name ? esc(S.birth.name) + ', ton' : 'Ton'} profil d'entrepreneur·e est prêt</h3>
+        <p class="muted">Ton archétype, ta piste de business n°1 et ton premier pas t'attendent juste en dessous.</p>
+        <div class="actions"><a class="btn" href="#resultats">Découvrir mon profil</a><button type="button" class="btn ghost" data-qnav="edit">Modifier mes réponses</button></div></div>`;
+    return;
+  }
+  const q = QUIZ[qStep], v = S.quick[q.k], multi = q.type === 'multi';
+  const opts = q.opts.map(([val, title, sub]) => {
+    const on = multi ? (v || []).includes(val) : v === val;
+    const n = multi && on ? v.indexOf(val) + 1 : 0;
+    return `<button type="button" class="qopt ${on ? 'on' : ''}" data-q="${val}" aria-pressed="${on}">${n ? `<span class="n">${n}</span>` : ''}<b>${title}</b>${sub ? `<small>${sub}</small>` : ''}</button>`;
+  }).join('');
+  const cnt = multi ? (v || []).length : 0;
+  box.innerHTML = `
+    <div class="q-top"><span class="eyebrow">Question ${qStep + 1} sur ${QUIZ.length}</span><span class="mono muted" style="font-size:.85rem">${Math.round(qStep / QUIZ.length * 100)} %</span></div>
+    <div class="bar" aria-hidden="true"><span style="width:${qStep / QUIZ.length * 100}%"></span></div>
+    <div class="${anim ? 'qslide' : ''}" style="display:grid;gap:16px">
+      <div><h3 class="q-title">${q.t}</h3>${q.d ? `<p class="muted" style="margin-top:4px">${q.d}</p>` : ''}</div>
+      <div class="qopts" role="group" aria-label="${esc(q.t)}">${opts}</div>
+    </div>
+    <div class="q-nav"><button type="button" class="btn ghost" data-qnav="prev" ${qStep === 0 ? 'disabled' : ''}>Précédent</button>${multi ? `<span class="hint">${cnt}/${q.n} choisies</span><button type="button" class="btn" data-qnav="next" ${cnt === q.n ? '' : 'disabled'}>Continuer</button>` : v !== undefined ? '<button type="button" class="btn" data-qnav="next">Continuer</button>' : '<span></span>'}</div>`;
+}
+function quizGo(n) {
+  qStep = Math.max(0, Math.min(QUIZ.length, n));
+  renderQuiz(true);
+  if (qStep >= QUIZ.length) { renderResults(); renderChartNext(); }
+  updateNextBar();
+  if ($('#quiz').getBoundingClientRect().top < 0) $('#quiz').scrollIntoView({ block: 'start' });
+}
+$('#quizBox').addEventListener('click', e => {
+  const t = e.target.closest('button'); if (!t) return;
+  if (t.dataset.qnav === 'prev') return quizGo(qStep - 1);
+  if (t.dataset.qnav === 'next') return quizGo(qStep + 1);
+  if (t.dataset.qnav === 'edit') return quizGo(0);
+  if (t.dataset.q === undefined) return;
+  if (S.example) { toast('C\'est l\'exemple de Camille : reviens à ton parcours pour répondre à ton tour.'); return; }
+  const q = QUIZ[qStep], val = t.dataset.q;
+  if (q.type === 'multi') {
+    const arr = S.quick[q.k] ||= [], i = arr.indexOf(val);
+    if (i > -1) arr.splice(i, 1);
+    else if (arr.length < q.n) arr.push(val);
+    else { toast(`Tu as déjà choisi ${q.n} réponses : retire-en une pour changer.`); return; }
+    save(); renderQuiz();
+  } else {
+    S.quick[q.k] = val; save(); renderQuiz();
+    clearTimeout(qTimer); qTimer = setTimeout(() => { if (QUIZ[qStep] === q) quizGo(qStep + 1); }, 420);
+  }
+});
+
+function archetype() {
+  const q = S.quick; if (!q.pull) return null;
+  return Object.assign({ letter: q.pull, nuance: S.chart ? TYPE_BIZ[S.chart.type] : null }, ARCHETYPES[q.pull]);
+}
+function ideaCardFree(x) {
+  const T = S.chart ? TYPES[S.chart.type] : null;
+  return `<article class="idea">
+      <div class="idea-top"><div><p class="eyebrow">Ta piste n°1</p><h4>${x.t}</h4></div><div class="score"><b class="mono">${x.total}</b><small>sur 100</small></div></div>
+      <p>${x.d}</p>
+      <div class="meta"><span class="pill">${MODEL_LABEL[x.model]}</span><span class="pill">${x.price}</span><span class="pill">${x.loc === 'online' ? 'En ligne' : x.loc === 'local' ? 'Local' : 'En ligne ou local'}</span>${x.fast ? '<span class="pill">Revenu rapide possible</span>' : ''}</div>
+      ${T ? `<p class="why"><b>Avec ton type ${T.name} :</b> ${fitTip(S.chart.type, x.model)}</p>` : ''}
+      <p class="firststep"><b>Ton premier pas cette semaine :</b> ${x.stepTxt}</p>
+      <p class="hint">Score indicatif calculé à partir de ton quiz express. Le bilan approfondi l'affine.</p>
+    </article>`;
+}
+function gateHTML(ar) {
   return `
-    <div class="paywall">
-      <div class="card pw-left">
-        <p class="eyebrow">${done < 7 ? `Bilan complété à ${done}/7 : termine-le pour des pistes plus justes` : 'Ton profil est prêt'}</p>
-        <h3>${S.birth.name ? esc(S.birth.name) + ', tes' : 'Tes'} pistes de business t'attendent</h3>
-        <div class="pw-stats">
-          <div><b>${S.chart ? TYPES[S.chart.type].name : '—'}</b><span>ton type</span></div>
-          <div><b class="mono">${S.ans.riasec.filter(Boolean).length >= 12 ? order.slice(0, 3).join('') : '···'}</b><span>ton code d'intérêts</span></div>
-          <div><b class="mono">${done}/7</b><span>modules du bilan</span></div>
-        </div>
+    <div class="gate">
+      <div class="card teaser">
+        <p class="eyebrow">Ton profil est prêt</p>
+        <h3>${S.birth.name ? esc(S.birth.name) + ', voici' : 'Voici'} ce qui t'attend</h3>
+        <p class="big-arch blur" aria-hidden="true">${ar.name}</p>
         <ul class="pw-list">
-          <li><b>4 pistes de business</b> classées sur 100 selon ton profil</li>
-          <li><b>Des idées 100 % sur mesure</b> générées à partir de tes réponses</li>
-          <li><b>Ton comité de 6 experts</b> : Human Design, orientation, stratégie, marketing, mindset, synthèse</li>
-          <li><b>Ton offre signature</b>, ta vision et ta feuille de route sur 90 jours</li>
-          <li><b>Ton récap complet</b> envoyé par e-mail, à imprimer ou à enregistrer</li>
+          <li><b>Ton archétype d'entrepreneur·e</b>, tes 3 forces et le type de business qui te va</li>
+          <li><b>Ta piste de business n°1</b>, notée sur 100, avec ton premier pas cette semaine</li>
+          <li><b>Ta carte Human Design</b> et tes 4 clés pour entreprendre, à garder</li>
         </ul>
-        <div class="pw-blur" aria-hidden="true">${[1, 2].map(i => `<div class="idea"><p class="eyebrow">Piste ${i}</p><h4>████████ ██████</h4><p>████ ██████ ████ ████████ ██ ██████.</p></div>`).join('')}</div>
       </div>
-      <div class="card pw-right">
-        <p class="eyebrow">Accès complet</p>
-        <p class="pw-price">${PRICE}</p>
-        <p class="muted">Paiement unique et sécurisé par SumUp · accès immédiat</p>
-        <label class="check" for="fCgv" style="align-items:flex-start"><input type="checkbox" id="fCgv" style="margin-top:4px"> <span class="hint">J'accepte les <a href="/cgv.html" target="_blank">conditions générales de vente</a>. Je demande l'accès immédiat au contenu et je renonce à mon droit de rétractation.</span></label>
-        <button class="btn" type="button" id="payGo">Débloquer mes résultats</button>
-        <p class="hint" id="payMsg" role="alert"></p>
+      <div class="card">
+        <form id="gateForm" class="mail-form" novalidate>
+          <div><p class="eyebrow">Gratuit</p><h3>Où t'envoie-t-on ton profil ?</h3><p class="muted" style="margin-top:4px">Il s'affiche ici tout de suite, et tu le reçois par e-mail pour le garder.</p></div>
+          <label for="gName">Ton prénom<input type="text" id="gName" autocomplete="given-name" placeholder="Camille" value="${esc(S.birth.name || '')}"></label>
+          <label for="gMail">Ton adresse e-mail<input type="email" id="gMail" autocomplete="email" placeholder="prenom@exemple.fr" required></label>
+          <label class="check" for="gOptin" style="align-items:flex-start"><input type="checkbox" id="gOptin" style="margin-top:4px"> <span class="hint">Je veux aussi recevoir les conseils de Ma Boussole Business pour lancer mon activité (désinscription en un clic).</span></label>
+          <button class="btn" type="submit">Révéler mon profil</button>
+          <p class="hint" id="gMsg" role="alert"></p>
+          <p class="hint">Ton adresse sert à t'envoyer ton profil. Voir notre <a href="/confidentialite.html" target="_blank">politique de confidentialité</a>.</p>
+        </form>
       </div>
     </div>`;
 }
-document.addEventListener('click', async e => {
-  if (e.target.id !== 'payGo') return;
-  const msg = $('#payMsg'), btn = e.target;
-  if (!$('#fCgv').checked) { msg.textContent = 'Coche la case des conditions générales de vente pour continuer.'; return; }
-  btn.disabled = true; msg.textContent = 'Ouverture du paiement sécurisé…';
-  try {
-    const d = await api('/api/checkout', { email: S.email || '' });
-    S.pendingCheckout = d.id; save();
-    location.href = d.url;
-  } catch (err) { btn.disabled = false; msg.textContent = 'Le paiement n\'a pas pu s\'ouvrir. Réessaie dans un instant.'; }
-});
-async function verifyReturn() {
-  const id = S.pendingCheckout; if (!id) return;
-  try {
-    const d = await api('/api/verify', { id });
-    if (d.paid) {
-      S.paid = true; S.example = false; S.token = d.token; delete S.pendingCheckout; save();
-      renderCompass(); renderTeam(); renderRecap();
-      setTimeout(() => $('#pistes').scrollIntoView(), 200);
-    } else if (d.status === 'FAILED' || d.status === 'EXPIRED') { delete S.pendingCheckout; save(); }
-  } catch (e) { }
+function renderResults() {
+  const box = $('#resultsBox');
+  if (!quizDone()) {
+    const n = QUIZ.filter(answeredQ).length;
+    box.innerHTML = `<div class="card next-card"><div><p class="eyebrow">${n ? `Quiz en cours · ${n}/${QUIZ.length}` : 'Encore une étape'}</p><h3>Réponds au quiz express pour révéler ton profil</h3><p class="muted">Ton archétype d'entrepreneur·e et ta piste n°1 apparaîtront ici.</p></div><a class="btn" href="#quiz">${n ? 'Reprendre le quiz' : 'Faire le quiz'}</a></div>`;
+    return;
+  }
+  const ar = archetype();
+  if (!freeOpen()) { box.innerHTML = gateHTML(ar); return; }
+  const T = S.chart ? TYPES[S.chart.type] : null, ideas = scoreIdeas().slice(0, 3), top = ideas[0];
+  box.innerHTML = `<div class="res">
+    <div class="card arch">
+      <div>
+        <p class="eyebrow">Ton archétype d'entrepreneur·e</p>
+        <p class="big-arch" style="margin-top:6px">${ar.name}</p>
+        ${T ? `<p class="muted" style="margin-top:6px">${T.name} · ${ar.nuance[0]}</p>` : ''}
+        <p style="margin-top:14px;font-size:1.05rem">${ar.line}</p>
+        <p style="margin-top:8px">${ar.biz}</p>
+        ${T ? `<p class="why" style="margin-top:10px"><b>Avec ton type ${T.name} :</b> ${ar.nuance[1]}</p>` : `<p class="hint" style="margin-top:10px"><a href="#charte">Calcule ta charte</a> pour voir comment ton type Human Design colore cet archétype.</p>`}
+      </div>
+      <div class="mini"><h4>Tes 3 forces</h4><ul>${ar.forces.map(f => `<li>${f}</li>`).join('')}</ul></div>
+    </div>
+    <div class="res-ideas">
+      ${top ? ideaCardFree(top) : '<div class="card"><p>Aucune piste ne correspond à tes contraintes actuelles : le bilan approfondi permet de les ajuster finement.</p></div>'}
+      <div class="card locked-ideas">
+        <p class="eyebrow">Tes autres pistes</p>
+        ${ideas.slice(1).map((x, i) => `<div class="locked-idea"><span><span class="tag">Piste ${i + 2} · ${x.total}/100</span></span><h4>${x.t}</h4><p aria-hidden="true">${x.d}</p></div>`).join('')}
+        <p class="muted" style="font-size:.9rem">Dans la version complète : 4 pistes affinées par ton bilan approfondi, des idées 100 % sur mesure, ton offre et ton plan sur 90 jours.</p>
+        <div><a class="btn" href="#offre">Découvrir la version complète</a></div>
+      </div>
+    </div>
+    ${S.example ? '' : `<p class="sent">${S.emailSent ? `Ton profil a été envoyé à <b>${esc(S.email)}</b>. Pense à regarder tes courriers indésirables.` : `Ton profil n'a pas pu être envoyé à <b>${esc(S.email)}</b>.`} <button type="button" class="linkbtn" id="resend">Renvoyer</button> · <button type="button" class="linkbtn" id="changeMail">Changer d'adresse</button></p>`}
+  </div>`;
 }
-
-function chartCardHTML() {
-  const ch = computeChart(); if (!ch) return '';
-  const T = TYPES[ch.type], b = S.birth;
-  const svg = bodygraph(ch).replace(/var\(--center-on\)/g, '#DDBE93').replace(/var\(--surface\)/g, '#FBF7F1').replace(/var\(--ink\)/g, '#3A2819').replace(/var\(--muted\)/g, '#7A614B').replace(/var\(--design\)/g, '#C08C4E').replace(/var\(--line-off\)/g, '#E4D6C1');
-  const keys = hdCards(ch, b.unknown);
-  return `<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Ma carte Human Design${b.name ? ' — ' + esc(b.name) : ''}</title><style>${RECAP_CSS}.grid{display:grid;grid-template-columns:240px 1fr;gap:24px;align-items:start}.grid svg{width:100%;height:auto}@media(max-width:560px){.grid{grid-template-columns:1fr}}</style></head><body><main class="doc">
-  <header class="rc-head"><p class="rc-eyebrow">Ma Boussole Business · ma carte Human Design</p><h2>${b.name ? esc(b.name) + ', ' : ''}${T.name}</h2><p class="rc-angle">${T.strat}</p></header>
-  <section class="rc-sec grid"><div>${svg}</div><dl class="rc-dl">
+const HEX = s => s.replace(/var\(--center-on\)/g, '#DDBE93').replace(/var\(--surface\)/g, '#FBF7F1').replace(/var\(--ink\)/g, '#3A2819').replace(/var\(--muted\)/g, '#7A614B').replace(/var\(--design\)/g, '#C08C4E').replace(/var\(--line-off\)/g, '#E4D6C1');
+function freeResultsHTML() {
+  const ch = computeChart(), b = S.birth, ar = archetype(), top = scoreIdeas()[0], T = ch ? TYPES[ch.type] : null;
+  return `<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Mon profil Boussole Business${b.name ? ' — ' + esc(b.name) : ''}</title><style>${RECAP_CSS}.grid{display:grid;grid-template-columns:240px 1fr;gap:24px;align-items:start}.grid svg{width:100%;height:auto}@media(max-width:560px){.grid{grid-template-columns:1fr}}</style></head><body><main class="doc">
+  <header class="rc-head"><p class="rc-eyebrow">Ma Boussole Business · mon profil d'entrepreneur·e</p><h2>${b.name ? esc(b.name) + ', ' : ''}${ar.name}</h2><p class="rc-angle">${ar.line}</p></header>
+  <section class="rc-sec"><h3>Ton archétype</h3><p>${ar.biz}</p>${T ? `<p><b>Avec ton type ${T.name} :</b> ${TYPE_BIZ[ch.type][1]}</p>` : ''}<p class="rc-w" style="margin-top:10px">Tes forces</p><ul class="rc-ul">${ar.forces.map(f => `<li>${f}</li>`).join('')}</ul></section>
+  ${top ? `<section class="rc-sec"><h3>Ta piste n°1 · ${top.total}/100</h3><p class="rc-k-title" style="font-size:18px;margin:0 0 6px">${top.t}</p><p>${top.d}</p><p><b>Premier pas cette semaine :</b> ${top.stepTxt}</p><p><b>Prix indicatif :</b> ${top.price}</p></section>` : ''}
+  ${ch ? `<section class="rc-sec grid"><div>${HEX(bodygraph(ch))}</div><dl class="rc-dl">
     <div><dt>Type</dt><dd>${T.name}</dd></div><div><dt>Stratégie</dt><dd>${T.strat}</dd></div>
     <div><dt>Autorité</dt><dd>${b.unknown ? 'À confirmer' : AUTH[ch.authority][0]}</dd></div><div><dt>Profil</dt><dd>${b.unknown ? 'À confirmer' : ch.profile}</dd></div>
     <div><dt>Définition</dt><dd>${DEFS[ch.definition]}</dd></div><div><dt>Signature</dt><dd>${T.sig}</dd></div>
     <div><dt>Centres définis</dt><dd>${ch.defined.map(c => CENTER_TXT[c][0]).join(', ') || 'Aucun'}</dd></div>
   </dl></section>
-  <section class="rc-sec"><h3>Tes 4 clés pour entreprendre</h3><div class="rc-keys">${keys.map(k => `<div class="rc-key"><p class="rc-k-label">${k.label}</p><p class="rc-k-title">${k.title}</p><p>${k.why}</p></div>`).join('')}</div></section>
-  <p class="rc-foot">Le Human Design est une grille de lecture de soi, pas une science validée.</p></main></body></html>`;
+  <section class="rc-sec"><h3>Tes 4 clés pour entreprendre</h3><div class="rc-keys">${hdCards(ch, b.unknown).map(k => `<div class="rc-key"><p class="rc-k-label">${k.label}</p><p class="rc-k-title">${k.title}</p><p>${k.why}</p></div>`).join('')}</div></section>` : ''}
+  <p class="rc-foot">Le Human Design est une grille de lecture de soi, pas une science validée : garde ce qui te parle et teste-le dans la réalité.</p></main></body></html>`;
 }
-function renderMail() {
-  const box = $('#mailBox'); if (!box) return;
-  if (!S.chart) { box.innerHTML = ''; return; }
-  box.innerHTML = `
-    <div class="card mail">
-      <div><p class="eyebrow">Garde ta carte</p><h3>Reçois ta carte Human Design par e-mail</h3><p class="muted">Ta charte et tes 4 clés pour entreprendre, dans ta boîte mail en quelques secondes.</p></div>
-      <form id="mailForm" class="mail-form" novalidate>
-        <label for="fMail">Ton adresse e-mail<input type="email" id="fMail" autocomplete="email" placeholder="prenom@exemple.fr" value="${esc(S.email || '')}"></label>
-        <label class="check" for="fOptin"><input type="checkbox" id="fOptin"> <span class="hint">J'accepte de recevoir les conseils de Ma Boussole Business (désinscription en un clic).</span></label>
-        <div class="mail-btns"><button class="btn" type="submit">Recevoir ma carte</button><a class="btn ghost" href="#bilan">Passer à mon bilan</a></div>
-        <p class="hint" id="mailMsg" role="status"></p>
-        <p class="hint">Tes données sont traitées selon notre <a href="/confidentialite.html" target="_blank">politique de confidentialité</a>.</p>
-      </form>
-    </div>`;
+async function sendFree() {
+  const ar = archetype(), top = scoreIdeas()[0], ch = S.chart, unk = S.birth.unknown;
+  try {
+    await api('/api/send-email', {
+      type: 'carte', email: S.email, name: S.birth.name || '', optin: !!S.optin, html: freeResultsHTML(),
+      lead: { hd_type: ch ? TYPES[ch.type].name : null, hd_authority: ch && !unk ? AUTH[ch.authority][0] : null, hd_profile: ch && !unk ? ch.profile : null, archetype: ar?.name, top_idea: top?.t, quiz: S.quick, utm: S.utm || null }
+    });
+    return true;
+  } catch (err) { return false; }
 }
 document.addEventListener('submit', async e => {
-  if (e.target.id !== 'mailForm') return;
+  if (e.target.id !== 'gateForm') return;
   e.preventDefault();
-  const v = $('#fMail').value.trim(), msg = $('#mailMsg'), btn = e.target.querySelector('button[type=submit]');
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)) { msg.textContent = 'Indique une adresse e-mail valide, par exemple prenom@exemple.fr.'; return; }
-  S.email = v; save(); btn.disabled = true; msg.textContent = 'Envoi en cours…';
-  try {
-    await api('/api/send-email', { type: 'carte', email: v, name: S.birth.name || '', optin: $('#fOptin').checked, html: chartCardHTML() });
-    msg.textContent = `Ta carte est partie à ${v}. Pense à vérifier tes courriers indésirables.`;
-  } catch (err) { msg.textContent = 'L\'envoi n\'a pas fonctionné. Vérifie ton adresse et réessaie.'; }
-  finally { btn.disabled = false; }
+  const v = $('#gMail').value.trim().toLowerCase(), msg = $('#gMsg'), btn = e.target.querySelector('button[type=submit]');
+  if (!EMAIL_RE.test(v)) { msg.textContent = 'Indique une adresse e-mail valide, par exemple prenom@exemple.fr.'; $('#gMail').focus(); return; }
+  const nm = $('#gName').value.trim(); if (nm) S.birth.name = nm;
+  S.email = v; S.optin = $('#gOptin').checked; save();
+  btn.disabled = true; msg.textContent = 'Préparation de ton profil…';
+  S.emailSent = await sendFree(); save();
+  renderAll(); $('#resultats').scrollIntoView({ block: 'start' });
+});
+document.addEventListener('click', async e => {
+  if (e.target.id === 'resend') { toast('Envoi en cours…'); S.emailSent = await sendFree(); save(); renderResults(); toast(S.emailSent ? `Profil renvoyé à ${S.email}` : 'L\'envoi n\'a pas fonctionné. Réessaie dans une minute.'); }
+  if (e.target.id === 'changeMail') { S.email = ''; S.emailSent = false; save(); renderAll(); $('#gMail')?.focus(); }
 });
 
+/* ---------- version complète : paiement (SumUp) et accès ---------- */
+function paywallHTML() {
+  const ar = archetype(), top = scoreIdeas()[0], T = S.chart ? TYPES[S.chart.type] : null;
+  return `
+    <div class="paywall">
+      <div class="card pw-left">
+        <p class="eyebrow">${ar ? `Ton profil : ${ar.name}${T ? ' · ' + T.name : ''}` : 'Ta boussole complète'}</p>
+        <h3>Tout ce qu'il te faut pour passer de l'idée à ton premier client</h3>
+        <div class="pw-stats">
+          <div><b>${T ? T.name : '—'}</b><span>ton type</span></div>
+          <div><b>${ar ? ar.short : '—'}</b><span>ton archétype</span></div>
+          <div><b class="mono">${top ? top.total + '/100' : '—'}</b><span>ta piste n°1</span></div>
+        </div>
+        <ul class="pw-list">
+          <li><b>Ton bilan approfondi</b> en 7 modules : intérêts, compétences, énergie, valeurs, style, contraintes, idées</li>
+          <li><b>4 pistes de business</b> classées sur 100, avec le détail du score et un premier pas</li>
+          <li><b>Des idées 100 % sur mesure</b> générées par IA à partir de tes réponses</li>
+          <li><b>Ton comité de 6 experts IA</b> : Human Design, orientation, stratégie, marketing, mindset, synthèse</li>
+          <li><b>Ton offre signature</b>, ton positionnement, ta vision et ta feuille de route sur 90 jours</li>
+          <li><b>Ton récap complet</b> par e-mail, à imprimer ou à enregistrer en PDF</li>
+        </ul>
+        <div class="faq">
+          <details><summary>Combien de temps ça prend ?</summary><p>Compte 20 minutes pour le bilan approfondi, que tu peux faire en plusieurs fois, puis 3 à 5 minutes pour l'analyse du comité d'experts.</p></details>
+          <details><summary>Et si je change d'appareil ?</summary><p>Après ton paiement, tu reçois un lien d'accès personnel par e-mail : il rouvre ton accès sur ton téléphone, ton ordinateur ou ta tablette.</p></details>
+          <details><summary>Est-ce un abonnement ?</summary><p>Non : un paiement unique de ${PRICE}, sans engagement ni renouvellement.</p></details>
+          <details><summary>Le Human Design, c'est scientifique ?</summary><p>Non, et nous ne le présentons jamais ainsi : c'est une grille de réflexion. Tes pistes s'appuient surtout sur tes intérêts, tes compétences, tes valeurs et tes contraintes.</p></details>
+        </div>
+      </div>
+      <div class="card pw-right">
+        <p class="eyebrow">Accès complet</p>
+        <p class="pw-price">${PRICE}</p>
+        <p class="muted">Paiement unique et sécurisé par SumUp · accès immédiat</p>
+        <label for="payMail">Ton adresse e-mail<input type="email" id="payMail" autocomplete="email" placeholder="prenom@exemple.fr" value="${esc(S.example ? '' : S.email || '')}"><span class="hint">Ton lien d'accès personnel y sera envoyé.</span></label>
+        <label class="check" for="fCgv" style="align-items:flex-start"><input type="checkbox" id="fCgv" style="margin-top:4px"> <span class="hint">J'accepte les <a href="/cgv.html" target="_blank">conditions générales de vente</a>. Je demande l'accès immédiat au contenu et je renonce à mon droit de rétractation.</span></label>
+        <button class="btn" type="button" id="payGo">Débloquer ma version complète</button>
+        <p class="hint" id="payMsg" role="alert"></p>
+        <form class="restore" id="restoreForm" novalidate>
+          <span class="hint"><b>Déjà acheté ?</b> Reçois à nouveau ton lien d'accès.</span>
+          <div class="code-row"><input type="email" id="rMail" autocomplete="email" placeholder="Adresse utilisée lors de l'achat" aria-label="Adresse utilisée lors de l'achat"><button class="btn ghost" type="submit">Envoyer</button></div>
+          <p class="hint" id="rMsg" role="status"></p>
+        </form>
+      </div>
+    </div>`;
+}
+function renderOffer() {
+  const box = $('#offerBox');
+  if (S.paid && !S.example) {
+    box.innerHTML = `<div class="card active-card"><div><p class="eyebrow">Accès complet actif ✓</p><h3 style="font-size:1.3rem;font-weight:400;margin-top:4px">Ton bilan approfondi t'attend</h3><p class="muted" style="margin-top:4px">Ton lien d'accès personnel t'a été envoyé par e-mail : il rouvre tout sur n'importe quel appareil.</p></div><a class="btn" href="#bilan">Continuer mon parcours</a></div>`;
+    return;
+  }
+  box.innerHTML = paywallHTML();
+}
+document.addEventListener('click', async e => {
+  if (e.target.id !== 'payGo') return;
+  const msg = $('#payMsg'), btn = e.target, mail = $('#payMail').value.trim().toLowerCase(), cgv = $('#fCgv').checked;
+  if (!EMAIL_RE.test(mail)) { msg.textContent = 'Indique ton adresse e-mail : ton lien d\'accès y sera envoyé.'; $('#payMail').focus(); return; }
+  if (!cgv) { msg.textContent = 'Coche la case des conditions générales de vente pour continuer.'; return; }
+  if (S.example) leaveExample();
+  S.email = mail; save();
+  btn.disabled = true; msg.textContent = 'Ouverture du paiement sécurisé…';
+  try {
+    const d = await api('/api/checkout', { email: mail });
+    S.pendingCheckout = d.id; save();
+    location.href = d.url;
+  } catch (err) { btn.disabled = false; msg.textContent = 'Le paiement n\'a pas pu s\'ouvrir. Réessaie dans un instant.'; }
+});
+document.addEventListener('submit', async e => {
+  if (e.target.id !== 'restoreForm') return;
+  e.preventDefault();
+  const v = $('#rMail').value.trim(), m = $('#rMsg');
+  if (!EMAIL_RE.test(v)) { m.textContent = 'Indique l\'adresse utilisée lors de ton achat.'; return; }
+  m.textContent = 'Envoi en cours…';
+  try { await api('/api/restore', { email: v }); m.textContent = 'Si un achat est associé à cette adresse, ton lien d\'accès arrive dans quelques instants. Pense à regarder tes courriers indésirables.'; }
+  catch (err) { m.textContent = 'L\'envoi n\'a pas fonctionné. Réessaie dans un instant.'; }
+});
+function grant(token) {
+  if (S.example) leaveExample();
+  S.paid = true; S.token = token; delete S.pendingCheckout; save(); renderAll();
+  setTimeout(() => $('#bilan').scrollIntoView(), 250);
+}
+async function verifyReturn() {
+  const url = new URL(location.href), acces = url.searchParams.get('acces'), back = url.searchParams.get('paiement') === 'ok';
+  const utm = {}; ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content'].forEach(k => { const v = url.searchParams.get(k); if (v) utm[k] = v.slice(0, 80); });
+  if (Object.keys(utm).length && !S.utm) { S.utm = utm; save(); }
+  if (acces || back) { url.searchParams.delete('acces'); url.searchParams.delete('paiement'); history.replaceState(null, '', url.pathname + url.search + url.hash); }
+  if (acces) {
+    try { const d = await api('/api/verify', { token: acces }); if (d.paid) { grant(d.token); toast('Ton accès complet est ouvert sur cet appareil ✓'); } else toast('Ce lien d\'accès n\'est pas valide. Demande-en un nouveau depuis « Déjà acheté ? ».'); } catch (err) { }
+    return;
+  }
+  const id = S.pendingCheckout; if (!id) return;
+  if (back) toast('Confirmation de ton paiement…');
+  // SumUp peut mettre quelques secondes à confirmer : au retour du paiement, on réessaie un peu.
+  for (let i = 0; i < (back ? 6 : 1); i++) {
+    try {
+      const d = await api('/api/verify', { id });
+      if (d.paid) { grant(d.token); toast('Paiement confirmé, merci ! Ton accès complet est ouvert ✓'); return; }
+      if (d.status === 'FAILED' || d.status === 'EXPIRED') { delete S.pendingCheckout; save(); toast('Le paiement n\'a pas abouti. Tu peux réessayer quand tu veux.'); return; }
+    } catch (err) { if (err.status === 400 || err.status === 404) { delete S.pendingCheckout; save(); return; } }
+    if (back) await new Promise(r => setTimeout(r, 2500));
+  }
+  if (back) toast('Ton paiement est en cours de validation. Tu recevras ton lien d\'accès par e-mail dès sa confirmation.');
+}
+
+/* ---------- exemple, navigation et barre d'étape suivante ---------- */
+const MINE = KEY + '-mine';
+function enterExample() {
+  if (S.example) return;
+  try { localStorage.setItem(MINE, JSON.stringify(S)); } catch (e) { }
+  S = JSON.parse(JSON.stringify(EXAMPLE)); save();
+  fillForm(); resetQuizStep(); renderAll(); $('#charte').scrollIntoView();
+}
+function leaveExample() {
+  if (!S.example) return;
+  let mine = null; try { mine = JSON.parse(localStorage.getItem(MINE)); localStorage.removeItem(MINE); } catch (e) { }
+  S = mine && !mine.example ? mine : blankState(); S.quick ||= {}; save();
+  aiCache = null; fillForm(); resetQuizStep(); renderAll();
+}
+document.addEventListener('click', e => {
+  const t = e.target.closest('[data-example]'); if (!t) return;
+  if (t.dataset.example === 'on') enterExample(); else { leaveExample(); $('#charte').scrollIntoView(); }
+});
+function renderExampleBar() {
+  $('#exampleBar').innerHTML = S.example ? `<div class="ex-bar"><div class="wrap"><span><b>Exemple</b> · Tu explores le parcours complet de Camille, un profil fictif.</span><button type="button" class="btn" data-example="off">Revenir à mon parcours</button></div></div>` : '';
+}
+function renderNav() {
+  const u = unlocked();
+  $('#bilan').hidden = !u; $('#pistes').hidden = !u;
+  document.querySelectorAll('.navl').forEach(a => a.toggleAttribute('hidden', !u));
+}
+function nextStep() {
+  if (S.example) return null;
+  if (!S.chart) return ['Calculer ma charte gratuite', '#charte'];
+  if (!quizDone()) return ['Faire mon quiz express · 2 min', '#quiz'];
+  if (!S.email) return ['Révéler mon profil gratuit', '#resultats'];
+  if (!S.paid) return [`Débloquer la version complète · ${PRICE}`, '#offre'];
+  if (MODS.some((_, i) => !modDone(i))) return ['Continuer mon bilan approfondi', '#bilan'];
+  if (!S.experts?.synth) return ['Lancer mon comité d\'experts', '#comite'];
+  return null;
+}
+function updateNextBar() {
+  const n = nextStep(), bar = $('#nextBar');
+  const r = n && $(n[1]).getBoundingClientRect();
+  if (!n || window.scrollY < 420 || (r.top < innerHeight * .8 && r.bottom > innerHeight * .2)) { bar.hidden = true; return; }
+  bar.hidden = false; bar.textContent = n[0]; bar.href = n[1];
+}
+let scrollBusy = false;
+addEventListener('scroll', () => { if (scrollBusy) return; scrollBusy = true; requestAnimationFrame(() => { scrollBusy = false; updateNextBar(); }); }, { passive: true });
+
+function renderAll() {
+  renderExampleBar(); renderNav(); renderChart(); renderChartNext(); renderQuiz(); renderResults(); renderOffer();
+  renderWizard(); renderCompass(); renderTeam(); renderRecap(); updateNextBar();
+}
+
 /* ---------- form ---------- */
-function initForm() {
-  $('#fZone').innerHTML = ZONES.map(([z, n]) => `<option value="${z}">${n}</option>`).join('');
+function fillForm() {
   const b = S.birth;
   $('#fName').value = b.name || ''; $('#fDate').value = b.date || ''; $('#fTime').value = b.time || ''; $('#fCity').value = b.city || '';
   $('#fUnknown').checked = !!b.unknown; $('#fZone').value = b.zone || 'Europe/Paris'; $('#fTime').disabled = !!b.unknown;
+}
+function initForm() {
+  $('#fZone').innerHTML = ZONES.map(([z, n]) => `<option value="${z}">${n}</option>`).join('');
+  fillForm();
   $('#fUnknown').addEventListener('change', e => { $('#fTime').disabled = e.target.checked; });
   $('#birthForm').addEventListener('submit', e => {
     e.preventDefault();
@@ -1663,14 +2073,16 @@ function initForm() {
     if (yr < 1900 || yr > 2030) { err.hidden = false; err.textContent = 'Indique une année entre 1900 et 2030.'; return; }
     if (!unknown && !time) { err.hidden = false; err.textContent = 'Indique ton heure de naissance, ou coche « Je ne connais pas mon heure ».'; return; }
     err.hidden = true;
-    if (S.example) { S.example = false; S.ans = blankAns(); }
-    S.birth = { name: $('#fName').value.trim(), date, time, unknown, zone: $('#fZone').value, city: $('#fCity').value.trim() };
-    renderChart(); save(); renderMail(); renderWizard(); renderCompass(); renderTeam();
-    $('#chartOut').scrollIntoView({ block: 'start' });
+    const birth = { name: $('#fName').value.trim(), date, time, unknown, zone: $('#fZone').value, city: $('#fCity').value.trim() };
+    if (S.example) leaveExample();
+    S.birth = birth; save();
+    renderAll(); fillForm();
+    const out = $('#chartOut'); out.classList.add('reveal'); setTimeout(() => out.classList.remove('reveal'), 1600);
+    out.scrollIntoView({ block: 'start' });
   });
 }
 
-initForm(); renderChart(); renderMail(); renderWizard(); renderCompass(); renderTeam(); renderRecap(); verifyReturn();
+initForm(); resetQuizStep(); renderAll(); verifyReturn();
 
 </script>
 </body>

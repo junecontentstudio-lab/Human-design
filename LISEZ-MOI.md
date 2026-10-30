@@ -9,7 +9,10 @@ Ce dossier contient tout le site, prêt à être publié :
 | `api/checkout.js` | Crée la page de paiement SumUp |
 | `api/verify.js` | Vérifie le paiement auprès de SumUp et débloque l'accès |
 | `api/claude.js` | Relais vers l'IA Claude (idées sur mesure et comité d'experts), réservé aux clients |
-| `api/send-email.js` | Envoie la carte et le récap avec Brevo, et ajoute les contacts à tes listes |
+| `api/send-email.js` | Envoie le profil gratuit et le récap avec Brevo, enregistre les prospects dans Supabase |
+| `api/sumup-webhook.js` | Reçoit la confirmation de paiement de SumUp, même si la cliente ferme la page |
+| `api/restore.js` | « Déjà acheté ? » : renvoie le lien d'accès par e-mail |
+| `supabase/migrations/…sql` | Les tables de la base Supabase (prospects, paiements) |
 | `.env.example` | La liste des clés à renseigner dans Vercel |
 
 Compte environ 2 heures pour tout faire, sans écrire de code.
@@ -35,6 +38,12 @@ Compte environ 2 heures pour tout faire, sans écrire de code.
 2. Crée une clé API (elle commence par `sk-ant-`).
 3. Fixe une **limite de dépense mensuelle** dans les paramètres, pour éviter toute surprise.
 
+**Supabase (base de données)**
+1. Ouvre ton projet sur supabase.com (ou crée-en un).
+2. Va dans **SQL Editor → New query**, colle tout le contenu de `supabase/migrations/20261030_boussole.sql`, puis clique sur **Run**.
+3. Dans **Project Settings → API**, note l'**URL du projet** et la clé **service_role** (secrète : elle ne va que dans Vercel).
+4. Pour suivre tes chiffres : **Table Editor** → `boussole_leads` (prospects), `boussole_purchases` (paiements), ou la vue `boussole_stats`.
+
 ## Étape 2 : mettre le dossier sur GitHub (15 min)
 
 1. Crée un compte gratuit sur github.com.
@@ -49,7 +58,7 @@ Compte environ 2 heures pour tout faire, sans écrire de code.
    - `SITE_URL` : l'adresse de ton site (au début, celle donnée par Vercel, par exemple https://ma-boussole-business.vercel.app).
    - `TOKEN_SECRET` : une longue phrase au hasard que tu ne communiques à personne.
    - `PRICE_EUR` : **mets 1 pour ton premier test**.
-   - Les clés SumUp, Brevo et Claude, et les numéros de tes listes Brevo.
+   - Les clés SumUp, Brevo, Claude et Supabase, et les numéros de tes listes Brevo.
 4. Va dans **Deployments**, clique sur les trois points du dernier déploiement, puis **Redeploy** pour prendre en compte les clés.
 
 ## Étape 4 : ton nom de domaine (15 min)
@@ -82,6 +91,6 @@ En cas de problème, Vercel affiche les erreurs dans **Logs** : copie-les-moi et
 ## Bon à savoir
 
 - **Coût par client** : un paiement SumUp en ligne prélève une commission (voir leurs tarifs), et une analyse complète du comité consomme quelques centimes à quelques dizaines de centimes d'API Claude. La limite de dépense protège ton budget.
-- **Accès sur un autre appareil** : l'accès est débloqué sur l'appareil de l'achat. Le client garde son récap par e-mail. Si quelqu'un change d'appareil, il peut t'écrire.
+- **Accès sur un autre appareil** : après le paiement, la cliente reçoit un e-mail avec son lien d'accès personnel, valable sur tous ses appareils. Elle peut le redemander avec « Déjà acheté ? » dans l'encadré de paiement.
 - **Sécurité** : les idées par IA et l'envoi du récap ne fonctionnent qu'avec un paiement vérifié par SumUp. Les 4 pistes classiques sont calculées dans la page : une personne très technique pourrait les afficher sans payer, ce qui reste marginal.
 - **Modifier le prix affiché** : dans `public/index.html`, cherche `const PRICE = '22 €'`. Pense à changer aussi `PRICE_EUR` dans Vercel et le prix dans les CGV.

@@ -13,11 +13,14 @@ const EXAMPLE = {
     style: ['b', 'a', 'b', 'b', 'b', 'a', 'a', 'a'],
     cons: { time: 1, budget: 1, revenue: 1, risk: 0, place: 2 },
     ideas: 'Accompagner des femmes en reconversion', excl: 'Vente à domicile'
-  }
+  },
+  quick: { pull: 'S', ask: 'S', skills: ['conseil,oral', 'former,ecrire', 'ecrire,reseaux'], values: ['liberte', 'impact', 'transmission'], sell: 'a', place: '2', time: '1', revenue: '1' }
 };
 const blankAns = () => ({ riasec: Array(30).fill(0), skills: {}, open: {}, values: [], style: Array(8).fill(''), cons: {}, ideas: '', excl: '' });
+const blankState = () => ({ birth: { name: '', date: '', time: '', unknown: false, zone: 'Europe/Paris', city: '' }, ans: blankAns(), quick: {} });
 
-let S = load() || JSON.parse(JSON.stringify(EXAMPLE));
+let S = load() || blankState();
+S.quick ||= {};
 let step = 0;
 function load() { try { const v = localStorage.getItem(KEY); return v ? JSON.parse(v) : null; } catch (e) { return null; } }
 function save() { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) { } }
@@ -89,14 +92,14 @@ function renderChart() {
         <div class="legend"><span><i style="background:var(--ink)"></i>Personnalité (conscient)</span><span><i style="background:var(--design)"></i>Design (inconscient)</span></div>
       </div>
       <dl class="facts">
-        <div class="fact wide"><dt>Type</dt><dd>${T.name}</dd></div>
-        <div class="fact"><dt>Stratégie</dt><dd>${T.strat}</dd></div>
-        <div class="fact"><dt>Autorité</dt><dd>${b.unknown ? 'À confirmer' : A[0]}</dd></div>
-        <div class="fact"><dt>Profil</dt><dd>${b.unknown ? 'À confirmer' : `${ch.profile} · ${LINES[l1][0]} / ${LINES[l2][0]}`}</dd></div>
-        <div class="fact"><dt>Définition</dt><dd>${DEFS[ch.definition]}</dd></div>
-        <div class="fact"><dt>Signature</dt><dd>${T.sig}</dd></div>
-        <div class="fact"><dt>Thème du non-soi</dt><dd>${T.ns}</dd></div>
-        <div class="fact wide"><dt>Croix d'incarnation (portes)</dt><dd class="mono" style="font-size:1rem">${ch.cross.p.join('/')} | ${ch.cross.d.join('/')}</dd></div>
+        <div class="fact wide" style="--i:0"><dt>Type</dt><dd>${T.name}</dd></div>
+        <div class="fact" style="--i:1"><dt>Stratégie</dt><dd>${T.strat}</dd></div>
+        <div class="fact" style="--i:2"><dt>Autorité</dt><dd>${b.unknown ? 'À confirmer' : A[0]}</dd></div>
+        <div class="fact" style="--i:3"><dt>Profil</dt><dd>${b.unknown ? 'À confirmer' : `${ch.profile} · ${LINES[l1][0]} / ${LINES[l2][0]}`}</dd></div>
+        <div class="fact" style="--i:4"><dt>Définition</dt><dd>${DEFS[ch.definition]}</dd></div>
+        <div class="fact" style="--i:5"><dt>Signature</dt><dd>${T.sig}</dd></div>
+        <div class="fact" style="--i:6"><dt>Thème du non-soi</dt><dd>${T.ns}</dd></div>
+        <div class="fact wide" style="--i:7"><dt>Croix d'incarnation (portes)</dt><dd class="mono" style="font-size:1rem">${ch.cross.p.join('/')} | ${ch.cross.d.join('/')}</dd></div>
       </dl>
     </div>
     ${b.unknown ? '<p class="hint" style="margin-top:12px">Sans heure de naissance, la Lune et parfois le type peuvent changer : seuls les éléments les plus stables sont à retenir.</p>' : ''}`;
@@ -159,6 +162,7 @@ function renderWizard() {
   $('#wizard').innerHTML = `
     <div class="progress" role="tablist">${MODS.map((x, i) => `<button type="button" data-step="${i}" class="${i === step ? 'cur' : ''} ${modDone(i) ? 'done' : ''}" role="tab" aria-selected="${i === step}">${i + 1}. ${x.t}</button>`).join('')}</div>
     <div class="bar" aria-hidden="true"><span style="width:${doneCount / MODS.length * 100}%"></span></div>
+    <p class="live">${liveInsight()}</p>
     <div class="mod-head"><h3>${m.t}</h3><p class="muted">${m.d}</p></div>
     <div>${body}</div>
     <div class="wiz-nav">
@@ -166,10 +170,15 @@ function renderWizard() {
       ${step < MODS.length - 1 ? '<button type="button" class="btn" id="next">Module suivant</button>' : '<button type="button" class="btn" id="finish">Voir mes pistes</button>'}
     </div>`;
 }
-function leaveExample() {
-  if (!S.example) return;
-  S.example = false; S.ans = blankAns();
-  renderNotice();
+function liveInsight() {
+  const a = S.ans, n = a.riasec.filter(Boolean).length;
+  const rs = riasecScores(a), code = Object.keys(rs).sort((x, y) => rs[y] - rs[x]).slice(0, 3).join('');
+  const strong = SKILLS.flatMap(([, l]) => l).filter(([k]) => (a.skills[k] || 0) >= 2).length;
+  const bits = [];
+  if (n >= 12) bits.push(`Code d'intérêts : <b class="mono">${code}</b>`);
+  if (strong) bits.push(`<b>${strong}</b> compétence${strong > 1 ? 's' : ''} forte${strong > 1 ? 's' : ''}`);
+  if (a.values.length) bits.push(`Valeur n°1 : <b>${VALUES.find(x => x[0] === a.values[0])[1]}</b>`);
+  return bits.length ? `Ton profil se dessine · ${bits.join(' · ')}` : 'Ton profil se dessine au fil de tes réponses : chaque module affine tes pistes.';
 }
 $('#wizard').addEventListener('click', e => {
   const t = e.target.closest('button'); if (!t) return;
@@ -178,34 +187,49 @@ $('#wizard').addEventListener('click', e => {
   if (t.id === 'prev') { step--; renderWizard(); $('#bilan').scrollIntoView(); return; }
   if (t.id === 'next') { step++; renderWizard(); $('#bilan').scrollIntoView(); return; }
   if (t.id === 'finish') { renderCompass(); $('#pistes').scrollIntoView(); return; }
-  const wasEx = S.example;
-  if (wasEx) leaveExample();
+  if (!t.dataset.r && !t.dataset.s && !t.dataset.val && t.dataset.st === undefined && !t.dataset.c) return;
+  if (S.example) { toast('C\'est l\'exemple de Camille : quitte l\'exemple pour remplir ton propre bilan.'); return; }
+  const wasDone = modDone(step);
   if (t.dataset.r !== undefined) a.riasec[+t.dataset.r] = +t.dataset.v;
   else if (t.dataset.s) a.skills[t.dataset.s] = +t.dataset.v;
   else if (t.dataset.val) { const k = t.dataset.val, i = a.values.indexOf(k); if (i > -1) a.values.splice(i, 1); else if (a.values.length < 5) a.values.push(k); }
   else if (t.dataset.st !== undefined) a.style[+t.dataset.st] = t.dataset.v;
   else if (t.dataset.c) a.cons[t.dataset.c] = +t.dataset.v;
   save();
-  const y = window.scrollY; renderWizard(); renderCompass(); window.scrollTo(0, y);
+  if (!wasDone && modDone(step)) toast(`Module « ${MODS[step].t} » terminé ✓`);
+  const y = window.scrollY; renderWizard(); renderCompass(); updateNextBar(); window.scrollTo(0, y);
 });
 $('#wizard').addEventListener('input', e => {
   const t = e.target;
-  if (S.example) { const v = t.value; leaveExample(); renderWizard(); renderCompass(); const n = document.getElementById(t.id); if (n) { n.value = v; n.focus(); } }
-  const el = document.getElementById(t.id) || t;
-  if (el.dataset.o) S.ans.open[el.dataset.o] = el.value;
-  if (el.dataset.f) S.ans[el.dataset.f] = el.value;
+  if (S.example) return;
+  if (t.dataset.o) S.ans.open[t.dataset.o] = t.value;
+  if (t.dataset.f) S.ans[t.dataset.f] = t.value;
   save();
 });
 $('#wizard').addEventListener('change', () => renderCompass());
 
 /* ---------- scoring ---------- */
-function riasecScores() {
+function riasecScores(a = activeAns()) {
   const s = { R: 0, I: 0, A: 0, S: 0, E: 0, C: 0 };
-  RIASEC_Q.forEach(([l], i) => { s[l] += S.ans.riasec[i] || 0; });
+  RIASEC_Q.forEach(([l], i) => { s[l] += a.riasec[i] || 0; });
   return s;
 }
+// Réponses du quiz express traduites dans le format du bilan, pour un premier calcul des pistes.
+function quickAns() {
+  const q = S.quick || {}, num = v => v === undefined ? undefined : +v;
+  const riasec = RIASEC_Q.map(([l]) => !q.pull ? 0 : l === q.pull ? 5 : l === q.ask ? 4 : 2);
+  const skills = {}; SKILLS.forEach(([, l]) => l.forEach(([k]) => { skills[k] = 1; }));
+  (q.skills || []).forEach(s => s.split(',').forEach(k => { skills[k] = 3; }));
+  const style = Array(8).fill(''); if (q.sell) style[7] = q.sell;
+  return { riasec, skills, open: {}, values: (q.values || []).slice(), style, cons: { time: num(q.time), budget: 1, revenue: num(q.revenue), risk: 1, place: num(q.place) }, ideas: '', excl: '' };
+}
+// Chaque module terminé du bilan approfondi remplace la partie correspondante du quiz express.
+function activeAns() {
+  const q = quickAns(), a = S.ans;
+  return { riasec: modDone(0) ? a.riasec : q.riasec, skills: modDone(1) ? a.skills : q.skills, open: a.open, values: modDone(3) ? a.values : q.values, style: modDone(4) ? a.style : q.style, cons: modDone(5) ? a.cons : q.cons, ideas: a.ideas, excl: a.excl };
+}
 function scoreIdeas() {
-  const a = S.ans, rs = riasecScores();
+  const a = activeAns(), rs = riasecScores(a);
   const type = S.chart?.type;
   const c = { time: a.cons.time ?? 2, budget: a.cons.budget ?? 2, revenue: a.cons.revenue ?? 3, place: a.cons.place ?? 2 };
   const exclWords = (a.excl || '').toLowerCase().split(/[^a-zà-ÿ]+/).filter(w => w.length > 3);
@@ -236,15 +260,14 @@ function scoreIdeas() {
 
 function renderNotice() {
   const done = MODS.filter((_, i) => modDone(i)).length;
-  if (!S.example && done < MODS.length) { $('#exampleNotice').innerHTML = `<div class="notice" style="margin-bottom:16px"><span>Ton bilan est complété à ${done}/${MODS.length} modules : tes pistes s'affinent à chaque réponse.</span><a class="btn ghost" href="#bilan">Continuer mon bilan</a></div>`; return; }
-  $('#exampleNotice').innerHTML = S.example ? `<div class="notice" style="margin-bottom:16px"><span><span class="tag ex">Exemple</span> Ces pistes sont celles de Camille, un profil fictif. Remplis ta charte et ton bilan pour voir les tiennes.</span><a class="btn ghost" href="#bilan">Commencer mon bilan</a></div>` : '';
+  if (!S.example && done < MODS.length) { $('#exampleNotice').innerHTML = `<div class="notice" style="margin-bottom:16px"><span>Tes pistes s'appuient sur ton quiz express et sur ${done}/${MODS.length} modules de ton bilan approfondi : elles s'affinent à chaque module terminé.</span><a class="btn ghost" href="#bilan">Continuer mon bilan</a></div>`; return; }
+  $('#exampleNotice').innerHTML = S.example ? `<div class="notice" style="margin-bottom:16px"><span><span class="tag ex">Exemple</span> Ces pistes sont celles de Camille, un profil fictif.</span><button type="button" class="btn ghost" data-example="off">Revenir à mon parcours</button></div>` : '';
 }
 
 function renderCompass() {
   renderNotice();
-  if (!unlocked()) { LAST_RULE = scoreIdeas().slice(0, 4); $('#compass').innerHTML = paywallHTML(); $('#compass').classList.add('is-locked'); if ($('#recapBox')) renderRecap(); return; }
-  $('#compass').classList.remove('is-locked');
-  const a = S.ans, rs = riasecScores();
+  if (!unlocked()) { LAST_RULE = scoreIdeas().slice(0, 4); $('#compass').innerHTML = ''; if ($('#recapBox')) renderRecap(); return; }
+  const a = activeAns(), rs = riasecScores(a);
   const answered = a.riasec.filter(Boolean).length;
   const order = Object.keys(rs).sort((x, y) => rs[y] - rs[x]);
   const code = answered >= 12 ? order.slice(0, 3).join('') : '···';
@@ -303,7 +326,7 @@ sampleFn = { json: async (prompt, opts = {}) => {
   try { r = await fetch('/api/claude', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ prompt, token: S.token || '' }), signal: opts.signal }); }
   catch (e) { throw { code: e && e.name === 'AbortError' ? 'cancelled' : 'upstream_error' }; }
   if (r.status === 402) throw { code: 'locked' };
-  if (r.status === 429) throw { code: 'rate_limited' };
+  if (r.status === 429) { let d = {}; try { d = await r.json(); } catch (e) { } throw { code: d.code === 'quota' ? 'quota' : 'rate_limited' }; }
   if (!r.ok) throw { code: 'upstream_error' };
   const d = await r.json(); if (d.data === undefined) throw { code: 'invalid_json' }; return d.data;
 } };
@@ -314,7 +337,7 @@ function setupAI() {
   const go = $('#aiGo'); if (go) go.onclick = runAI;
 }
 function profileText() {
-  const a = S.ans, rs = riasecScores();
+  const a = activeAns(), rs = riasecScores(a);
   const order = Object.keys(rs).sort((x, y) => rs[y] - rs[x]);
   const ch = S.chart;
   const skills = SKILLS.flatMap(([, l]) => l).map(([k, n]) => `${n}: ${SKILL_LEVELS[a.skills[k] || 0]}`).join('; ');
@@ -341,7 +364,7 @@ async function runAI() {
     if (!Array.isArray(res)) throw { code: 'invalid_json' };
     aiCache = res; st.textContent = ''; renderAI(res);
   } catch (e) {
-    const msg = { locked: 'Les idées sur mesure sont incluses dans l\'accès complet.', not_granted: 'Tu n\'as pas autorisé cette page à utiliser Claude.', sampling_disabled: 'Claude n\'est pas disponible pour ce compte.', rate_limited: 'Trop de demandes pour le moment. Réessaie dans quelques minutes.', invalid_json: 'La réponse était incomplète. Clique à nouveau pour réessayer.', cancelled: '' };
+    const msg = { locked: 'Les idées sur mesure sont incluses dans l\'accès complet.', not_granted: 'Tu n\'as pas autorisé cette page à utiliser Claude.', sampling_disabled: 'Claude n\'est pas disponible pour ce compte.', rate_limited: 'Trop de demandes pour le moment. Réessaie dans quelques minutes.', quota: 'Tu as utilisé toutes les générations incluses dans ton accès. Écris-nous si tu en as besoin de plus.', invalid_json: 'La réponse était incomplète. Clique à nouveau pour réessayer.', cancelled: '' };
     st.textContent = msg[e.code] ?? 'La génération a été interrompue. Clique à nouveau pour réessayer.';
     if (['not_granted', 'sampling_disabled', 'not_declared', 'capability_disabled'].includes(e.code)) go.hidden = true;
   } finally { go.disabled = false; }
@@ -427,7 +450,7 @@ function plan(o) {
 }
 function recapData() {
   const o = currentOffer(); if (!o) return null;
-  const a = S.ans, rs = riasecScores(), ch = S.chart, unk = S.birth.unknown;
+  const a = activeAns(), rs = riasecScores(a), ch = S.chart, unk = S.birth.unknown;
   const order = Object.keys(rs).sort((x, y) => rs[y] - rs[x]);
   return {
     o, ch, unk,
@@ -513,7 +536,7 @@ function renderRecap() {
   if (!unlocked()) { box.innerHTML = ''; return; }
   const o = currentOffer();
   if (!o) {
-    box.innerHTML = `<div class="card empty"><h3>Choisis d'abord une piste</h3><p class="muted">À l'étape 3, clique sur « Choisir cette piste » sous l'idée qui t'attire le plus. Tu pourras ensuite construire ton offre et recevoir ton récap.</p><div><a class="btn ghost" href="#pistes">Voir mes pistes</a></div></div>`;
+    box.innerHTML = `<div class="card empty"><h3>Choisis d'abord une piste</h3><p class="muted">À l'étape 5, clique sur « Choisir cette piste » sous l'idée qui t'attire le plus. Tu pourras ensuite construire ton offre et recevoir ton récap.</p><div><a class="btn ghost" href="#pistes">Voir mes pistes</a></div></div>`;
     return;
   }
   box.innerHTML = `
@@ -567,7 +590,6 @@ document.addEventListener('submit', async e => {
 $('#recap').addEventListener('input', e => {
   const k = e.target.dataset.of; if (!k) return;
   if (!S.offer) S.offer = Object.assign({}, currentOffer());
-  if (S.example) { S.example = false; renderNotice(); }
   S.offer[k] = e.target.value; save(); renderRecapDoc();
 });
 $('#recap').addEventListener('click', async e => {
@@ -658,7 +680,7 @@ function renderTeam() {
       <div class="roster">${AGENTS.map(a => `<div class="agent ${st(a.k)}"><span class="ini">${a.ini}</span><div><b>${a.n}</b><p>${a.d}</p><span class="state">${label[st(a.k)]}</span></div></div>`).join('')}</div>
       <div class="team-actions">
         ${avail ? `<button type="button" class="btn" id="teamGo" ${teamRunning ? 'disabled' : ''}>${done === 0 ? 'Lancer l\'analyse du comité' : done < AGENTS.length ? 'Compléter l\'analyse' : 'Refaire toute l\'analyse'}</button>${teamRunning ? '<button type="button" class="btn ghost" id="teamStop">Arrêter</button>' : ''}` : '<p class="muted">Le comité d\'experts est momentanément indisponible.</p>'}
-        <p class="ai-status" id="teamMsg" aria-live="polite">${teamRunning ? 'Les experts travaillent l\'un après l\'autre, chacun lit les rapports précédents. Compte 3 à 5 minutes.' : S.example ? 'Remplis ton bilan et choisis une piste avant de lancer le comité : plus tes réponses sont précises, plus l\'analyse est juste.' : ex.at ? `Dernière analyse : ${esc(ex.at)}.` : 'Conseil : choisis d\'abord une piste à l\'étape 3, le comité construira ton offre autour.'}</p>
+        <p class="ai-status" id="teamMsg" aria-live="polite">${teamRunning ? 'Les experts travaillent l\'un après l\'autre, chacun lit les rapports précédents. Compte 3 à 5 minutes.' : S.example ? 'Remplis ton bilan et choisis une piste avant de lancer le comité : plus tes réponses sont précises, plus l\'analyse est juste.' : ex.at ? `Dernière analyse : ${esc(ex.at)}.` : 'Conseil : choisis d\'abord une piste à l\'étape 5, le comité construira ton offre autour.'}</p>
       </div>
     </div>
     ${ex.synth ? `<div class="card">${visionHTML(ex.synth)}</div>` : ''}
@@ -688,7 +710,7 @@ async function runTeam(full) {
     $('#teamMsg').textContent = 'Analyse terminée. Ta vision et ta feuille de route sont aussi ajoutées à ton récap.';
   } catch (e) {
     teamCtl.abort(); teamRunning = false; renderTeam();
-    const msg = { locked: 'Le comité d\'experts est inclus dans l\'accès complet.', not_granted: 'Accès refusé.', rate_limited: 'Trop de demandes pour le moment. Réessaie dans quelques minutes : les rapports déjà prêts sont conservés.', cancelled: 'Analyse arrêtée. Les rapports déjà prêts sont conservés.', invalid_json: 'Un rapport est arrivé incomplet. Clique sur « Compléter l\'analyse » pour reprendre là où tu en étais.' };
+    const msg = { locked: 'Le comité d\'experts est inclus dans l\'accès complet.', not_granted: 'Accès refusé.', rate_limited: 'Trop de demandes pour le moment. Réessaie dans quelques minutes : les rapports déjà prêts sont conservés.', quota: 'Tu as utilisé toutes les analyses incluses dans ton accès. Écris-nous si tu en as besoin de plus.', cancelled: 'Analyse arrêtée. Les rapports déjà prêts sont conservés.', invalid_json: 'Un rapport est arrivé incomplet. Clique sur « Compléter l\'analyse » pour reprendre là où tu en étais.' };
     $('#teamMsg').textContent = msg[e?.code] ?? 'L\'analyse a été interrompue. Clique sur « Compléter l\'analyse » pour reprendre là où tu en étais.';
   }
 }
@@ -698,18 +720,22 @@ document.addEventListener('click', e => {
   if (t.id === 'teamStop') teamCtl?.abort();
   if (t.id === 'useOffer') {
     const o = S.experts?.strat?.offre; if (!o) return;
-    if (S.example) S.example = false;
     S.offer = { title0: String(o.nom || ''), name: String(o.nom || ''), client: String(o.client || ''), promise: String(o.promesse || ''), format: String(o.format || ''), price: String(o.prix || ''), step: String(S.experts.strat.test_validation || ''), score: 0 };
     save(); renderCompass(); renderRecap(); $('#recap').scrollIntoView();
   }
 });
 
-/* ---------- accès payant (SumUp), e-mails (Brevo) et carte ---------- */
+
+/* ---------- parcours gratuit : quiz express, profil et e-mail ---------- */
 const PRICE = '22 €';
-let isOwner = false;
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const unlocked = () => S.example || S.paid;
 const lead = s => { const i = s.search(/\.\s/); return i > 0 ? `<b>${s.slice(0, i + 1)}</b>${s.slice(i + 1)}` : `<b>${s}</b>`; };
-const slugOf = n => (n || 'mon').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'mon';
+const answeredQ = q => q.type === 'multi' ? (S.quick[q.k] || []).length === q.n : S.quick[q.k] !== undefined;
+const quizDone = () => QUIZ.every(answeredQ);
+const freeOpen = () => S.example || !!S.email;
+let qStep = 0, qTimer = null;
+const resetQuizStep = () => { qStep = quizDone() ? QUIZ.length : Math.max(0, QUIZ.findIndex(q => !answeredQ(q))); };
 
 async function api(path, body) {
   const r = await fetch(path, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
@@ -717,112 +743,351 @@ async function api(path, body) {
   if (!r.ok) throw { status: r.status, message: d.error || 'Erreur' };
   return d;
 }
+function toast(msg) {
+  document.querySelector('.toast')?.remove();
+  const t = document.createElement('div'); t.className = 'toast'; t.setAttribute('role', 'status'); t.textContent = msg;
+  document.body.appendChild(t); setTimeout(() => t.remove(), 3600);
+}
 
-function paywallHTML() {
-  const rs = riasecScores(), order = Object.keys(rs).sort((x, y) => rs[y] - rs[x]);
-  const done = MODS.filter((_, i) => modDone(i)).length;
+function renderChartNext() {
+  const box = $('#chartNext');
+  if (!S.chart) { box.innerHTML = ''; return; }
+  const done = quizDone();
+  box.innerHTML = `<div class="card next-card"><div><p class="eyebrow">Prochaine étape</p><h3>${done ? 'Ton profil d\'entrepreneur·e est prêt' : 'Croise ta charte avec tes envies : 8 questions, 2 minutes'}</h3></div><a class="btn" href="${done ? '#resultats' : '#quiz'}">${done ? 'Voir mon profil' : 'Faire mon quiz express'}</a></div>`;
+}
+
+function renderQuiz(anim) {
+  const box = $('#quizBox');
+  if (qStep >= QUIZ.length) {
+    box.innerHTML = `
+      <div class="bar" aria-hidden="true"><span style="width:100%"></span></div>
+      <div class="q-done"><p class="eyebrow">Quiz terminé ✓</p><h3>${S.birth.name ? esc(S.birth.name) + ', ton' : 'Ton'} profil d'entrepreneur·e est prêt</h3>
+        <p class="muted">Ton archétype, ta piste de business n°1 et ton premier pas t'attendent juste en dessous.</p>
+        <div class="actions"><a class="btn" href="#resultats">Découvrir mon profil</a><button type="button" class="btn ghost" data-qnav="edit">Modifier mes réponses</button></div></div>`;
+    return;
+  }
+  const q = QUIZ[qStep], v = S.quick[q.k], multi = q.type === 'multi';
+  const opts = q.opts.map(([val, title, sub]) => {
+    const on = multi ? (v || []).includes(val) : v === val;
+    const n = multi && on ? v.indexOf(val) + 1 : 0;
+    return `<button type="button" class="qopt ${on ? 'on' : ''}" data-q="${val}" aria-pressed="${on}">${n ? `<span class="n">${n}</span>` : ''}<b>${title}</b>${sub ? `<small>${sub}</small>` : ''}</button>`;
+  }).join('');
+  const cnt = multi ? (v || []).length : 0;
+  box.innerHTML = `
+    <div class="q-top"><span class="eyebrow">Question ${qStep + 1} sur ${QUIZ.length}</span><span class="mono muted" style="font-size:.85rem">${Math.round(qStep / QUIZ.length * 100)} %</span></div>
+    <div class="bar" aria-hidden="true"><span style="width:${qStep / QUIZ.length * 100}%"></span></div>
+    <div class="${anim ? 'qslide' : ''}" style="display:grid;gap:16px">
+      <div><h3 class="q-title">${q.t}</h3>${q.d ? `<p class="muted" style="margin-top:4px">${q.d}</p>` : ''}</div>
+      <div class="qopts" role="group" aria-label="${esc(q.t)}">${opts}</div>
+    </div>
+    <div class="q-nav"><button type="button" class="btn ghost" data-qnav="prev" ${qStep === 0 ? 'disabled' : ''}>Précédent</button>${multi ? `<span class="hint">${cnt}/${q.n} choisies</span><button type="button" class="btn" data-qnav="next" ${cnt === q.n ? '' : 'disabled'}>Continuer</button>` : v !== undefined ? '<button type="button" class="btn" data-qnav="next">Continuer</button>' : '<span></span>'}</div>`;
+}
+function quizGo(n) {
+  qStep = Math.max(0, Math.min(QUIZ.length, n));
+  renderQuiz(true);
+  if (qStep >= QUIZ.length) { renderResults(); renderChartNext(); }
+  updateNextBar();
+  if ($('#quiz').getBoundingClientRect().top < 0) $('#quiz').scrollIntoView({ block: 'start' });
+}
+$('#quizBox').addEventListener('click', e => {
+  const t = e.target.closest('button'); if (!t) return;
+  if (t.dataset.qnav === 'prev') return quizGo(qStep - 1);
+  if (t.dataset.qnav === 'next') return quizGo(qStep + 1);
+  if (t.dataset.qnav === 'edit') return quizGo(0);
+  if (t.dataset.q === undefined) return;
+  if (S.example) { toast('C\'est l\'exemple de Camille : reviens à ton parcours pour répondre à ton tour.'); return; }
+  const q = QUIZ[qStep], val = t.dataset.q;
+  if (q.type === 'multi') {
+    const arr = S.quick[q.k] ||= [], i = arr.indexOf(val);
+    if (i > -1) arr.splice(i, 1);
+    else if (arr.length < q.n) arr.push(val);
+    else { toast(`Tu as déjà choisi ${q.n} réponses : retire-en une pour changer.`); return; }
+    save(); renderQuiz();
+  } else {
+    S.quick[q.k] = val; save(); renderQuiz();
+    clearTimeout(qTimer); qTimer = setTimeout(() => { if (QUIZ[qStep] === q) quizGo(qStep + 1); }, 420);
+  }
+});
+
+function archetype() {
+  const q = S.quick; if (!q.pull) return null;
+  return Object.assign({ letter: q.pull, nuance: S.chart ? TYPE_BIZ[S.chart.type] : null }, ARCHETYPES[q.pull]);
+}
+function ideaCardFree(x) {
+  const T = S.chart ? TYPES[S.chart.type] : null;
+  return `<article class="idea">
+      <div class="idea-top"><div><p class="eyebrow">Ta piste n°1</p><h4>${x.t}</h4></div><div class="score"><b class="mono">${x.total}</b><small>sur 100</small></div></div>
+      <p>${x.d}</p>
+      <div class="meta"><span class="pill">${MODEL_LABEL[x.model]}</span><span class="pill">${x.price}</span><span class="pill">${x.loc === 'online' ? 'En ligne' : x.loc === 'local' ? 'Local' : 'En ligne ou local'}</span>${x.fast ? '<span class="pill">Revenu rapide possible</span>' : ''}</div>
+      ${T ? `<p class="why"><b>Avec ton type ${T.name} :</b> ${fitTip(S.chart.type, x.model)}</p>` : ''}
+      <p class="firststep"><b>Ton premier pas cette semaine :</b> ${x.stepTxt}</p>
+      <p class="hint">Score indicatif calculé à partir de ton quiz express. Le bilan approfondi l'affine.</p>
+    </article>`;
+}
+function gateHTML(ar) {
   return `
-    <div class="paywall">
-      <div class="card pw-left">
-        <p class="eyebrow">${done < 7 ? `Bilan complété à ${done}/7 : termine-le pour des pistes plus justes` : 'Ton profil est prêt'}</p>
-        <h3>${S.birth.name ? esc(S.birth.name) + ', tes' : 'Tes'} pistes de business t'attendent</h3>
-        <div class="pw-stats">
-          <div><b>${S.chart ? TYPES[S.chart.type].name : '—'}</b><span>ton type</span></div>
-          <div><b class="mono">${S.ans.riasec.filter(Boolean).length >= 12 ? order.slice(0, 3).join('') : '···'}</b><span>ton code d'intérêts</span></div>
-          <div><b class="mono">${done}/7</b><span>modules du bilan</span></div>
-        </div>
+    <div class="gate">
+      <div class="card teaser">
+        <p class="eyebrow">Ton profil est prêt</p>
+        <h3>${S.birth.name ? esc(S.birth.name) + ', voici' : 'Voici'} ce qui t'attend</h3>
+        <p class="big-arch blur" aria-hidden="true">${ar.name}</p>
         <ul class="pw-list">
-          <li><b>4 pistes de business</b> classées sur 100 selon ton profil</li>
-          <li><b>Des idées 100 % sur mesure</b> générées à partir de tes réponses</li>
-          <li><b>Ton comité de 6 experts</b> : Human Design, orientation, stratégie, marketing, mindset, synthèse</li>
-          <li><b>Ton offre signature</b>, ta vision et ta feuille de route sur 90 jours</li>
-          <li><b>Ton récap complet</b> envoyé par e-mail, à imprimer ou à enregistrer</li>
+          <li><b>Ton archétype d'entrepreneur·e</b>, tes 3 forces et le type de business qui te va</li>
+          <li><b>Ta piste de business n°1</b>, notée sur 100, avec ton premier pas cette semaine</li>
+          <li><b>Ta carte Human Design</b> et tes 4 clés pour entreprendre, à garder</li>
         </ul>
-        <div class="pw-blur" aria-hidden="true">${[1, 2].map(i => `<div class="idea"><p class="eyebrow">Piste ${i}</p><h4>████████ ██████</h4><p>████ ██████ ████ ████████ ██ ██████.</p></div>`).join('')}</div>
       </div>
-      <div class="card pw-right">
-        <p class="eyebrow">Accès complet</p>
-        <p class="pw-price">${PRICE}</p>
-        <p class="muted">Paiement unique et sécurisé par SumUp · accès immédiat</p>
-        <label class="check" for="fCgv" style="align-items:flex-start"><input type="checkbox" id="fCgv" style="margin-top:4px"> <span class="hint">J'accepte les <a href="/cgv.html" target="_blank">conditions générales de vente</a>. Je demande l'accès immédiat au contenu et je renonce à mon droit de rétractation.</span></label>
-        <button class="btn" type="button" id="payGo">Débloquer mes résultats</button>
-        <p class="hint" id="payMsg" role="alert"></p>
+      <div class="card">
+        <form id="gateForm" class="mail-form" novalidate>
+          <div><p class="eyebrow">Gratuit</p><h3>Où t'envoie-t-on ton profil ?</h3><p class="muted" style="margin-top:4px">Il s'affiche ici tout de suite, et tu le reçois par e-mail pour le garder.</p></div>
+          <label for="gName">Ton prénom<input type="text" id="gName" autocomplete="given-name" placeholder="Camille" value="${esc(S.birth.name || '')}"></label>
+          <label for="gMail">Ton adresse e-mail<input type="email" id="gMail" autocomplete="email" placeholder="prenom@exemple.fr" required></label>
+          <label class="check" for="gOptin" style="align-items:flex-start"><input type="checkbox" id="gOptin" style="margin-top:4px"> <span class="hint">Je veux aussi recevoir les conseils de Ma Boussole Business pour lancer mon activité (désinscription en un clic).</span></label>
+          <button class="btn" type="submit">Révéler mon profil</button>
+          <p class="hint" id="gMsg" role="alert"></p>
+          <p class="hint">Ton adresse sert à t'envoyer ton profil. Voir notre <a href="/confidentialite.html" target="_blank">politique de confidentialité</a>.</p>
+        </form>
       </div>
     </div>`;
 }
-document.addEventListener('click', async e => {
-  if (e.target.id !== 'payGo') return;
-  const msg = $('#payMsg'), btn = e.target;
-  if (!$('#fCgv').checked) { msg.textContent = 'Coche la case des conditions générales de vente pour continuer.'; return; }
-  btn.disabled = true; msg.textContent = 'Ouverture du paiement sécurisé…';
-  try {
-    const d = await api('/api/checkout', { email: S.email || '' });
-    S.pendingCheckout = d.id; save();
-    location.href = d.url;
-  } catch (err) { btn.disabled = false; msg.textContent = 'Le paiement n\'a pas pu s\'ouvrir. Réessaie dans un instant.'; }
-});
-async function verifyReturn() {
-  const id = S.pendingCheckout; if (!id) return;
-  try {
-    const d = await api('/api/verify', { id });
-    if (d.paid) {
-      S.paid = true; S.example = false; S.token = d.token; delete S.pendingCheckout; save();
-      renderCompass(); renderTeam(); renderRecap();
-      setTimeout(() => $('#pistes').scrollIntoView(), 200);
-    } else if (d.status === 'FAILED' || d.status === 'EXPIRED') { delete S.pendingCheckout; save(); }
-  } catch (e) { }
+function renderResults() {
+  const box = $('#resultsBox');
+  if (!quizDone()) {
+    const n = QUIZ.filter(answeredQ).length;
+    box.innerHTML = `<div class="card next-card"><div><p class="eyebrow">${n ? `Quiz en cours · ${n}/${QUIZ.length}` : 'Encore une étape'}</p><h3>Réponds au quiz express pour révéler ton profil</h3><p class="muted">Ton archétype d'entrepreneur·e et ta piste n°1 apparaîtront ici.</p></div><a class="btn" href="#quiz">${n ? 'Reprendre le quiz' : 'Faire le quiz'}</a></div>`;
+    return;
+  }
+  const ar = archetype();
+  if (!freeOpen()) { box.innerHTML = gateHTML(ar); return; }
+  const T = S.chart ? TYPES[S.chart.type] : null, ideas = scoreIdeas().slice(0, 3), top = ideas[0];
+  box.innerHTML = `<div class="res">
+    <div class="card arch">
+      <div>
+        <p class="eyebrow">Ton archétype d'entrepreneur·e</p>
+        <p class="big-arch" style="margin-top:6px">${ar.name}</p>
+        ${T ? `<p class="muted" style="margin-top:6px">${T.name} · ${ar.nuance[0]}</p>` : ''}
+        <p style="margin-top:14px;font-size:1.05rem">${ar.line}</p>
+        <p style="margin-top:8px">${ar.biz}</p>
+        ${T ? `<p class="why" style="margin-top:10px"><b>Avec ton type ${T.name} :</b> ${ar.nuance[1]}</p>` : `<p class="hint" style="margin-top:10px"><a href="#charte">Calcule ta charte</a> pour voir comment ton type Human Design colore cet archétype.</p>`}
+      </div>
+      <div class="mini"><h4>Tes 3 forces</h4><ul>${ar.forces.map(f => `<li>${f}</li>`).join('')}</ul></div>
+    </div>
+    <div class="res-ideas">
+      ${top ? ideaCardFree(top) : '<div class="card"><p>Aucune piste ne correspond à tes contraintes actuelles : le bilan approfondi permet de les ajuster finement.</p></div>'}
+      <div class="card locked-ideas">
+        <p class="eyebrow">Tes autres pistes</p>
+        ${ideas.slice(1).map((x, i) => `<div class="locked-idea"><span><span class="tag">Piste ${i + 2} · ${x.total}/100</span></span><h4>${x.t}</h4><p aria-hidden="true">${x.d}</p></div>`).join('')}
+        <p class="muted" style="font-size:.9rem">Dans la version complète : 4 pistes affinées par ton bilan approfondi, des idées 100 % sur mesure, ton offre et ton plan sur 90 jours.</p>
+        <div><a class="btn" href="#offre">Découvrir la version complète</a></div>
+      </div>
+    </div>
+    ${S.example ? '' : `<p class="sent">${S.emailSent ? `Ton profil a été envoyé à <b>${esc(S.email)}</b>. Pense à regarder tes courriers indésirables.` : `Ton profil n'a pas pu être envoyé à <b>${esc(S.email)}</b>.`} <button type="button" class="linkbtn" id="resend">Renvoyer</button> · <button type="button" class="linkbtn" id="changeMail">Changer d'adresse</button></p>`}
+  </div>`;
 }
-
-function chartCardHTML() {
-  const ch = computeChart(); if (!ch) return '';
-  const T = TYPES[ch.type], b = S.birth;
-  const svg = bodygraph(ch).replace(/var\(--center-on\)/g, '#DDBE93').replace(/var\(--surface\)/g, '#FBF7F1').replace(/var\(--ink\)/g, '#3A2819').replace(/var\(--muted\)/g, '#7A614B').replace(/var\(--design\)/g, '#C08C4E').replace(/var\(--line-off\)/g, '#E4D6C1');
-  const keys = hdCards(ch, b.unknown);
-  return `<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Ma carte Human Design${b.name ? ' — ' + esc(b.name) : ''}</title><style>${RECAP_CSS}.grid{display:grid;grid-template-columns:240px 1fr;gap:24px;align-items:start}.grid svg{width:100%;height:auto}@media(max-width:560px){.grid{grid-template-columns:1fr}}</style></head><body><main class="doc">
-  <header class="rc-head"><p class="rc-eyebrow">Ma Boussole Business · ma carte Human Design</p><h2>${b.name ? esc(b.name) + ', ' : ''}${T.name}</h2><p class="rc-angle">${T.strat}</p></header>
-  <section class="rc-sec grid"><div>${svg}</div><dl class="rc-dl">
+const HEX = s => s.replace(/var\(--center-on\)/g, '#DDBE93').replace(/var\(--surface\)/g, '#FBF7F1').replace(/var\(--ink\)/g, '#3A2819').replace(/var\(--muted\)/g, '#7A614B').replace(/var\(--design\)/g, '#C08C4E').replace(/var\(--line-off\)/g, '#E4D6C1');
+function freeResultsHTML() {
+  const ch = computeChart(), b = S.birth, ar = archetype(), top = scoreIdeas()[0], T = ch ? TYPES[ch.type] : null;
+  return `<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Mon profil Boussole Business${b.name ? ' — ' + esc(b.name) : ''}</title><style>${RECAP_CSS}.grid{display:grid;grid-template-columns:240px 1fr;gap:24px;align-items:start}.grid svg{width:100%;height:auto}@media(max-width:560px){.grid{grid-template-columns:1fr}}</style></head><body><main class="doc">
+  <header class="rc-head"><p class="rc-eyebrow">Ma Boussole Business · mon profil d'entrepreneur·e</p><h2>${b.name ? esc(b.name) + ', ' : ''}${ar.name}</h2><p class="rc-angle">${ar.line}</p></header>
+  <section class="rc-sec"><h3>Ton archétype</h3><p>${ar.biz}</p>${T ? `<p><b>Avec ton type ${T.name} :</b> ${TYPE_BIZ[ch.type][1]}</p>` : ''}<p class="rc-w" style="margin-top:10px">Tes forces</p><ul class="rc-ul">${ar.forces.map(f => `<li>${f}</li>`).join('')}</ul></section>
+  ${top ? `<section class="rc-sec"><h3>Ta piste n°1 · ${top.total}/100</h3><p class="rc-k-title" style="font-size:18px;margin:0 0 6px">${top.t}</p><p>${top.d}</p><p><b>Premier pas cette semaine :</b> ${top.stepTxt}</p><p><b>Prix indicatif :</b> ${top.price}</p></section>` : ''}
+  ${ch ? `<section class="rc-sec grid"><div>${HEX(bodygraph(ch))}</div><dl class="rc-dl">
     <div><dt>Type</dt><dd>${T.name}</dd></div><div><dt>Stratégie</dt><dd>${T.strat}</dd></div>
     <div><dt>Autorité</dt><dd>${b.unknown ? 'À confirmer' : AUTH[ch.authority][0]}</dd></div><div><dt>Profil</dt><dd>${b.unknown ? 'À confirmer' : ch.profile}</dd></div>
     <div><dt>Définition</dt><dd>${DEFS[ch.definition]}</dd></div><div><dt>Signature</dt><dd>${T.sig}</dd></div>
     <div><dt>Centres définis</dt><dd>${ch.defined.map(c => CENTER_TXT[c][0]).join(', ') || 'Aucun'}</dd></div>
   </dl></section>
-  <section class="rc-sec"><h3>Tes 4 clés pour entreprendre</h3><div class="rc-keys">${keys.map(k => `<div class="rc-key"><p class="rc-k-label">${k.label}</p><p class="rc-k-title">${k.title}</p><p>${k.why}</p></div>`).join('')}</div></section>
-  <p class="rc-foot">Le Human Design est une grille de lecture de soi, pas une science validée.</p></main></body></html>`;
+  <section class="rc-sec"><h3>Tes 4 clés pour entreprendre</h3><div class="rc-keys">${hdCards(ch, b.unknown).map(k => `<div class="rc-key"><p class="rc-k-label">${k.label}</p><p class="rc-k-title">${k.title}</p><p>${k.why}</p></div>`).join('')}</div></section>` : ''}
+  <p class="rc-foot">Le Human Design est une grille de lecture de soi, pas une science validée : garde ce qui te parle et teste-le dans la réalité.</p></main></body></html>`;
 }
-function renderMail() {
-  const box = $('#mailBox'); if (!box) return;
-  if (!S.chart) { box.innerHTML = ''; return; }
-  box.innerHTML = `
-    <div class="card mail">
-      <div><p class="eyebrow">Garde ta carte</p><h3>Reçois ta carte Human Design par e-mail</h3><p class="muted">Ta charte et tes 4 clés pour entreprendre, dans ta boîte mail en quelques secondes.</p></div>
-      <form id="mailForm" class="mail-form" novalidate>
-        <label for="fMail">Ton adresse e-mail<input type="email" id="fMail" autocomplete="email" placeholder="prenom@exemple.fr" value="${esc(S.email || '')}"></label>
-        <label class="check" for="fOptin"><input type="checkbox" id="fOptin"> <span class="hint">J'accepte de recevoir les conseils de Ma Boussole Business (désinscription en un clic).</span></label>
-        <div class="mail-btns"><button class="btn" type="submit">Recevoir ma carte</button><a class="btn ghost" href="#bilan">Passer à mon bilan</a></div>
-        <p class="hint" id="mailMsg" role="status"></p>
-        <p class="hint">Tes données sont traitées selon notre <a href="/confidentialite.html" target="_blank">politique de confidentialité</a>.</p>
-      </form>
-    </div>`;
+async function sendFree() {
+  const ar = archetype(), top = scoreIdeas()[0], ch = S.chart, unk = S.birth.unknown;
+  try {
+    await api('/api/send-email', {
+      type: 'carte', email: S.email, name: S.birth.name || '', optin: !!S.optin, html: freeResultsHTML(),
+      lead: { hd_type: ch ? TYPES[ch.type].name : null, hd_authority: ch && !unk ? AUTH[ch.authority][0] : null, hd_profile: ch && !unk ? ch.profile : null, archetype: ar?.name, top_idea: top?.t, quiz: S.quick, utm: S.utm || null }
+    });
+    return true;
+  } catch (err) { return false; }
 }
 document.addEventListener('submit', async e => {
-  if (e.target.id !== 'mailForm') return;
+  if (e.target.id !== 'gateForm') return;
   e.preventDefault();
-  const v = $('#fMail').value.trim(), msg = $('#mailMsg'), btn = e.target.querySelector('button[type=submit]');
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)) { msg.textContent = 'Indique une adresse e-mail valide, par exemple prenom@exemple.fr.'; return; }
-  S.email = v; save(); btn.disabled = true; msg.textContent = 'Envoi en cours…';
-  try {
-    await api('/api/send-email', { type: 'carte', email: v, name: S.birth.name || '', optin: $('#fOptin').checked, html: chartCardHTML() });
-    msg.textContent = `Ta carte est partie à ${v}. Pense à vérifier tes courriers indésirables.`;
-  } catch (err) { msg.textContent = 'L\'envoi n\'a pas fonctionné. Vérifie ton adresse et réessaie.'; }
-  finally { btn.disabled = false; }
+  const v = $('#gMail').value.trim().toLowerCase(), msg = $('#gMsg'), btn = e.target.querySelector('button[type=submit]');
+  if (!EMAIL_RE.test(v)) { msg.textContent = 'Indique une adresse e-mail valide, par exemple prenom@exemple.fr.'; $('#gMail').focus(); return; }
+  const nm = $('#gName').value.trim(); if (nm) S.birth.name = nm;
+  S.email = v; S.optin = $('#gOptin').checked; save();
+  btn.disabled = true; msg.textContent = 'Préparation de ton profil…';
+  S.emailSent = await sendFree(); save();
+  renderAll(); $('#resultats').scrollIntoView({ block: 'start' });
+});
+document.addEventListener('click', async e => {
+  if (e.target.id === 'resend') { toast('Envoi en cours…'); S.emailSent = await sendFree(); save(); renderResults(); toast(S.emailSent ? `Profil renvoyé à ${S.email}` : 'L\'envoi n\'a pas fonctionné. Réessaie dans une minute.'); }
+  if (e.target.id === 'changeMail') { S.email = ''; S.emailSent = false; save(); renderAll(); $('#gMail')?.focus(); }
 });
 
+/* ---------- version complète : paiement (SumUp) et accès ---------- */
+function paywallHTML() {
+  const ar = archetype(), top = scoreIdeas()[0], T = S.chart ? TYPES[S.chart.type] : null;
+  return `
+    <div class="paywall">
+      <div class="card pw-left">
+        <p class="eyebrow">${ar ? `Ton profil : ${ar.name}${T ? ' · ' + T.name : ''}` : 'Ta boussole complète'}</p>
+        <h3>Tout ce qu'il te faut pour passer de l'idée à ton premier client</h3>
+        <div class="pw-stats">
+          <div><b>${T ? T.name : '—'}</b><span>ton type</span></div>
+          <div><b>${ar ? ar.short : '—'}</b><span>ton archétype</span></div>
+          <div><b class="mono">${top ? top.total + '/100' : '—'}</b><span>ta piste n°1</span></div>
+        </div>
+        <ul class="pw-list">
+          <li><b>Ton bilan approfondi</b> en 7 modules : intérêts, compétences, énergie, valeurs, style, contraintes, idées</li>
+          <li><b>4 pistes de business</b> classées sur 100, avec le détail du score et un premier pas</li>
+          <li><b>Des idées 100 % sur mesure</b> générées par IA à partir de tes réponses</li>
+          <li><b>Ton comité de 6 experts IA</b> : Human Design, orientation, stratégie, marketing, mindset, synthèse</li>
+          <li><b>Ton offre signature</b>, ton positionnement, ta vision et ta feuille de route sur 90 jours</li>
+          <li><b>Ton récap complet</b> par e-mail, à imprimer ou à enregistrer en PDF</li>
+        </ul>
+        <div class="faq">
+          <details><summary>Combien de temps ça prend ?</summary><p>Compte 20 minutes pour le bilan approfondi, que tu peux faire en plusieurs fois, puis 3 à 5 minutes pour l'analyse du comité d'experts.</p></details>
+          <details><summary>Et si je change d'appareil ?</summary><p>Après ton paiement, tu reçois un lien d'accès personnel par e-mail : il rouvre ton accès sur ton téléphone, ton ordinateur ou ta tablette.</p></details>
+          <details><summary>Est-ce un abonnement ?</summary><p>Non : un paiement unique de ${PRICE}, sans engagement ni renouvellement.</p></details>
+          <details><summary>Le Human Design, c'est scientifique ?</summary><p>Non, et nous ne le présentons jamais ainsi : c'est une grille de réflexion. Tes pistes s'appuient surtout sur tes intérêts, tes compétences, tes valeurs et tes contraintes.</p></details>
+        </div>
+      </div>
+      <div class="card pw-right">
+        <p class="eyebrow">Accès complet</p>
+        <p class="pw-price">${PRICE}</p>
+        <p class="muted">Paiement unique et sécurisé par SumUp · accès immédiat</p>
+        <label for="payMail">Ton adresse e-mail<input type="email" id="payMail" autocomplete="email" placeholder="prenom@exemple.fr" value="${esc(S.example ? '' : S.email || '')}"><span class="hint">Ton lien d'accès personnel y sera envoyé.</span></label>
+        <label class="check" for="fCgv" style="align-items:flex-start"><input type="checkbox" id="fCgv" style="margin-top:4px"> <span class="hint">J'accepte les <a href="/cgv.html" target="_blank">conditions générales de vente</a>. Je demande l'accès immédiat au contenu et je renonce à mon droit de rétractation.</span></label>
+        <button class="btn" type="button" id="payGo">Débloquer ma version complète</button>
+        <p class="hint" id="payMsg" role="alert"></p>
+        <form class="restore" id="restoreForm" novalidate>
+          <span class="hint"><b>Déjà acheté ?</b> Reçois à nouveau ton lien d'accès.</span>
+          <div class="code-row"><input type="email" id="rMail" autocomplete="email" placeholder="Adresse utilisée lors de l'achat" aria-label="Adresse utilisée lors de l'achat"><button class="btn ghost" type="submit">Envoyer</button></div>
+          <p class="hint" id="rMsg" role="status"></p>
+        </form>
+      </div>
+    </div>`;
+}
+function renderOffer() {
+  const box = $('#offerBox');
+  if (S.paid && !S.example) {
+    box.innerHTML = `<div class="card active-card"><div><p class="eyebrow">Accès complet actif ✓</p><h3 style="font-size:1.3rem;font-weight:400;margin-top:4px">Ton bilan approfondi t'attend</h3><p class="muted" style="margin-top:4px">Ton lien d'accès personnel t'a été envoyé par e-mail : il rouvre tout sur n'importe quel appareil.</p></div><a class="btn" href="#bilan">Continuer mon parcours</a></div>`;
+    return;
+  }
+  box.innerHTML = paywallHTML();
+}
+document.addEventListener('click', async e => {
+  if (e.target.id !== 'payGo') return;
+  const msg = $('#payMsg'), btn = e.target, mail = $('#payMail').value.trim().toLowerCase(), cgv = $('#fCgv').checked;
+  if (!EMAIL_RE.test(mail)) { msg.textContent = 'Indique ton adresse e-mail : ton lien d\'accès y sera envoyé.'; $('#payMail').focus(); return; }
+  if (!cgv) { msg.textContent = 'Coche la case des conditions générales de vente pour continuer.'; return; }
+  if (S.example) leaveExample();
+  S.email = mail; save();
+  btn.disabled = true; msg.textContent = 'Ouverture du paiement sécurisé…';
+  try {
+    const d = await api('/api/checkout', { email: mail });
+    S.pendingCheckout = d.id; save();
+    location.href = d.url;
+  } catch (err) { btn.disabled = false; msg.textContent = 'Le paiement n\'a pas pu s\'ouvrir. Réessaie dans un instant.'; }
+});
+document.addEventListener('submit', async e => {
+  if (e.target.id !== 'restoreForm') return;
+  e.preventDefault();
+  const v = $('#rMail').value.trim(), m = $('#rMsg');
+  if (!EMAIL_RE.test(v)) { m.textContent = 'Indique l\'adresse utilisée lors de ton achat.'; return; }
+  m.textContent = 'Envoi en cours…';
+  try { await api('/api/restore', { email: v }); m.textContent = 'Si un achat est associé à cette adresse, ton lien d\'accès arrive dans quelques instants. Pense à regarder tes courriers indésirables.'; }
+  catch (err) { m.textContent = 'L\'envoi n\'a pas fonctionné. Réessaie dans un instant.'; }
+});
+function grant(token) {
+  if (S.example) leaveExample();
+  S.paid = true; S.token = token; delete S.pendingCheckout; save(); renderAll();
+  setTimeout(() => $('#bilan').scrollIntoView(), 250);
+}
+async function verifyReturn() {
+  const url = new URL(location.href), acces = url.searchParams.get('acces'), back = url.searchParams.get('paiement') === 'ok';
+  const utm = {}; ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content'].forEach(k => { const v = url.searchParams.get(k); if (v) utm[k] = v.slice(0, 80); });
+  if (Object.keys(utm).length && !S.utm) { S.utm = utm; save(); }
+  if (acces || back) { url.searchParams.delete('acces'); url.searchParams.delete('paiement'); history.replaceState(null, '', url.pathname + url.search + url.hash); }
+  if (acces) {
+    try { const d = await api('/api/verify', { token: acces }); if (d.paid) { grant(d.token); toast('Ton accès complet est ouvert sur cet appareil ✓'); } else toast('Ce lien d\'accès n\'est pas valide. Demande-en un nouveau depuis « Déjà acheté ? ».'); } catch (err) { }
+    return;
+  }
+  const id = S.pendingCheckout; if (!id) return;
+  if (back) toast('Confirmation de ton paiement…');
+  // SumUp peut mettre quelques secondes à confirmer : au retour du paiement, on réessaie un peu.
+  for (let i = 0; i < (back ? 6 : 1); i++) {
+    try {
+      const d = await api('/api/verify', { id });
+      if (d.paid) { grant(d.token); toast('Paiement confirmé, merci ! Ton accès complet est ouvert ✓'); return; }
+      if (d.status === 'FAILED' || d.status === 'EXPIRED') { delete S.pendingCheckout; save(); toast('Le paiement n\'a pas abouti. Tu peux réessayer quand tu veux.'); return; }
+    } catch (err) { if (err.status === 400 || err.status === 404) { delete S.pendingCheckout; save(); return; } }
+    if (back) await new Promise(r => setTimeout(r, 2500));
+  }
+  if (back) toast('Ton paiement est en cours de validation. Tu recevras ton lien d\'accès par e-mail dès sa confirmation.');
+}
+
+/* ---------- exemple, navigation et barre d'étape suivante ---------- */
+const MINE = KEY + '-mine';
+function enterExample() {
+  if (S.example) return;
+  try { localStorage.setItem(MINE, JSON.stringify(S)); } catch (e) { }
+  S = JSON.parse(JSON.stringify(EXAMPLE)); save();
+  fillForm(); resetQuizStep(); renderAll(); $('#charte').scrollIntoView();
+}
+function leaveExample() {
+  if (!S.example) return;
+  let mine = null; try { mine = JSON.parse(localStorage.getItem(MINE)); localStorage.removeItem(MINE); } catch (e) { }
+  S = mine && !mine.example ? mine : blankState(); S.quick ||= {}; save();
+  aiCache = null; fillForm(); resetQuizStep(); renderAll();
+}
+document.addEventListener('click', e => {
+  const t = e.target.closest('[data-example]'); if (!t) return;
+  if (t.dataset.example === 'on') enterExample(); else { leaveExample(); $('#charte').scrollIntoView(); }
+});
+function renderExampleBar() {
+  $('#exampleBar').innerHTML = S.example ? `<div class="ex-bar"><div class="wrap"><span><b>Exemple</b> · Tu explores le parcours complet de Camille, un profil fictif.</span><button type="button" class="btn" data-example="off">Revenir à mon parcours</button></div></div>` : '';
+}
+function renderNav() {
+  const u = unlocked();
+  $('#bilan').hidden = !u; $('#pistes').hidden = !u;
+  document.querySelectorAll('.navl').forEach(a => a.toggleAttribute('hidden', !u));
+}
+function nextStep() {
+  if (S.example) return null;
+  if (!S.chart) return ['Calculer ma charte gratuite', '#charte'];
+  if (!quizDone()) return ['Faire mon quiz express · 2 min', '#quiz'];
+  if (!S.email) return ['Révéler mon profil gratuit', '#resultats'];
+  if (!S.paid) return [`Débloquer la version complète · ${PRICE}`, '#offre'];
+  if (MODS.some((_, i) => !modDone(i))) return ['Continuer mon bilan approfondi', '#bilan'];
+  if (!S.experts?.synth) return ['Lancer mon comité d\'experts', '#comite'];
+  return null;
+}
+function updateNextBar() {
+  const n = nextStep(), bar = $('#nextBar');
+  const r = n && $(n[1]).getBoundingClientRect();
+  if (!n || window.scrollY < 420 || (r.top < innerHeight * .8 && r.bottom > innerHeight * .2)) { bar.hidden = true; return; }
+  bar.hidden = false; bar.textContent = n[0]; bar.href = n[1];
+}
+let scrollBusy = false;
+addEventListener('scroll', () => { if (scrollBusy) return; scrollBusy = true; requestAnimationFrame(() => { scrollBusy = false; updateNextBar(); }); }, { passive: true });
+
+function renderAll() {
+  renderExampleBar(); renderNav(); renderChart(); renderChartNext(); renderQuiz(); renderResults(); renderOffer();
+  renderWizard(); renderCompass(); renderTeam(); renderRecap(); updateNextBar();
+}
+
 /* ---------- form ---------- */
-function initForm() {
-  $('#fZone').innerHTML = ZONES.map(([z, n]) => `<option value="${z}">${n}</option>`).join('');
+function fillForm() {
   const b = S.birth;
   $('#fName').value = b.name || ''; $('#fDate').value = b.date || ''; $('#fTime').value = b.time || ''; $('#fCity').value = b.city || '';
   $('#fUnknown').checked = !!b.unknown; $('#fZone').value = b.zone || 'Europe/Paris'; $('#fTime').disabled = !!b.unknown;
+}
+function initForm() {
+  $('#fZone').innerHTML = ZONES.map(([z, n]) => `<option value="${z}">${n}</option>`).join('');
+  fillForm();
   $('#fUnknown').addEventListener('change', e => { $('#fTime').disabled = e.target.checked; });
   $('#birthForm').addEventListener('submit', e => {
     e.preventDefault();
@@ -833,11 +1098,13 @@ function initForm() {
     if (yr < 1900 || yr > 2030) { err.hidden = false; err.textContent = 'Indique une année entre 1900 et 2030.'; return; }
     if (!unknown && !time) { err.hidden = false; err.textContent = 'Indique ton heure de naissance, ou coche « Je ne connais pas mon heure ».'; return; }
     err.hidden = true;
-    if (S.example) { S.example = false; S.ans = blankAns(); }
-    S.birth = { name: $('#fName').value.trim(), date, time, unknown, zone: $('#fZone').value, city: $('#fCity').value.trim() };
-    renderChart(); save(); renderMail(); renderWizard(); renderCompass(); renderTeam();
-    $('#chartOut').scrollIntoView({ block: 'start' });
+    const birth = { name: $('#fName').value.trim(), date, time, unknown, zone: $('#fZone').value, city: $('#fCity').value.trim() };
+    if (S.example) leaveExample();
+    S.birth = birth; save();
+    renderAll(); fillForm();
+    const out = $('#chartOut'); out.classList.add('reveal'); setTimeout(() => out.classList.remove('reveal'), 1600);
+    out.scrollIntoView({ block: 'start' });
   });
 }
 
-initForm(); renderChart(); renderMail(); renderWizard(); renderCompass(); renderTeam(); renderRecap(); verifyReturn();
+initForm(); resetQuizStep(); renderAll(); verifyReturn();

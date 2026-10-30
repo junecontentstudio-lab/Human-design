@@ -217,3 +217,47 @@ const LINE_BIZ = {
   5: "On vient vers toi pour des solutions : propose des offres pratiques au résultat clair, et soigne ta réputation.",
   6: "Inspire par l'exemple : montre ton parcours et ta vision à long terme. Ta crédibilité grandit avec les années."
 };
+
+// Quiz express gratuit (bloc 1) : 8 questions, une par écran. Les réponses alimentent un premier calcul des pistes.
+const QUIZ = [
+  { k: 'pull', t: 'Un samedi libre, sans obligation. Tu choisis spontanément de…', type: 'one', opts: [
+    ['R', 'Fabriquer, jardiner, bricoler', 'Voir un résultat concret de tes mains'],
+    ['I', 'Lire, te documenter, comprendre', 'Creuser un sujet jusqu\'au fond'],
+    ['A', 'Créer : écrire, dessiner, décorer', 'Exprimer quelque chose de toi'],
+    ['S', 'Voir des proches, écouter, aider', 'Être utile à quelqu\'un'],
+    ['E', 'Lancer un projet, organiser une sortie', 'Embarquer les autres dans ton idée'],
+    ['C', 'Ranger, planifier, faire le point', 'Mettre de l\'ordre et repartir léger·e']] },
+  { k: 'ask', t: 'Le plus souvent, on vient te demander…', type: 'one', opts: [
+    ['R', 'Un coup de main concret', 'Réparer, installer, fabriquer'],
+    ['I', 'Ton analyse', 'Comprendre un problème, trouver une solution'],
+    ['A', 'Ton œil créatif', 'Une idée, un visuel, une ambiance'],
+    ['S', 'Une oreille, un conseil', 'Y voir plus clair dans une situation'],
+    ['E', 'De prendre les choses en main', 'Décider, convaincre, mener le groupe'],
+    ['C', 'D\'organiser', 'Un planning, un budget, un dossier']] },
+  { k: 'skills', t: 'Tes 3 super-pouvoirs', d: 'Choisis les 3 qui te ressemblent le plus.', type: 'multi', n: 3, opts: [
+    ['conseil,oral', 'Écouter et conseiller'], ['former,ecrire', 'Expliquer, transmettre'], ['ecrire,reseaux', 'Écrire, raconter'],
+    ['design,photo', 'Créer du beau'], ['manuel,cuisine,bricolage', 'Faire de mes mains'], ['projet,admin,event', 'Organiser, piloter'],
+    ['vendre,oral', 'Convaincre, vendre'], ['digital,nocode,data', 'Le numérique, les outils'], ['sante', 'Santé, bien-être, sport'], ['expertise,finance', 'Un savoir métier pointu']] },
+  { k: 'values', t: 'Ce qui compte le plus pour toi', d: 'Choisis 3 valeurs, de la plus importante à la moins importante.', type: 'multi', n: 3, opts: [
+    ['liberte', 'Liberté'], ['securite', 'Sécurité financière'], ['impact', 'Impact positif'], ['creativite', 'Créativité'], ['lien', 'Lien humain'],
+    ['transmission', 'Transmission'], ['famille', 'Famille et temps libre'], ['reconnaissance', 'Reconnaissance'], ['aventure', 'Aventure et nouveauté']] },
+  { k: 'sell', t: 'Pour gagner ta vie, tu préfères…', type: 'one', opts: [
+    ['a', 'Vendre ton temps et ta présence', 'Séances, prestations, accompagnement'],
+    ['b', 'Créer une fois, vendre souvent', 'Formation, produit, contenu']] },
+  { k: 'place', t: 'Ton projet idéal se vit…', type: 'one', opts: [
+    ['0', '100 % en ligne', 'Depuis chez toi ou en voyage'], ['1', 'Près de chez toi', 'En face-à-face, dans ta ville'], ['2', 'Les deux me vont', 'Un mélange des deux']] },
+  { k: 'time', t: 'Combien de temps peux-tu y consacrer chaque semaine ?', type: 'one', opts: [
+    ['0', 'Moins de 5 h', 'À côté d\'un emploi bien rempli'], ['1', '5 à 10 h', 'Quelques soirées ou un jour off'], ['2', '10 à 20 h', 'Un vrai mi-temps'], ['3', 'Temps plein', 'C\'est mon projet principal']] },
+  { k: 'revenue', t: 'Ce projet doit te rapporter…', type: 'one', opts: [
+    ['0', 'Tout de suite', 'J\'ai besoin d\'un revenu rapidement'], ['1', 'Sous 6 mois', 'Je peux tenir un peu'], ['2', 'Sous 1 an', 'Je construis tranquillement'], ['3', 'Pas de pression', 'C\'est d\'abord un projet de cœur']] }
+];
+
+// Archétype d'entrepreneur·e : dominante d'intérêts du quiz, nuancée par le type Human Design.
+const ARCHETYPES = {
+  R: { short: 'Artisan·e', name: 'Artisan·e du concret', line: 'Tu transformes les idées en résultats que l\'on peut toucher.', forces: ['Le sens du travail bien fait', 'Des résultats visibles qui rassurent tes clients', 'Une crédibilité immédiate : on voit ce que tu sais faire'], biz: 'Les offres tangibles te vont : savoir-faire, fabrication, prestations techniques, ateliers pratiques.' },
+  I: { short: 'Expert·e', name: 'Expert·e éclaireur·se', line: 'Tu comprends en profondeur et tu rends clair ce qui est compliqué.', forces: ['Une vraie profondeur sur ton sujet', 'La capacité de résoudre des problèmes difficiles', 'Une parole fiable, qu\'on a envie de suivre'], biz: 'Vends ta compréhension : audit, conseil, formation, contenus de fond, méthode.' },
+  A: { short: 'Créatif·ve', name: 'Créatif·ve inspirant·e', line: 'Tu crées des choses qui touchent et qui donnent envie.', forces: ['Un univers à toi, reconnaissable', 'Le talent de rendre les choses belles et désirables', 'Une communication naturellement attirante'], biz: 'Ton univers est ton offre : création sur mesure, produits, contenus, ateliers créatifs.' },
+  S: { short: 'Guide', name: 'Guide bienveillant·e', line: 'Tu aides les autres à avancer, et ils le sentent.', forces: ['Une écoute qui met en confiance', 'Le don de faire progresser les gens', 'Des clients fidèles qui te recommandent'], biz: 'L\'accompagnement est ton terrain : coaching, soin, formation, communauté.' },
+  E: { short: 'Initiateur·rice', name: 'Initiateur·rice', line: 'Tu lances, tu fédères, tu fais bouger les choses.', forces: ['L\'audace de te lancer avant d\'être prêt·e', 'Le talent de convaincre et d\'embarquer', 'Une énergie qui crée des opportunités'], biz: 'Les projets à impulser te vont : événements, offres à fort enjeu, marque, communauté que tu animes.' },
+  C: { short: 'Architecte', name: 'Architecte organisé·e', line: 'Tu mets de l\'ordre, et tout devient plus simple autour de toi.', forces: ['La rigueur qui rassure', 'Le talent de créer des méthodes et des systèmes', 'Une fiabilité rare, très recherchée'], biz: 'Vends de la clarté et du temps gagné : organisation, assistance, outils, méthodes clés en main.' }
+};

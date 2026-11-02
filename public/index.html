@@ -2014,6 +2014,11 @@ function paywallHTML() {
         <label class="check" for="fCgv" style="align-items:flex-start"><input type="checkbox" id="fCgv" style="margin-top:4px"> <span class="hint">J'accepte les <a href="/cgv.html" target="_blank">conditions générales de vente</a>. Je demande l'accès immédiat au contenu et je renonce à mon droit de rétractation.</span></label>
         <button class="btn" type="button" id="payGo">Débloquer ma version complète</button>
         <p class="hint" id="payMsg" role="alert"></p>
+        <form class="restore" id="codeForm" novalidate>
+          <span class="hint"><b>Tu as un code d'accès ?</b></span>
+          <div class="code-row"><input type="text" id="cCode" autocomplete="off" placeholder="Ton code" aria-label="Code d'accès"><button class="btn ghost" type="submit">Valider</button></div>
+          <p class="hint" id="cMsg" role="status"></p>
+        </form>
         <form class="restore" id="restoreForm" novalidate>
           <span class="hint"><b>Déjà acheté ?</b> Reçois à nouveau ton lien d'accès.</span>
           <div class="code-row"><input type="email" id="rMail" autocomplete="email" placeholder="Adresse utilisée lors de l'achat" aria-label="Adresse utilisée lors de l'achat"><button class="btn ghost" type="submit">Envoyer</button></div>
@@ -2053,16 +2058,30 @@ document.addEventListener('submit', async e => {
   try { await api('/api/restore', { email: v }); m.textContent = 'Si un achat est associé à cette adresse, ton lien d\'accès arrive dans quelques instants. Pense à regarder tes courriers indésirables.'; }
   catch (err) { m.textContent = 'L\'envoi n\'a pas fonctionné. Réessaie dans un instant.'; }
 });
+async function redeemCode(code) {
+  const d = await api('/api/verify', { code });
+  grant(d.token); toast('Code accepté : ta version complète est ouverte ✓');
+}
+document.addEventListener('submit', async e => {
+  if (e.target.id !== 'codeForm') return;
+  e.preventDefault();
+  const v = $('#cCode').value.trim(), m = $('#cMsg');
+  if (!v) { m.textContent = 'Indique ton code.'; return; }
+  m.textContent = 'Vérification…';
+  try { await redeemCode(v); } catch (err) { m.textContent = err.status === 403 ? 'Ce code n\'est pas valide.' : 'La vérification n\'a pas fonctionné. Réessaie dans un instant.'; }
+});
 function grant(token) {
   if (S.example) leaveExample();
   S.paid = true; S.token = token; delete S.pendingCheckout; save(); renderAll();
   setTimeout(() => $('#bilan').scrollIntoView(), 250);
 }
 async function verifyReturn() {
-  const url = new URL(location.href), acces = url.searchParams.get('acces'), back = url.searchParams.get('paiement') === 'ok';
+  const url = new URL(location.href), acces = url.searchParams.get('acces'), back = url.searchParams.get('paiement') === 'ok', code = url.searchParams.get('code');
   const utm = {}; ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content'].forEach(k => { const v = url.searchParams.get(k); if (v) utm[k] = v.slice(0, 80); });
   if (Object.keys(utm).length && !S.utm) { S.utm = utm; save(); }
-  if (acces || back) { url.searchParams.delete('acces'); url.searchParams.delete('paiement'); history.replaceState(null, '', url.pathname + url.search + url.hash); }
+  if (acces || back || code) { ['acces', 'paiement', 'code'].forEach(k => url.searchParams.delete(k)); history.replaceState(null, '', url.pathname + url.search + url.hash); }
+  // Lien de test à partager : /?code=TONCODE ouvre la version complète sans paiement.
+  if (code && !S.paid) { try { await redeemCode(code); } catch (err) { toast('Ce code d\'accès n\'est pas valide.'); } return; }
   if (acces) {
     try { const d = await api('/api/verify', { token: acces }); if (d.paid) { grant(d.token); toast('Ton accès complet est ouvert sur cet appareil ✓'); } else toast('Ce lien d\'accès n\'est pas valide. Demande-en un nouveau depuis « Déjà acheté ? ».'); } catch (err) { }
     return;

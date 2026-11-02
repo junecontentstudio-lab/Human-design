@@ -13,6 +13,7 @@ Page de vente et outil en ligne (français, tutoiement). **Bloc gratuit** : char
   - `checkout.js` : crée un Hosted Checkout SumUp (`POST /v0.1/checkouts`, `hosted_checkout.enabled`, `return_url` = webhook), enregistre la ligne `boussole_purchases` (PENDING + e-mail), renvoie `{id, url}`.
   - `verify.js` : `{id}` → `confirmCheckout` (lib/payments.js) ; `{token}` → vérifie un lien d'accès. Renvoie un jeton HMAC (`lib/token.js`).
   - `sumup-webhook.js` : notification SumUp ; relit le checkout chez SumUp avant de confirmer.
+  - `verify.js` accepte aussi `{code}` : si `ACCESS_CODE` correspond, délivre un jeton de test `code-<empreinte du code>-<uuid>` (version complète sans paiement, hors quota IA et hors statistiques). Changer ou vider `ACCESS_CODE` révoque ces jetons. Lien de test : `/?code=XXX`.
   - `restore.js` : « Déjà acheté ? » → renvoie le lien d'accès (`/?acces=<jeton>`) à l'e-mail d'achat ; réponse identique que l'adresse soit cliente ou non.
   - `claude.js` : relais vers `POST /v1/messages`, réservé aux détenteurs d'un jeton valide, plafonné par achat (`AI_CALLS_LIMIT`, RPC `boussole_use_ai`) ; renvoie `{data}` (JSON parsé).
   - `send-email.js` : Brevo. Type `carte` (profil gratuit) : enregistre le prospect dans `boussole_leads` (1 envoi/min, 10 max par adresse). Type `recap` exige le jeton.

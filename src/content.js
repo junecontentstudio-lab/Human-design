@@ -173,13 +173,6 @@ const IDEAS = [
   ['Services aux animaux', 'Garde, promenade et soins pour les animaux de ton quartier.', 'RS', ['manuel'], ['lien', 'liberte'], 0, 1, 0, 'local', 'service', 'Propose tes services à 10 voisins via le panneau d\'affichage et les groupes locaux.', '15 à 30 € la visite']
 ];
 
-const MODEL_FIT = {
-  generator: { service: 1, commerce: .8, communaute: .7, produit: .6, contenu: .6, conseil: .6 },
-  mg: { produit: 1, contenu: 1, commerce: .9, service: .8, communaute: .8, conseil: .6 },
-  projector: { conseil: 1, service: .8, contenu: .8, communaute: .7, produit: .6, commerce: .4 },
-  manifestor: { commerce: 1, produit: .9, communaute: .8, contenu: .8, conseil: .7, service: .5 },
-  reflector: { communaute: 1, conseil: .8, contenu: .7, service: .6, produit: .6, commerce: .5 }
-};
 const MODEL_LABEL = { service: 'Prestation', conseil: 'Conseil', produit: 'Produit numérique', contenu: 'Contenu', communaute: 'Communauté', commerce: 'Commerce' };
 
 const BODY_LABELS = [['sun', '☉', 'Soleil'], ['earth', '⊕', 'Terre'], ['northNode', '☊', 'Nœud Nord'], ['southNode', '☋', 'Nœud Sud'], ['moon', '☽', 'Lune'], ['mercury', '☿', 'Mercure'], ['venus', '♀', 'Vénus'], ['mars', '♂', 'Mars'], ['jupiter', '♃', 'Jupiter'], ['saturn', '♄', 'Saturne'], ['uranus', '♅', 'Uranus'], ['neptune', '♆', 'Neptune'], ['pluto', '♇', 'Pluton']];
@@ -218,8 +211,12 @@ const LINE_BIZ = {
   6: "Inspire par l'exemple : montre ton parcours et ta vision à long terme. Ta crédibilité grandit avec les années."
 };
 
-// Quiz express gratuit (bloc 1) : 8 questions, une par écran. Les réponses alimentent un premier calcul des pistes.
+// Quiz express gratuit (bloc 1) : 9 questions, une par écran. Les réponses alimentent un premier calcul des pistes.
+// La première distingue les deux parcours d'entrée du dossier de recherche (docs/).
 const QUIZ = [
+  { k: 'path', t: 'Où en es-tu aujourd\'hui ?', type: 'one', opts: [
+    ['idee', 'Je n\'ai pas encore d\'idée', 'Je veux explorer des pistes qui me ressemblent'],
+    ['projet', 'J\'ai déjà un projet, mais je bloque', 'Je veux le confronter à mon profil et avancer']] },
   { k: 'pull', t: 'Un samedi libre, sans obligation. Tu choisis spontanément de…', type: 'one', opts: [
     ['R', 'Fabriquer, jardiner, bricoler', 'Voir un résultat concret de tes mains'],
     ['I', 'Lire, te documenter, comprendre', 'Creuser un sujet jusqu\'au fond'],
@@ -261,3 +258,43 @@ const ARCHETYPES = {
   E: { short: 'Initiateur·rice', name: 'Initiateur·rice', line: 'Tu lances, tu fédères, tu fais bouger les choses.', forces: ['L\'audace de te lancer avant d\'être prêt·e', 'Le talent de convaincre et d\'embarquer', 'Une énergie qui crée des opportunités'], biz: 'Les projets à impulser te vont : événements, offres à fort enjeu, marque, communauté que tu animes.' },
   C: { short: 'Architecte', name: 'Architecte organisé·e', line: 'Tu mets de l\'ordre, et tout devient plus simple autour de toi.', forces: ['La rigueur qui rassure', 'Le talent de créer des méthodes et des systèmes', 'Une fiabilité rare, très recherchée'], biz: 'Vends de la clarté et du temps gagné : organisation, assistance, outils, méthodes clés en main.' }
 };
+
+// Questions réflexives (dossier de recherche, sections 2 à 5) : le Human Design inspire des questions, il ne donne pas de réponses.
+const TYPE_Q = {
+  generator: 'Quelles tâches te donnent envie de t\'investir durablement, au point de vouloir les recommencer ?',
+  mg: 'Quel équilibre veux-tu entre variété, exploration et priorités ?',
+  projector: 'Dans quelles situations peux-tu conseiller, observer ou structurer, et être reconnu·e pour cela ?',
+  manifestor: 'Quel niveau d\'autonomie te faut-il pour te sentir libre d\'agir ?',
+  reflector: 'Quel rôle jouent le cadre, les lieux, les équipes et les rythmes dans ton énergie ?'
+};
+const AUTH_Q = {
+  emotional: 'Comment tes émotions influencent-elles tes grandes décisions ?',
+  sacral: 'Quelles propositions suscitent chez toi un intérêt concret, immédiat ?',
+  splenic: 'Comment repères-tu une situation qui ne te convient pas ?',
+  ego: 'Que souhaites-tu réellement défendre ou entreprendre ?',
+  self: 'Que découvres-tu en formulant ton choix à voix haute ?',
+  mental: 'Avec qui et où réfléchis-tu le mieux ?',
+  lunar: 'Que révèle une réflexion étalée sur plusieurs semaines ?'
+};
+const LINE_Q = {
+  1: 'De quoi as-tu besoin de comprendre à fond avant de te sentir légitime ?',
+  2: 'Quels talents les autres remarquent-ils chez toi, alors qu\'ils te semblent naturels ?',
+  3: 'Qu\'as-tu appris de tes essais et de tes erreurs passés ?',
+  4: 'Quelles personnes de ton réseau pourraient être tes premiers clients ou partenaires ?',
+  5: 'Pour quels problèmes concrets vient-on te chercher ?',
+  6: 'Quelle expérience as-tu envie de transmettre avec les années ?'
+};
+const CENTER_Q = {
+  head: 'Quelles questions t\'intéressent spontanément ?', ajna: 'Comment apprends-tu et résous-tu les problèmes ?',
+  throat: 'Comment préfères-tu communiquer ?', g: 'Quelles valeurs veux-tu retrouver dans ton travail ?',
+  heart: 'Comment vis-tu la négociation et la reconnaissance ?', sacral: 'Quelles activités voudrais-tu recommencer ?',
+  solar: 'Comment traverses-tu les hauts et les bas d\'un projet ?', spleen: 'Comment repères-tu les contextes qui te conviennent ?',
+  root: 'Comment gères-tu les délais et les urgences ?'
+};
+// Critères de validation par défaut à 30 jours (étape « Passer à l'action ») : des signaux observables, pas des impressions.
+const VALIDATION = [
+  'Au moins 10 conversations avec des personnes de ta cible, pour comprendre leur problème avec leurs mots',
+  'Au moins 3 personnes qui disent clairement vouloir acheter, ou qui pré-achètent',
+  'Un premier client payant, même au prix de lancement',
+  'L\'envie de continuer après ces 30 jours : ton énergie est aussi un critère'
+];

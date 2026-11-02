@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Ma Boussole Business · Human Design et business passion</title>
-<meta name="description" content="Découvre ton Human Design et trouve ton business passion : charte gratuite, bilan d'orientation et pistes de business sur mesure.">
+<meta name="description" content="Explore ton fonctionnement, découvre des pistes entrepreneuriales qui te ressemblent et teste ton business passion. Charte Human Design et profil gratuits.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400&family=Figtree:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <style>
@@ -381,6 +381,15 @@ footer .wrap{display:grid;gap:6px}
 @keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 @keyframes fadein{from{opacity:0}to{opacity:1}}
 @media (max-width:900px){.gate,.arch,.res-ideas{grid-template-columns:1fr}}
+/* recherche : questions réflexives, résonance, projet */
+.k-lab.q{background:transparent;border:1px dashed var(--design);color:var(--accent)}
+.reson{display:flex;gap:8px;align-items:center;flex-wrap:wrap;border-top:1px solid var(--line-off);padding-top:10px;margin-top:2px}
+.chip.sm{font-size:.82rem;padding:5px 11px}
+.cq{font-size:.82rem;color:var(--muted);border-top:1px dashed var(--line);padding-top:4px;margin-top:2px}
+.proj{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:16px;align-items:start}
+.proj h3{font-size:1.25rem;font-weight:400;margin-top:4px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+@media (max-width:900px){.proj{grid-template-columns:1fr}}
 @media (prefers-reduced-motion: reduce){ *{animation:none!important} }
 @media (prefers-reduced-motion: reduce){ *{transition:none!important;scroll-behavior:auto!important} }
 html{scroll-behavior:smooth}
@@ -405,7 +414,7 @@ html{scroll-behavior:smooth}
     <div>
       <p class="eyebrow">Human Design · orientation · idées de business</p>
       <h1 style="margin-top:14px">Découvre ton Human Design et trouve ton <em>business passion</em></h1>
-      <p class="lead">En 5 minutes et gratuitement : ta charte, ton archétype d'entrepreneur·e et ta première piste de business, pensée pour ta façon de fonctionner.</p>
+      <p class="lead">Explore ton fonctionnement, découvre des pistes entrepreneuriales qui te ressemblent et teste ton business passion. En 5 minutes et gratuitement : ta charte, ton archétype d'entrepreneur·e et ta première piste.</p>
       <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:22px">
         <a class="btn" href="#charte">Commencer gratuitement</a>
         <button type="button" class="btn ghost" data-example="on">Voir l'exemple de Camille</button>
@@ -415,7 +424,7 @@ html{scroll-behavior:smooth}
     <div class="ladder">
       <div class="rung free"><p class="eyebrow">Gratuit · 5 min</p><ol class="steps">
         <li><div><b>Ta charte Human Design</b><span>Type, stratégie, autorité, profil et tes 4 clés pour entreprendre.</span></div></li>
-        <li><div><b>Ton quiz express</b><span>8 questions en un clic chacune.</span></div></li>
+        <li><div><b>Ton quiz express</b><span>9 questions en un clic chacune.</span></div></li>
         <li><div><b>Ton profil d'entrepreneur·e</b><span>Ton archétype et ta piste n°1, envoyés par e-mail.</span></div></li>
       </ol></div>
       <div class="rung paid"><p class="eyebrow">Version complète · <span class="price-tag">22 €</span></p><ul class="pw-mini">
@@ -428,7 +437,7 @@ html{scroll-behavior:smooth}
 <section class="chapter" id="charte">
   <div class="wrap">
     <div class="chapter-head">
-      <div><p class="eyebrow">Étape 1 · gratuit</p><h2>Ton mode de fonctionnement</h2></div>
+      <div><p class="eyebrow">Étape 1 · Se découvrir · gratuit</p><h2>Ton mode de fonctionnement</h2></div>
       <p class="muted">Il te faut ta date, ton heure et ton lieu de naissance : plus l'heure est précise, plus ton profil et ton autorité sont fiables.</p>
     </div>
     <div class="band">
@@ -458,8 +467,8 @@ html{scroll-behavior:smooth}
 <section class="chapter" id="quiz">
   <div class="wrap">
     <div class="chapter-head">
-      <div><p class="eyebrow">Étape 2 · gratuit · 2 minutes</p><h2>Ton quiz express</h2></div>
-      <p class="muted">8 questions, un clic par réponse. Suis ton premier élan : il n'y a pas de bonne réponse.</p>
+      <div><p class="eyebrow">Étape 2 · Se découvrir · gratuit · 2 minutes</p><h2>Ton quiz express</h2></div>
+      <p class="muted">9 questions, un clic par réponse. Suis ton premier élan : il n'y a pas de bonne réponse.</p>
     </div>
     <div class="band"><div class="card quiz" id="quizBox"></div></div>
   </div>
@@ -468,7 +477,7 @@ html{scroll-behavior:smooth}
 <section class="chapter" id="resultats">
   <div class="wrap">
     <div class="chapter-head">
-      <div><p class="eyebrow">Étape 3 · gratuit</p><h2>Ton profil d'entrepreneur·e</h2></div>
+      <div><p class="eyebrow">Étape 3 · Se découvrir · gratuit</p><h2>Ton profil d'entrepreneur·e</h2></div>
       <p class="muted">Ton archétype, ta piste de business n°1 et ton premier pas, croisés avec ta charte.</p>
     </div>
     <div id="resultsBox"></div>
@@ -488,7 +497,7 @@ html{scroll-behavior:smooth}
 <section class="chapter" id="bilan">
   <div class="wrap">
     <div class="chapter-head">
-      <div><p class="eyebrow">Version complète · étape 4</p><h2>Ton bilan approfondi</h2></div>
+      <div><p class="eyebrow">Étape 4 · Comprendre tes forces</p><h2>Ton bilan approfondi</h2></div>
       <p class="muted">Environ 20 minutes, à ton rythme : tout est enregistré au fur et à mesure. Plus tu complètes de modules, plus tes pistes s'affinent.</p>
     </div>
     <div class="band"><div class="card wizard" id="wizard"></div></div>
@@ -498,8 +507,8 @@ html{scroll-behavior:smooth}
 <section class="chapter" id="pistes">
   <div class="wrap">
     <div class="chapter-head">
-      <div><p class="eyebrow">Version complète · étape 5</p><h2>Tes pistes de business passion</h2></div>
-      <p class="muted">Chaque idée est notée sur 100 : compétences 30, intérêts 25, valeurs 15, style de fonctionnement 15, faisabilité 15.</p>
+      <div><p class="eyebrow">Étape 5 · Explorer les possibilités</p><h2>Tes pistes de business passion</h2></div>
+      <p class="muted">Chaque idée est notée sur 100 : compétences 30, intérêts 25, valeurs 15, style de travail 15, faisabilité 15. Ton Human Design n'entre pas dans le score : il t'aide seulement à choisir ta façon de travailler et de vendre.</p>
     </div>
     <div id="exampleNotice"></div>
     <div class="compass" id="compass"></div>
@@ -509,7 +518,7 @@ html{scroll-behavior:smooth}
 <section class="chapter" id="comite">
   <div class="wrap">
     <div class="chapter-head">
-      <div><p class="eyebrow">Version complète · étape 6</p><h2>Ton comité d'experts</h2></div>
+      <div><p class="eyebrow">Étape 6 · Choisir ta piste</p><h2>Ton comité d'experts</h2></div>
       <p class="muted">Six experts IA, chacun dans son domaine, analysent ton profil à tour de rôle. Chacun lit les rapports des précédents, puis la directrice de synthèse en tire ta vision et ta feuille de route.</p>
     </div>
     <div class="band team" id="teamBox"></div>
@@ -519,7 +528,7 @@ html{scroll-behavior:smooth}
 <section class="chapter" id="recap">
   <div class="wrap">
     <div class="chapter-head">
-      <div><p class="eyebrow">Version complète · étape 7</p><h2>Ton offre et ton récap</h2></div>
+      <div><p class="eyebrow">Étape 7 · Passer à l'action</p><h2>Ton offre, ton test et ton récap</h2></div>
       <p class="muted">Transforme ta piste en offre claire, puis garde ton récap : à télécharger, à imprimer ou à t'envoyer par e-mail.</p>
     </div>
     <div class="band" id="recapBox"></div>
@@ -884,13 +893,6 @@ const IDEAS = [
   ['Services aux animaux', 'Garde, promenade et soins pour les animaux de ton quartier.', 'RS', ['manuel'], ['lien', 'liberte'], 0, 1, 0, 'local', 'service', 'Propose tes services à 10 voisins via le panneau d\'affichage et les groupes locaux.', '15 à 30 € la visite']
 ];
 
-const MODEL_FIT = {
-  generator: { service: 1, commerce: .8, communaute: .7, produit: .6, contenu: .6, conseil: .6 },
-  mg: { produit: 1, contenu: 1, commerce: .9, service: .8, communaute: .8, conseil: .6 },
-  projector: { conseil: 1, service: .8, contenu: .8, communaute: .7, produit: .6, commerce: .4 },
-  manifestor: { commerce: 1, produit: .9, communaute: .8, contenu: .8, conseil: .7, service: .5 },
-  reflector: { communaute: 1, conseil: .8, contenu: .7, service: .6, produit: .6, commerce: .5 }
-};
 const MODEL_LABEL = { service: 'Prestation', conseil: 'Conseil', produit: 'Produit numérique', contenu: 'Contenu', communaute: 'Communauté', commerce: 'Commerce' };
 
 const BODY_LABELS = [['sun', '☉', 'Soleil'], ['earth', '⊕', 'Terre'], ['northNode', '☊', 'Nœud Nord'], ['southNode', '☋', 'Nœud Sud'], ['moon', '☽', 'Lune'], ['mercury', '☿', 'Mercure'], ['venus', '♀', 'Vénus'], ['mars', '♂', 'Mars'], ['jupiter', '♃', 'Jupiter'], ['saturn', '♄', 'Saturne'], ['uranus', '♅', 'Uranus'], ['neptune', '♆', 'Neptune'], ['pluto', '♇', 'Pluton']];
@@ -929,8 +931,12 @@ const LINE_BIZ = {
   6: "Inspire par l'exemple : montre ton parcours et ta vision à long terme. Ta crédibilité grandit avec les années."
 };
 
-// Quiz express gratuit (bloc 1) : 8 questions, une par écran. Les réponses alimentent un premier calcul des pistes.
+// Quiz express gratuit (bloc 1) : 9 questions, une par écran. Les réponses alimentent un premier calcul des pistes.
+// La première distingue les deux parcours d'entrée du dossier de recherche (docs/).
 const QUIZ = [
+  { k: 'path', t: 'Où en es-tu aujourd\'hui ?', type: 'one', opts: [
+    ['idee', 'Je n\'ai pas encore d\'idée', 'Je veux explorer des pistes qui me ressemblent'],
+    ['projet', 'J\'ai déjà un projet, mais je bloque', 'Je veux le confronter à mon profil et avancer']] },
   { k: 'pull', t: 'Un samedi libre, sans obligation. Tu choisis spontanément de…', type: 'one', opts: [
     ['R', 'Fabriquer, jardiner, bricoler', 'Voir un résultat concret de tes mains'],
     ['I', 'Lire, te documenter, comprendre', 'Creuser un sujet jusqu\'au fond'],
@@ -973,6 +979,46 @@ const ARCHETYPES = {
   C: { short: 'Architecte', name: 'Architecte organisé·e', line: 'Tu mets de l\'ordre, et tout devient plus simple autour de toi.', forces: ['La rigueur qui rassure', 'Le talent de créer des méthodes et des systèmes', 'Une fiabilité rare, très recherchée'], biz: 'Vends de la clarté et du temps gagné : organisation, assistance, outils, méthodes clés en main.' }
 };
 
+// Questions réflexives (dossier de recherche, sections 2 à 5) : le Human Design inspire des questions, il ne donne pas de réponses.
+const TYPE_Q = {
+  generator: 'Quelles tâches te donnent envie de t\'investir durablement, au point de vouloir les recommencer ?',
+  mg: 'Quel équilibre veux-tu entre variété, exploration et priorités ?',
+  projector: 'Dans quelles situations peux-tu conseiller, observer ou structurer, et être reconnu·e pour cela ?',
+  manifestor: 'Quel niveau d\'autonomie te faut-il pour te sentir libre d\'agir ?',
+  reflector: 'Quel rôle jouent le cadre, les lieux, les équipes et les rythmes dans ton énergie ?'
+};
+const AUTH_Q = {
+  emotional: 'Comment tes émotions influencent-elles tes grandes décisions ?',
+  sacral: 'Quelles propositions suscitent chez toi un intérêt concret, immédiat ?',
+  splenic: 'Comment repères-tu une situation qui ne te convient pas ?',
+  ego: 'Que souhaites-tu réellement défendre ou entreprendre ?',
+  self: 'Que découvres-tu en formulant ton choix à voix haute ?',
+  mental: 'Avec qui et où réfléchis-tu le mieux ?',
+  lunar: 'Que révèle une réflexion étalée sur plusieurs semaines ?'
+};
+const LINE_Q = {
+  1: 'De quoi as-tu besoin de comprendre à fond avant de te sentir légitime ?',
+  2: 'Quels talents les autres remarquent-ils chez toi, alors qu\'ils te semblent naturels ?',
+  3: 'Qu\'as-tu appris de tes essais et de tes erreurs passés ?',
+  4: 'Quelles personnes de ton réseau pourraient être tes premiers clients ou partenaires ?',
+  5: 'Pour quels problèmes concrets vient-on te chercher ?',
+  6: 'Quelle expérience as-tu envie de transmettre avec les années ?'
+};
+const CENTER_Q = {
+  head: 'Quelles questions t\'intéressent spontanément ?', ajna: 'Comment apprends-tu et résous-tu les problèmes ?',
+  throat: 'Comment préfères-tu communiquer ?', g: 'Quelles valeurs veux-tu retrouver dans ton travail ?',
+  heart: 'Comment vis-tu la négociation et la reconnaissance ?', sacral: 'Quelles activités voudrais-tu recommencer ?',
+  solar: 'Comment traverses-tu les hauts et les bas d\'un projet ?', spleen: 'Comment repères-tu les contextes qui te conviennent ?',
+  root: 'Comment gères-tu les délais et les urgences ?'
+};
+// Critères de validation par défaut à 30 jours (étape « Passer à l'action ») : des signaux observables, pas des impressions.
+const VALIDATION = [
+  'Au moins 10 conversations avec des personnes de ta cible, pour comprendre leur problème avec leurs mots',
+  'Au moins 3 personnes qui disent clairement vouloir acheter, ou qui pré-achètent',
+  'Un premier client payant, même au prix de lancement',
+  'L\'envie de continuer après ces 30 jours : ton énergie est aussi un critère'
+];
+
 const $ = s => document.querySelector(s);
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const KEY = 'boussole-business-v1';
@@ -989,7 +1035,7 @@ const EXAMPLE = {
     cons: { time: 1, budget: 1, revenue: 1, risk: 0, place: 2 },
     ideas: 'Accompagner des femmes en reconversion', excl: 'Vente à domicile'
   },
-  quick: { pull: 'S', ask: 'S', skills: ['conseil,oral', 'former,ecrire', 'ecrire,reseaux'], values: ['liberte', 'impact', 'transmission'], sell: 'a', place: '2', time: '1', revenue: '1' }
+  quick: { path: 'projet', pull: 'S', ask: 'S', skills: ['conseil,oral', 'former,ecrire', 'ecrire,reseaux'], values: ['liberte', 'impact', 'transmission'], sell: 'a', place: '2', time: '1', revenue: '1' }
 };
 const blankAns = () => ({ riasec: Array(30).fill(0), skills: {}, open: {}, values: [], style: Array(8).fill(''), cons: {}, ideas: '', excl: '' });
 const blankState = () => ({ birth: { name: '', date: '', time: '', unknown: false, zone: 'Europe/Paris', city: '' }, ans: blankAns(), quick: {} });
@@ -1080,14 +1126,14 @@ function renderChart() {
     ${b.unknown ? '<p class="hint" style="margin-top:12px">Sans heure de naissance, la Lune et parfois le type peuvent changer : seuls les éléments les plus stables sont à retenir.</p>' : ''}`;
 
   const chans = ch.channels.map(([a, c]) => { const k = CHANNEL_TXT[`${a}-${c}`] || CHANNEL_TXT[`${c}-${a}`]; return `<div><span class="mono">${a}–${c}</span><span><b>${k[0]}</b> : ${k[1]}</span></div>`; }).join('') || '<p class="muted">Aucun canal défini : tu captes et amplifies l\'énergie des autres.</p>';
-  const centers = Object.keys(CENTER_TXT).map(c => { const on = ch.defined.includes(c), t = CENTER_TXT[c]; return `<div class="center ${on ? 'on' : ''}"><b>${t[0]}<small>${on ? 'Défini' : 'Ouvert'}</small></b><span>${on ? t[1] : t[2]}</span></div>`; }).join('');
+  const centers = Object.keys(CENTER_TXT).map(c => { const on = ch.defined.includes(c), t = CENTER_TXT[c]; return `<div class="center ${on ? 'on' : ''}"><b>${t[0]}<small>${on ? 'Défini' : 'Ouvert'}</small></b><span>${on ? t[1] : t[2]}</span><i class="cq">${CENTER_Q[c]}</i></div>`; }).join('');
   const rows = BODY_LABELS.map(([k, sym, n]) => `<tr><td class="d mono">${ch.des[k].gate}.${ch.des[k].line}</td><td>${sym} ${n}</td><td class="mono">${ch.pers[k].gate}.${ch.pers[k].line}</td></tr>`).join('');
   $('#chartDetails').innerHTML = `
     <div class="details">
-      <div class="block full hdbiz-head"><p class="eyebrow">Ton Human Design au service de ton business</p><h4>Tes 4 clés pour entreprendre à ta façon</h4><p class="muted">Chaque carte explique ce que cet élément change concrètement dans ta manière de travailler, de trouver des clients, de décider et de vendre.</p></div>
-      ${hdCards(ch, S.birth.unknown).map(c => `<div class="block key"><div class="key-top"><span class="key-n">${c.n}</span><div><p class="eyebrow">${c.label}</p><h4>${c.title}</h4></div></div><p class="k-ess">${c.what}</p><div class="k-rows"><div><span class="k-lab">Business</span><p>${lead(c.why)}</p></div><div><span class="k-lab">À faire</span><p>${lead(c.evolve)}</p></div>${c.trap ? `<div><span class="k-lab warn">Alerte</span><p>${c.trap}</p></div>` : ''}</div></div>`).join('')}
+      <div class="block full hdbiz-head"><p class="eyebrow">Ton Human Design au service de ton business</p><h4>Tes 4 clés pour entreprendre à ta façon</h4><p class="muted">Une lecture symbolique, issue de la tradition Human Design, de ta façon de travailler, de décider et de vendre. Ce n'est pas un test validé : garde ce qui te parle, écarte le reste. Tes réponses « Ça me parle / Pas vraiment » guident ensuite ton comité d'experts.</p></div>
+      ${hdCards(ch, S.birth.unknown).map(c => `<div class="block key"><div class="key-top"><span class="key-n">${c.n}</span><div><p class="eyebrow">${c.label}</p><h4>${c.title}</h4></div></div><p class="k-ess">${c.what}</p><div class="k-rows"><div><span class="k-lab">Business</span><p>${lead(c.why)}</p></div><div><span class="k-lab">À faire</span><p>${lead(c.evolve)}</p></div>${c.trap ? `<div><span class="k-lab warn">Alerte</span><p>${c.trap}</p></div>` : ''}${c.q ? `<div><span class="k-lab q">Question</span><p><i>${c.q}</i></p></div>` : ''}</div>${resonHTML(c.k)}</div>`).join('')}
       <div class="block full"><p class="eyebrow">Tes talents innés</p><h4>${ch.channels.length} canal${ch.channels.length > 1 ? 'aux' : ''} défini${ch.channels.length > 1 ? 's' : ''}</h4><div class="chan">${chans}</div></div>
-      <div class="block full"><p class="eyebrow">Tes 9 centres</p><div class="centers">${centers}</div></div>
+      <div class="block full"><p class="eyebrow">Tes 9 centres</p><p class="hint">Un centre ouvert ne signifie pas une absence de capacité : c'est un thème que tu vis de façon plus variable.</p><div class="centers">${centers}</div></div>
       <div class="block full"><details><summary>Positions planétaires (portes et lignes)</summary><div class="table-scroll" style="margin-top:10px"><table><thead><tr><th>Design</th><th>Planète</th><th>Personnalité</th></tr></thead><tbody>${rows}</tbody></table></div></details></div>
     </div>`;
 }
@@ -1205,7 +1251,6 @@ function activeAns() {
 }
 function scoreIdeas() {
   const a = activeAns(), rs = riasecScores(a);
-  const type = S.chart?.type;
   const c = { time: a.cons.time ?? 2, budget: a.cons.budget ?? 2, revenue: a.cons.revenue ?? 3, place: a.cons.place ?? 2 };
   const exclWords = (a.excl || '').toLowerCase().split(/[^a-zà-ÿ]+/).filter(w => w.length > 3);
   const rw = [1, .8, .6, .4, .3];
@@ -1217,11 +1262,12 @@ function scoreIdeas() {
     const skill = sk.reduce((s, k) => s + (a.skills[k] || 0) / 3, 0) / sk.length;
     const inter = r.split('').reduce((s, l) => s + Math.max(0, rs[l] - 5) / 20, 0) / r.length;
     let val = 0; a.values.forEach((v, i) => { if (vals.includes(v)) val += rw[i]; }); val = Math.min(1, val / 1.6);
-    let sty = type ? MODEL_FIT[type][model] : .7;
-    if (a.style[7] === 'a' && (model === 'service' || model === 'conseil')) sty += .15;
-    if (a.style[7] === 'b' && ['produit', 'contenu', 'communaute'].includes(model)) sty += .15;
-    if (a.style[6] === 'a' && loc !== 'online') sty += .05;
-    if (a.style[6] === 'b' && loc === 'online') sty += .05;
+    // Le Human Design n'entre pas dans le score : seules tes préférences de travail déclarées comptent.
+    let sty = .6;
+    if (a.style[7] === 'a' && (model === 'service' || model === 'conseil')) sty += .3;
+    if (a.style[7] === 'b' && ['produit', 'contenu', 'communaute'].includes(model)) sty += .3;
+    if (a.style[6] === 'a' && loc !== 'online') sty += .1;
+    if (a.style[6] === 'b' && loc === 'online') sty += .1;
     sty = Math.min(1, sty);
     let feas = 1;
     if (c.time === 0 && !async) feas *= .4;
@@ -1318,7 +1364,10 @@ function profileText() {
   const skills = SKILLS.flatMap(([, l]) => l).map(([k, n]) => `${n}: ${SKILL_LEVELS[a.skills[k] || 0]}`).join('; ');
   const cons = CONSTRAINTS.map(([k, q, o]) => `${q}: ${a.cons[k] !== undefined ? o[a.cons[k]] : 'non renseigné'}`).join('; ');
   const style = STYLE_Q.map(([q, x, y], i) => `${q}: ${a.style[i] === 'a' ? x : a.style[i] === 'b' ? y : '?'}`).join('; ');
+  const res = k => Object.entries(S.reson || {}).filter(([, v]) => v === k).map(([x]) => RESON_LABEL[x]);
   return [
+    `Situation: ${S.quick?.path === 'projet' ? 'a déjà un projet mais bloque (voir ses idées ci-dessous)' : S.quick?.path === 'idee' ? 'n\'a pas encore d\'idée précise' : 'non précisée'}.`,
+    res('oui').length || res('non').length ? `Lectures Human Design qui lui parlent: ${res('oui').join(', ') || 'aucune indiquée'}. Qui ne lui parlent pas: ${res('non').join(', ') || 'aucune'} (ne t'appuie pas dessus).` : '',
     ch ? `Human Design: type ${TYPES[ch.type].name}, stratégie « ${TYPES[ch.type].strat} », autorité ${S.birth.unknown ? 'inconnue (heure manquante)' : AUTH[ch.authority][0]}, profil ${ch.profile}, centres définis: ${ch.defined.map(c => CENTER_TXT[c][0]).join(', ') || 'aucun'}, canaux: ${ch.channels.map(([x, y]) => (CHANNEL_TXT[`${x}-${y}`] || CHANNEL_TXT[`${y}-${x}`])[0]).join(', ') || 'aucun'}.` : 'Human Design: non calculé.',
     `Intérêts RIASEC (sur 25): ${order.map(l => `${RIASEC[l][0]} ${rs[l]}`).join(', ')}.`,
     `Compétences: ${skills}.`,
@@ -1326,7 +1375,7 @@ function profileText() {
     `Style: ${style}.`, `Contraintes: ${cons}.`,
     ...OPEN_Q.map(([k, q]) => `${q} ${a.open[k] || '—'}`),
     `Idées déjà envisagées: ${a.ideas || '—'}.`, `Domaines exclus: ${a.excl || '—'}.`
-  ].join('\n');
+  ].filter(Boolean).join('\n');
 }
 async function runAI() {
   if (!sampleFn) return;
@@ -1365,16 +1414,31 @@ function hdCards(ch, unknown) {
   const T = TYPES[ch.type], TB = TYPE_BIZ[ch.type], SB = STRAT_BIZ[ch.type], A = AUTH[ch.authority];
   const [l1, l2] = ch.profile.split('/');
   return [
-    { n: 1, label: 'Ton type', title: `${T.name} · ${TB[0]}`, what: T.desc, why: TB[1], evolve: TB[2], trap: TB[3] },
-    { n: 2, label: 'Ta stratégie', title: T.strat, what: "Ta stratégie est ta façon naturelle d'entrer dans les projets et de rencontrer les bonnes opportunités, sans forcer.", why: SB[0], evolve: SB[1] },
+    { k: 'type', n: 1, label: 'Ton type', title: `${T.name} · ${TB[0]}`, what: T.desc, why: TB[1], evolve: TB[2], trap: TB[3], q: TYPE_Q[ch.type] },
+    { k: 'strat', n: 2, label: 'Ta stratégie', title: T.strat, what: "Ta stratégie est ta façon naturelle d'entrer dans les projets et de rencontrer les bonnes opportunités, sans forcer.", why: SB[0], evolve: SB[1] },
     unknown
-      ? { n: 3, label: 'Ton autorité', title: 'À confirmer', what: "Ton autorité dépend de ton heure de naissance. Retrouve-la sur ton acte de naissance pour la connaître.", why: "En attendant, ne prends aucune grande décision business dans l'urgence : laisse-toi au moins une nuit.", evolve: "Complète ton heure de naissance dès que possible." }
-      : { n: 3, label: 'Ton autorité', title: A[0], what: A[1], why: AUTH_BIZ[ch.authority], evolve: "Applique cette méthode à chaque décision importante : nouvelle offre, prix, client, associé, investissement." },
+      ? { k: 'auth', n: 3, label: 'Ton autorité', title: 'À confirmer', what: "Ton autorité dépend de ton heure de naissance. Retrouve-la sur ton acte de naissance pour la connaître.", why: "En attendant, ne prends aucune grande décision business dans l'urgence : laisse-toi au moins une nuit.", evolve: "Complète ton heure de naissance dès que possible." }
+      : { k: 'auth', n: 3, label: 'Ton autorité', title: A[0], what: A[1], why: AUTH_BIZ[ch.authority], evolve: "Utilise-la comme un repère pour tes décisions importantes (offre, prix, client, associé), en plus de l'analyse des risques, de ton budget et de la demande réelle.", q: AUTH_Q[ch.authority] },
     unknown
-      ? { n: 4, label: 'Ton profil', title: 'À confirmer', what: "Ton profil dépend de ton heure de naissance.", why: "Il indique comment tu attires tes clients et ce qu'ils attendent de toi.", evolve: "Complète ton heure de naissance pour le découvrir." }
-      : { n: 4, label: 'Ton profil', title: `${ch.profile} · ${LINES[l1][0]} / ${LINES[l2][0]}`, what: `Ton profil décrit ton rôle et la façon dont les autres te perçoivent : ${LINES[l1][0].toLowerCase()} côté conscient, ${LINES[l2][0].toLowerCase()} côté inconscient.`, why: `${LINE_BIZ[l1]} ${LINE_BIZ[l2]}`, evolve: `${LINES[l1][1]} ${LINES[l2][1]}` }
+      ? { k: 'profile', n: 4, label: 'Ton profil', title: 'À confirmer', what: "Ton profil dépend de ton heure de naissance.", why: "Il indique comment tu attires tes clients et ce qu'ils attendent de toi.", evolve: "Complète ton heure de naissance pour le découvrir." }
+      : { k: 'profile', q: `${LINE_Q[l1]} ${LINE_Q[l2]}`, n: 4, label: 'Ton profil', title: `${ch.profile} · ${LINES[l1][0]} / ${LINES[l2][0]}`, what: `Ton profil décrit ton rôle et la façon dont les autres te perçoivent : ${LINES[l1][0].toLowerCase()} côté conscient, ${LINES[l2][0].toLowerCase()} côté inconscient.`, why: `${LINE_BIZ[l1]} ${LINE_BIZ[l2]}`, evolve: `${LINES[l1][1]} ${LINES[l2][1]}` }
   ];
 }
+
+// « Ça me parle / Pas vraiment » : chaque lecture peut être contestée, et le comité en tient compte.
+const RESON_LABEL = { type: 'son type', strat: 'sa stratégie', auth: 'son autorité', profile: 'son profil' };
+function resonHTML(k) {
+  const v = S.reson?.[k];
+  return `<div class="reson" role="group" aria-label="Cette lecture te parle-t-elle ?"><span class="hint">Cette lecture te parle ?</span><button type="button" class="chip sm ${v === 'oui' ? 'on' : ''}" data-res="${k}" data-v="oui" aria-pressed="${v === 'oui'}">Ça me parle</button><button type="button" class="chip sm ${v === 'non' ? 'on' : ''}" data-res="${k}" data-v="non" aria-pressed="${v === 'non'}">Pas vraiment</button></div>`;
+}
+document.addEventListener('click', e => {
+  const t = e.target.closest('[data-res]'); if (!t) return;
+  S.reson ||= {};
+  S.reson[t.dataset.res] = S.reson[t.dataset.res] === t.dataset.v ? undefined : t.dataset.v;
+  save();
+  t.parentElement.outerHTML = resonHTML(t.dataset.res);
+  if (S.reson[t.dataset.res] === 'non') toast('Noté : ton comité d\'experts ne s\'appuiera pas sur cette lecture.');
+});
 
 /* ---------- offre et récap ---------- */
 let LAST_RULE = [];
@@ -1417,11 +1481,15 @@ function plan(o) {
   const find = ch ? STRAT_BIZ[ch.type][0] : "Parle de ton offre autour de toi et sur un réseau social.";
   const evolve = ch ? TYPE_BIZ[ch.type][2] : "Garde ce qui te donne de l'énergie, change le reste.";
   return [
-    ['Semaine 1', 'Clarifier et valider', `Écris ton offre en une phrase et valide-la avec ton autorité. ${decide}`],
+    ['Semaine 1', 'Clarifier', `Écris ton offre en une phrase et liste 20 personnes de ta cible à contacter. ${decide}`],
     ['Semaine 2', 'Tester', `${o.step || 'Présente ton offre à 10 personnes de ta cible.'} ${launch}`],
     ['Semaine 3', 'Trouver tes 3 premiers clients', `Propose ton offre au prix de lancement. ${find}`],
-    ['Semaine 4', 'Ajuster et décider la suite', `Recueille les retours, ajuste l'offre et le prix. ${evolve}`]
+    ['Semaine 4', 'Ajuster et décider la suite', `Compare tes résultats à tes critères de validation ci-dessous, ajuste l'offre et le prix, ou passe à ta piste alternative. ${evolve}`]
   ];
+}
+function validation() {
+  const c = S.experts?.synth?.criteres_validation;
+  return Array.isArray(c) && c.length ? c.map(String) : VALIDATION;
 }
 function recapData() {
   const o = currentOffer(); if (!o) return null;
@@ -1436,7 +1504,9 @@ function recapData() {
     values: a.values.map(v => VALUES.find(x => x[0] === v)[1]),
     keys: ch ? hdCards(ch, unk) : [],
     ex: S.experts || {},
-    plan: plan(o)
+    plan: plan(o),
+    valid: validation(),
+    alt: S.experts?.strat?.alternative || ''
   };
 }
 function recapDocHTML(d) {
@@ -1457,7 +1527,9 @@ function recapDocHTML(d) {
     <div><dt>Compétences fortes</dt><dd>${d.skills.join(', ') || '<span class="rc-empty">Bilan à compléter</span>'}</dd></div>
     <div><dt>Valeurs</dt><dd>${d.values.join(', ') || '<span class="rc-empty">Bilan à compléter</span>'}</dd></div>
   </dl></section>
-  <section class="rc-sec"><h3>Tes 30 premiers jours</h3><ol class="rc-plan">${d.plan.map(([w, t, x]) => `<li><p class="rc-w">${w} · <b>${t}</b></p><p>${esc(x)}</p></li>`).join('')}</ol></section>
+  <section class="rc-sec"><h3>Tes 30 premiers jours pour tester</h3><ol class="rc-plan">${d.plan.map(([w, t, x]) => `<li><p class="rc-w">${w} · <b>${t}</b></p><p>${esc(x)}</p></li>`).join('')}</ol>
+    <p class="rc-w" style="margin-top:14px">Tes critères de validation</p><ul class="rc-ul">${li(d.valid)}</ul>
+    ${d.alt ? `<p style="margin-top:10px"><b>Si le test n'est pas concluant, ta piste alternative :</b> ${esc(d.alt)}</p>` : ''}</section>
   ${d.ex.synth && (d.ex.synth.feuille_de_route || []).length ? `<section class="rc-sec"><h3>Ta feuille de route sur 90 jours</h3><div class="rc-keys">${d.ex.synth.feuille_de_route.map(m => `<div class="rc-key"><p class="rc-k-label">${esc(m.mois)}</p><p class="rc-k-title">${esc(m.objectif)}</p><ul class="rc-ul">${li(m.actions)}</ul></div>`).join('')}</div>${d.ex.synth.indicateur ? `<p style="margin-top:10px"><b>Ton indicateur de réussite :</b> ${esc(d.ex.synth.indicateur)}</p>` : ''}</section>` : ''}
   ${d.ex.mind?.phrase_ancre ? `<p class="rc-vision" style="margin-top:16px">« ${esc(d.ex.mind.phrase_ancre)} »</p>` : ''}
   <p class="rc-foot">Le Human Design est une grille de lecture de soi, pas une science validée : garde ce qui te parle et teste-le dans la réalité.</p>`;
@@ -1473,7 +1545,9 @@ function recapText(d) {
   if (d.code) L.push(`- Intérêts dominants : ${d.code}`);
   L.push(`- Compétences fortes : ${d.skills.join(', ') || 'à compléter'}`, `- Valeurs : ${d.values.join(', ') || 'à compléter'}`, '');
   if (d.ex.mkt) { L.push('', 'MON POSITIONNEMENT', d.ex.mkt.positionnement || ''); if (d.ex.mkt.pitch) L.push(`Pitch : ${d.ex.mkt.pitch}`); }
-  L.push('', 'MES 30 PREMIERS JOURS'); d.plan.forEach(([w, t, x]) => L.push(`- ${w} — ${t} : ${x}`));
+  L.push('', 'MES 30 PREMIERS JOURS POUR TESTER'); d.plan.forEach(([w, t, x]) => L.push(`- ${w} — ${t} : ${x}`));
+  L.push('', 'MES CRITÈRES DE VALIDATION'); d.valid.forEach(x => L.push(`- ${x}`));
+  if (d.alt) L.push(`Piste alternative : ${d.alt}`);
   if (d.ex.synth && (d.ex.synth.feuille_de_route || []).length) { L.push('', 'MA FEUILLE DE ROUTE SUR 90 JOURS'); d.ex.synth.feuille_de_route.forEach(m => { L.push(`${m.mois} — ${m.objectif}`); (m.actions || []).forEach(x => L.push(`  - ${x}`)); }); if (d.ex.synth.indicateur) L.push(`Indicateur de réussite : ${d.ex.synth.indicateur}`); }
   return L.join('\n');
 }
@@ -1591,11 +1665,11 @@ const AGENTS = [
     role: "analyste Human Design expérimenté·e. Traduis sa charte en mode d'emploi entrepreneurial : forces, pièges, rythme de travail idéal, façon d'attirer et de vendre, environnement idéal. Appuie-toi précisément sur son type, sa stratégie, son autorité, son profil, ses centres définis et ouverts et ses canaux.",
     schema: '{"synthese": "2 à 3 phrases", "forces": ["3 forces business"], "pieges": ["3 pièges à éviter"], "rythme": "son rythme de travail idéal", "vente": "comment attirer et vendre", "environnement": "son environnement de travail idéal"}' },
   { k: 'orient', ini: 'OR', n: "Conseillère en orientation", d: 'Révèle ta zone de génie, tes talents et tes compétences transférables.',
-    role: "conseiller·ère en orientation et en bilan professionnel. Analyse ses intérêts (RIASEC), ses compétences, ses valeurs et ses réponses libres pour identifier sa zone de génie, ses talents, ses compétences transférables et ses motivations profondes.",
-    schema: '{"synthese": "2 à 3 phrases", "zone_de_genie": "1 phrase", "talents": ["3 talents"], "competences_transferables": ["3 compétences"], "motivations": ["3 motivations profondes"], "a_eviter": "ce qui l\'éteint, 1 phrase"}' },
+    role: "conseiller·ère en orientation et en bilan professionnel. Analyse ses intérêts (RIASEC), ses compétences, ses valeurs et ses réponses libres pour identifier sa zone de génie, ses talents, ses compétences transférables et ses motivations profondes. Appuie-toi aussi sur la théorie de l'autodétermination : de quoi a-t-elle besoin en autonomie, en sentiment de compétence et en appartenance pour rester motivée ?",
+    schema: '{"synthese": "2 à 3 phrases", "zone_de_genie": "1 phrase", "talents": ["3 talents"], "competences_transferables": ["3 compétences"], "motivations": ["3 motivations profondes"], "besoins": "1 à 2 phrases sur ses besoins d\'autonomie, de compétence et d\'appartenance", "a_eviter": "ce qui l\'éteint, 1 phrase"}' },
   { k: 'strat', ini: 'ST', n: 'Stratège business', d: 'Conçoit ton offre signature, ton prix et ton modèle de revenus.',
-    role: "stratège business spécialisé·e dans le lancement d'activités d'indépendants. À partir des analyses précédentes et de la piste choisie, conçois son offre signature : client précis, problème, promesse, format, prix de lancement réaliste en euros, modèle de revenus, test de validation sans argent et évolution à 12 mois.",
-    schema: '{"synthese": "2 à 3 phrases", "offre": {"nom": "nom court et parlant", "client": "client idéal précis", "probleme": "le problème résolu", "promesse": "le résultat promis", "format": "format et durée", "prix": "prix de lancement en euros"}, "modele_revenus": "1 à 2 phrases", "test_validation": "1 test à faire en 14 jours sans argent", "evolution": "comment l\'activité grandit à 12 mois"}' },
+    role: "stratège business spécialisé·e dans le lancement d'activités d'indépendants. À partir des analyses précédentes et de la piste choisie, conçois son offre signature : client précis, problème, promesse, format, prix de lancement réaliste en euros, modèle de revenus, test de validation sans argent et évolution à 12 mois. Si elle a déjà un projet, pars de ce projet. Propose aussi une piste alternative crédible, au cas où le test ne serait pas concluant.",
+    schema: '{"synthese": "2 à 3 phrases", "offre": {"nom": "nom court et parlant", "client": "client idéal précis", "probleme": "le problème résolu", "promesse": "le résultat promis", "format": "format et durée", "prix": "prix de lancement en euros"}, "modele_revenus": "1 à 2 phrases", "test_validation": "1 test à faire en 14 jours sans argent", "evolution": "comment l\'activité grandit à 12 mois", "alternative": "1 piste alternative en 1 à 2 phrases"}' },
   { k: 'mkt', ini: 'MK', n: 'Experte marketing', d: 'Définit ton positionnement, ton pitch et tes meilleurs canaux pour trouver des clients.',
     role: "expert·e en marketing et en positionnement pour indépendants. Définis son positionnement, un pitch prêt à dire, 3 canaux d'acquisition adaptés à son Human Design (stratégie et profil), à ses compétences et à ses contraintes, et 5 idées de contenus.",
     schema: '{"synthese": "2 à 3 phrases", "positionnement": "1 phrase : j\'aide [qui] à [résultat] grâce à [méthode]", "pitch": "2 à 3 phrases à dire à l\'oral", "canaux": [{"canal": "nom", "pourquoi": "1 phrase", "action": "1 action concrète"}], "idees_contenus": ["5 idées de contenus"]}' },
@@ -1603,8 +1677,8 @@ const AGENTS = [
     role: "coach en posture entrepreneuriale. Identifie ses 3 blocages les plus probables (d'après ses projets passés, son rapport au risque, ses centres ouverts, ses valeurs) avec une parade concrète pour chacun, un rituel hebdomadaire simple et une phrase ancre.",
     schema: '{"synthese": "2 à 3 phrases", "blocages": [{"blocage": "1 phrase", "parade": "1 phrase concrète"}], "rituel": "1 rituel hebdomadaire", "phrase_ancre": "1 phrase courte à se répéter"}' },
   { k: 'synth', ini: 'VS', n: 'Directrice de synthèse', d: 'Rassemble les 5 rapports en une vision claire et une feuille de route sur 90 jours.',
-    role: "directeur·rice de synthèse du comité. Rassemble les 5 rapports en une vision claire, cohérente et motivante : sa vision en une phrase, pourquoi cette personne est faite pour ce projet, 3 priorités, une feuille de route sur 90 jours (3 mois, 3 actions concrètes par mois), l'indicateur de réussite à suivre et un message d'encouragement.",
-    schema: '{"vision": "1 phrase inspirante et concrète", "pourquoi_toi": "2 à 3 phrases", "priorites": ["3 priorités"], "feuille_de_route": [{"mois": "Mois 1", "objectif": "1 phrase", "actions": ["3 actions"]}], "indicateur": "l\'indicateur de réussite à 90 jours", "message": "2 phrases d\'encouragement"}' }
+    role: "directeur·rice de synthèse du comité. Rassemble les 5 rapports en une vision claire, cohérente et motivante : sa vision en une phrase, pourquoi cette personne est faite pour ce projet, 3 priorités, une feuille de route sur 90 jours (3 mois, 3 actions concrètes par mois), l'indicateur de réussite à suivre, 3 critères de validation observables à 30 jours (conversations, intentions d'achat, premiers paiements, énergie ressentie) et un message d'encouragement.",
+    schema: '{"vision": "1 phrase inspirante et concrète", "pourquoi_toi": "2 à 3 phrases", "priorites": ["3 priorités"], "feuille_de_route": [{"mois": "Mois 1", "objectif": "1 phrase", "actions": ["3 actions"]}], "indicateur": "l\'indicateur de réussite à 90 jours", "criteres_validation": ["3 critères observables à 30 jours"], "message": "2 phrases d\'encouragement"}' }
 ];
 const PHASES = [['hd', 'orient'], ['strat'], ['mkt', 'mind'], ['synth']];
 let teamCtl = null, teamStatus = {}, teamRunning = false;
@@ -1617,7 +1691,7 @@ function offerContext() {
 function agentPrompt(ag) {
   const prev = AGENTS.filter(a => a.k !== ag.k && S.experts?.[a.k] && PHASES.findIndex(p => p.includes(a.k)) < PHASES.findIndex(p => p.includes(ag.k)))
     .map(a => `RAPPORT DE ${a.n.toUpperCase()} :\n${JSON.stringify(S.experts[a.k])}`).join('\n\n').slice(0, 14000);
-  return `Tu fais partie d'un comité d'experts qui aide une personne à trouver et lancer son business passion. Ton rôle : ${ag.role}\n\nÉcris en français, en tutoyant, avec des phrases courtes, concrètes et personnalisées : appuie-toi sur ses réponses réelles, jamais sur des généralités. Le Human Design est une grille de réflexion, jamais une certitude : formule-le avec nuance. Respecte toutes ses contraintes (budget, temps, besoin de revenu, lieu) et ses domaines exclus.\n\nPROFIL :\n${profileText()}\n\n${offerContext()}${prev ? '\n\n' + prev : ''}\n\nRéponds uniquement avec un objet JSON de cette forme : ${ag.schema}`;
+  return `Tu fais partie d'un comité d'experts qui aide une personne à trouver et lancer son business passion. Ton rôle : ${ag.role}\n\nÉcris en français, en tutoyant, avec des phrases courtes, concrètes et personnalisées : appuie-toi sur ses réponses réelles, jamais sur des généralités. Le Human Design est une grille de réflexion, jamais une certitude : formule-le avec nuance. Il enrichit la réflexion mais ne détermine jamais le choix d'une piste, qui repose sur ses compétences, ses contraintes, ses ressources et la demande réelle. Ne conseille jamais de démissionner ou d'investir sur la seule base du Human Design. Respecte toutes ses contraintes (budget, temps, besoin de revenu, lieu) et ses domaines exclus.\n\nPROFIL :\n${profileText()}\n\n${offerContext()}${prev ? '\n\n' + prev : ''}\n\nRéponds uniquement avec un objet JSON de cette forme : ${ag.schema}`;
 }
 
 function li(arr) { return (Array.isArray(arr) ? arr : []).map(x => `<li>${esc(x)}</li>`).join(''); }
@@ -1626,8 +1700,8 @@ function reportHTML(k, r) {
   const p = (lab, v) => v ? `<p><b>${lab} :</b> ${esc(v)}</p>` : '';
   switch (k) {
     case 'hd': return `<p class="lead-s">${esc(r.synthese)}</p><div class="two"><div><h5>Tes forces</h5><ul>${li(r.forces)}</ul></div><div><h5>Tes pièges</h5><ul>${li(r.pieges)}</ul></div></div>${p('Ton rythme idéal', r.rythme)}${p('Comment tu attires et vends', r.vente)}${p('Ton environnement idéal', r.environnement)}`;
-    case 'orient': return `<p class="lead-s">${esc(r.synthese)}</p><p class="genie">${esc(r.zone_de_genie)}</p><div class="three"><div><h5>Talents</h5><ul>${li(r.talents)}</ul></div><div><h5>Compétences transférables</h5><ul>${li(r.competences_transferables)}</ul></div><div><h5>Motivations</h5><ul>${li(r.motivations)}</ul></div></div>${p('Ce qui t\'éteint', r.a_eviter)}`;
-    case 'strat': { const o = r.offre || {}; return `<p class="lead-s">${esc(r.synthese)}</p><div class="offer-box"><p class="eyebrow">Ton offre signature</p><h5 class="offer-name">${esc(o.nom)}</h5><dl class="rc-dl"><div><dt>Pour qui</dt><dd>${esc(o.client)}</dd></div><div><dt>Problème</dt><dd>${esc(o.probleme)}</dd></div><div><dt>Promesse</dt><dd>${esc(o.promesse)}</dd></div><div><dt>Format</dt><dd>${esc(o.format)}</dd></div><div><dt>Prix de lancement</dt><dd>${esc(o.prix)}</dd></div></dl><div><button type="button" class="btn" id="useOffer">Utiliser cette offre pour mon récap</button></div></div>${p('Modèle de revenus', r.modele_revenus)}${p('Test de validation (14 jours)', r.test_validation)}${p('Dans 12 mois', r.evolution)}`; }
+    case 'orient': return `<p class="lead-s">${esc(r.synthese)}</p><p class="genie">${esc(r.zone_de_genie)}</p><div class="three"><div><h5>Talents</h5><ul>${li(r.talents)}</ul></div><div><h5>Compétences transférables</h5><ul>${li(r.competences_transferables)}</ul></div><div><h5>Motivations</h5><ul>${li(r.motivations)}</ul></div></div>${p('Ce qui nourrit ta motivation', r.besoins)}${p('Ce qui t\'éteint', r.a_eviter)}`;
+    case 'strat': { const o = r.offre || {}; return `<p class="lead-s">${esc(r.synthese)}</p><div class="offer-box"><p class="eyebrow">Ton offre signature</p><h5 class="offer-name">${esc(o.nom)}</h5><dl class="rc-dl"><div><dt>Pour qui</dt><dd>${esc(o.client)}</dd></div><div><dt>Problème</dt><dd>${esc(o.probleme)}</dd></div><div><dt>Promesse</dt><dd>${esc(o.promesse)}</dd></div><div><dt>Format</dt><dd>${esc(o.format)}</dd></div><div><dt>Prix de lancement</dt><dd>${esc(o.prix)}</dd></div></dl><div><button type="button" class="btn" id="useOffer">Utiliser cette offre pour mon récap</button></div></div>${p('Modèle de revenus', r.modele_revenus)}${p('Test de validation (14 jours)', r.test_validation)}${p('Dans 12 mois', r.evolution)}${p('Ta piste alternative', r.alternative)}`; }
     case 'mkt': return `<p class="lead-s">${esc(r.synthese)}</p><p class="genie">${esc(r.positionnement)}</p>${r.pitch ? `<blockquote class="pitch">${esc(r.pitch)}</blockquote>` : ''}<h5>Tes 3 canaux</h5><div class="chan-cards">${(r.canaux || []).map(c => `<div><b>${esc(c.canal)}</b><p>${esc(c.pourquoi)}</p><p class="muted"><b>Action :</b> ${esc(c.action)}</p></div>`).join('')}</div><h5>Idées de contenus</h5><ul>${li(r.idees_contenus)}</ul>`;
     case 'mind': return `<p class="lead-s">${esc(r.synthese)}</p><div class="blocks">${(r.blocages || []).map(b => `<div><p><b>${esc(b.blocage)}</b></p><p>→ ${esc(b.parade)}</p></div>`).join('')}</div>${p('Ton rituel hebdomadaire', r.rituel)}${r.phrase_ancre ? `<p class="genie">« ${esc(r.phrase_ancre)} »</p>` : ''}`;
   }
@@ -1639,6 +1713,7 @@ function visionHTML(v) {
     <h4 class="road-title">Ta feuille de route sur 90 jours</h4>
     <div class="road">${(v.feuille_de_route || []).map(m => `<div class="month"><p class="eyebrow">${esc(m.mois)}</p><p class="m-goal">${esc(m.objectif)}</p><ul>${li(m.actions)}</ul></div>`).join('')}</div>
     ${v.indicateur ? `<p class="kpi"><b>Ton indicateur de réussite :</b> ${esc(v.indicateur)}</p>` : ''}
+    ${(v.criteres_validation || []).length ? `<div class="kpi"><b>Tes critères de validation à 30 jours :</b><ul>${li(v.criteres_validation)}</ul></div>` : ''}
     ${v.message ? `<p class="encourage">${esc(v.message)}</p>` : ''}</div>`;
 }
 function renderTeam() {
@@ -1728,7 +1803,7 @@ function renderChartNext() {
   const box = $('#chartNext');
   if (!S.chart) { box.innerHTML = ''; return; }
   const done = quizDone();
-  box.innerHTML = `<div class="card next-card"><div><p class="eyebrow">Prochaine étape</p><h3>${done ? 'Ton profil d\'entrepreneur·e est prêt' : 'Croise ta charte avec tes envies : 8 questions, 2 minutes'}</h3></div><a class="btn" href="${done ? '#resultats' : '#quiz'}">${done ? 'Voir mon profil' : 'Faire mon quiz express'}</a></div>`;
+  box.innerHTML = `<div class="card next-card"><div><p class="eyebrow">Prochaine étape</p><h3>${done ? 'Ton profil d\'entrepreneur·e est prêt' : 'Croise ta charte avec tes envies : 9 questions, 2 minutes'}</h3></div><a class="btn" href="${done ? '#resultats' : '#quiz'}">${done ? 'Voir mon profil' : 'Faire mon quiz express'}</a></div>`;
 }
 
 function renderQuiz(anim) {
@@ -1825,6 +1900,7 @@ function gateHTML(ar) {
       </div>
     </div>`;
 }
+document.addEventListener('input', e => { if (e.target.id === 'projTxt') { S.ans.ideas = e.target.value; save(); } });
 function renderResults() {
   const box = $('#resultsBox');
   if (!quizDone()) {
@@ -1856,6 +1932,7 @@ function renderResults() {
         <div><a class="btn" href="#offre">Découvrir la version complète</a></div>
       </div>
     </div>
+    ${S.quick.path === 'projet' && !S.example ? `<div class="card proj"><div><p class="eyebrow">Ton projet</p><h3>Tu as déjà une idée : note-la ici</h3><p class="muted" style="margin-top:4px">Elle est enregistrée sur ton appareil. Dans la version complète, ton comité d'experts la confronte à ton profil, te propose une piste alternative et un plan de test sur 30 jours.</p></div><label for="projTxt" class="sr">Ton projet en quelques mots</label><textarea id="projTxt" placeholder="Ex. : des ateliers de couture pour débutantes, mais je ne sais pas comment trouver mes premières clientes">${esc(S.ans.ideas || '')}</textarea></div>` : ''}
     ${S.example ? '' : `<p class="sent">${S.emailSent ? `Ton profil a été envoyé à <b>${esc(S.email)}</b>. Pense à regarder tes courriers indésirables.` : `Ton profil n'a pas pu être envoyé à <b>${esc(S.email)}</b>.`} <button type="button" class="linkbtn" id="resend">Renvoyer</button> · <button type="button" class="linkbtn" id="changeMail">Changer d'adresse</button></p>`}
   </div>`;
 }

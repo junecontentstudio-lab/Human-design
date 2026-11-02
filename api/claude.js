@@ -1,4 +1,4 @@
-import { checkToken, tokenId, isCodeToken } from '../lib/token.js';
+import { checkToken, tokenId, isTestToken } from '../lib/token.js';
 import { db, dbOn } from '../lib/db.js';
 
 // Relais vers l'API Claude : la clé reste secrète côté serveur, et seuls les clients qui ont payé y ont accès.
@@ -18,7 +18,7 @@ export default async function handler(req, res) {
   if (typeof prompt !== 'string' || prompt.length < 20 || prompt.length > 60000) return res.status(400).json({ error: 'Demande invalide' });
   // Plafond d'appels IA par achat (comité complet = 6 appels), pour protéger le budget API.
   // Les accès de test n'ont pas de ligne d'achat : ils restent hors des statistiques de ventes.
-  if (dbOn() && !isCodeToken(token)) {
+  if (dbOn() && !isTestToken(token)) {
     const ok = await db('rpc/boussole_use_ai', { method: 'POST', body: { p_checkout: tokenId(token), p_limit: Number(process.env.AI_CALLS_LIMIT || 60) } });
     if (ok === false) return res.status(429).json({ error: 'Limite atteinte', code: 'quota' });
   }

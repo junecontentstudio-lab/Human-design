@@ -757,6 +757,8 @@ document.addEventListener('click', e => {
 
 /* ---------- parcours gratuit : quiz express, profil et e-mail ---------- */
 const PRICE = '22 €';
+let CONFIG = {};
+fetch('/api/config').then(r => r.json()).then(c => { CONFIG = c || {}; applyConfig(); }).catch(() => { });
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const unlocked = () => S.example || S.paid;
 const lead = s => { const i = s.search(/\.\s/); return i > 0 ? `<b>${s.slice(0, i + 1)}</b>${s.slice(i + 1)}` : `<b>${s}</b>`; };
@@ -968,7 +970,7 @@ function paywallHTML() {
         <div class="pw-stats">
           <div><b>${T ? T.name : '—'}</b><span>ton type</span></div>
           <div><b>${ar ? ar.short : '—'}</b><span>ton archétype</span></div>
-          <div><b class="mono">${top ? top.total + '/100' : '—'}</b><span>ta piste n°1</span></div>
+          <div><b class="mono">${top && quizDone() ? top.total + '/100' : '—'}</b><span>ta piste n°1</span></div>
         </div>
         <ul class="pw-list">
           <li><b>Ton bilan approfondi</b> en 7 modules : intérêts, compétences, énergie, valeurs, style, contraintes, idées</li>
@@ -980,12 +982,12 @@ function paywallHTML() {
         </ul>
         <div class="faq">
           <details><summary>Combien de temps ça prend ?</summary><p>Compte 20 minutes pour le bilan approfondi, que tu peux faire en plusieurs fois, puis 3 à 5 minutes pour l'analyse du comité d'experts.</p></details>
-          <details><summary>Et si je change d'appareil ?</summary><p>Après ton paiement, tu reçois un lien d'accès personnel par e-mail : il rouvre ton accès sur ton téléphone, ton ordinateur ou ta tablette.</p></details>
-          <details><summary>Est-ce un abonnement ?</summary><p>Non : un paiement unique de ${PRICE}, sans engagement ni renouvellement.</p></details>
+          ${CONFIG.freeAccess ? `<details><summary>C'est vraiment gratuit ?</summary><p>Oui, pendant la phase de test : aucun paiement ni carte bancaire. Ton accès reste ouvert sur cet appareil jusqu'à la fin du test.</p></details>` : `<details><summary>Et si je change d'appareil ?</summary><p>Après ton paiement, tu reçois un lien d'accès personnel par e-mail : il rouvre ton accès sur ton téléphone, ton ordinateur ou ta tablette.</p></details>
+          <details><summary>Est-ce un abonnement ?</summary><p>Non : un paiement unique de ${PRICE}, sans engagement ni renouvellement.</p></details>`}
           <details><summary>Le Human Design, c'est scientifique ?</summary><p>Non, et nous ne le présentons jamais ainsi : c'est une grille de réflexion. Tes pistes s'appuient surtout sur tes intérêts, tes compétences, tes valeurs et tes contraintes.</p></details>
         </div>
       </div>
-      <div class="card pw-right">
+      ${CONFIG.freeAccess ? freeCardHTML() : `<div class="card pw-right">
         <p class="eyebrow">Accès complet</p>
         <p class="pw-price">${PRICE}</p>
         <p class="muted">Paiement unique et sécurisé par SumUp · accès immédiat</p>
@@ -993,19 +995,38 @@ function paywallHTML() {
         <label class="check" for="fCgv" style="align-items:flex-start"><input type="checkbox" id="fCgv" style="margin-top:4px"> <span class="hint">J'accepte les <a href="/cgv.html" target="_blank">conditions générales de vente</a>. Je demande l'accès immédiat au contenu et je renonce à mon droit de rétractation.</span></label>
         <button class="btn" type="button" id="payGo">Débloquer ma version complète</button>
         <p class="hint" id="payMsg" role="alert"></p>
-        <form class="restore" id="codeForm" novalidate>
-          <span class="hint"><b>Tu as un code d'accès ?</b></span>
-          <div class="code-row"><input type="text" id="cCode" autocomplete="off" placeholder="Ton code" aria-label="Code d'accès"><button class="btn ghost" type="submit">Valider</button></div>
-          <p class="hint" id="cMsg" role="status"></p>
-        </form>
         <form class="restore" id="restoreForm" novalidate>
           <span class="hint"><b>Déjà acheté ?</b> Reçois à nouveau ton lien d'accès.</span>
           <div class="code-row"><input type="email" id="rMail" autocomplete="email" placeholder="Adresse utilisée lors de l'achat" aria-label="Adresse utilisée lors de l'achat"><button class="btn ghost" type="submit">Envoyer</button></div>
           <p class="hint" id="rMsg" role="status"></p>
         </form>
-      </div>
+      </div>`}
     </div>`;
 }
+function freeCardHTML() {
+  return `<div class="card pw-right">
+        <p class="eyebrow">Phase de test</p>
+        <p class="pw-price">Offert</p>
+        <p class="muted">Pendant la phase de test, la version complète est gratuite. En échange, tes retours nous aideront beaucoup !</p>
+        <label for="freeMail">Ton adresse e-mail (facultatif)<input type="email" id="freeMail" autocomplete="email" placeholder="prenom@exemple.fr" value="${esc(S.example ? '' : S.email || '')}"><span class="hint">Pour t'envoyer ton récap et te demander ton avis.</span></label>
+        <button class="btn" type="button" id="freeGo">Accéder à la version complète</button>
+        <p class="hint" id="freeMsg" role="alert"></p>
+      </div>`;
+}
+function applyConfig() {
+  document.querySelectorAll('.price-tag').forEach(el => { el.textContent = CONFIG.freeAccess ? 'offerte pendant le test' : PRICE; });
+  renderOffer(); updateNextBar();
+}
+document.addEventListener('click', async e => {
+  if (e.target.id !== 'freeGo') return;
+  const mail = $('#freeMail').value.trim().toLowerCase(), msg = $('#freeMsg');
+  if (mail && !EMAIL_RE.test(mail)) { msg.textContent = 'Cette adresse ne semble pas valide (tu peux aussi laisser le champ vide).'; return; }
+  if (S.example) leaveExample();
+  if (mail) { S.email = mail; save(); }
+  e.target.disabled = true; msg.textContent = 'Ouverture de ta version complète…';
+  try { const d = await api('/api/verify', { free: true }); grant(d.token); toast('Ta version complète est ouverte ✓ Bon test !'); }
+  catch (err) { e.target.disabled = false; msg.textContent = 'L\'accès n\'a pas pu s\'ouvrir. Réessaie dans un instant.'; }
+});
 function renderOffer() {
   const box = $('#offerBox');
   if (S.paid && !S.example) {
@@ -1037,30 +1058,16 @@ document.addEventListener('submit', async e => {
   try { await api('/api/restore', { email: v }); m.textContent = 'Si un achat est associé à cette adresse, ton lien d\'accès arrive dans quelques instants. Pense à regarder tes courriers indésirables.'; }
   catch (err) { m.textContent = 'L\'envoi n\'a pas fonctionné. Réessaie dans un instant.'; }
 });
-async function redeemCode(code) {
-  const d = await api('/api/verify', { code });
-  grant(d.token); toast('Code accepté : ta version complète est ouverte ✓');
-}
-document.addEventListener('submit', async e => {
-  if (e.target.id !== 'codeForm') return;
-  e.preventDefault();
-  const v = $('#cCode').value.trim(), m = $('#cMsg');
-  if (!v) { m.textContent = 'Indique ton code.'; return; }
-  m.textContent = 'Vérification…';
-  try { await redeemCode(v); } catch (err) { m.textContent = err.status === 403 ? 'Ce code n\'est pas valide.' : 'La vérification n\'a pas fonctionné. Réessaie dans un instant.'; }
-});
 function grant(token) {
   if (S.example) leaveExample();
   S.paid = true; S.token = token; delete S.pendingCheckout; save(); renderAll();
   setTimeout(() => $('#bilan').scrollIntoView(), 250);
 }
 async function verifyReturn() {
-  const url = new URL(location.href), acces = url.searchParams.get('acces'), back = url.searchParams.get('paiement') === 'ok', code = url.searchParams.get('code');
+  const url = new URL(location.href), acces = url.searchParams.get('acces'), back = url.searchParams.get('paiement') === 'ok';
   const utm = {}; ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content'].forEach(k => { const v = url.searchParams.get(k); if (v) utm[k] = v.slice(0, 80); });
   if (Object.keys(utm).length && !S.utm) { S.utm = utm; save(); }
-  if (acces || back || code) { ['acces', 'paiement', 'code'].forEach(k => url.searchParams.delete(k)); history.replaceState(null, '', url.pathname + url.search + url.hash); }
-  // Lien de test à partager : /?code=TONCODE ouvre la version complète sans paiement.
-  if (code && !S.paid) { try { await redeemCode(code); } catch (err) { toast('Ce code d\'accès n\'est pas valide.'); } return; }
+  if (acces || back) { ['acces', 'paiement'].forEach(k => url.searchParams.delete(k)); history.replaceState(null, '', url.pathname + url.search + url.hash); }
   if (acces) {
     try { const d = await api('/api/verify', { token: acces }); if (d.paid) { grant(d.token); toast('Ton accès complet est ouvert sur cet appareil ✓'); } else toast('Ce lien d\'accès n\'est pas valide. Demande-en un nouveau depuis « Déjà acheté ? ».'); } catch (err) { }
     return;
@@ -1110,7 +1117,7 @@ function nextStep() {
   if (!S.chart) return ['Calculer ma charte gratuite', '#charte'];
   if (!quizDone()) return ['Faire mon quiz express · 2 min', '#quiz'];
   if (!S.email) return ['Révéler mon profil gratuit', '#resultats'];
-  if (!S.paid) return [`Débloquer la version complète · ${PRICE}`, '#offre'];
+  if (!S.paid) return [CONFIG.freeAccess ? 'Accéder à la version complète (offerte)' : `Débloquer la version complète · ${PRICE}`, '#offre'];
   if (MODS.some((_, i) => !modDone(i))) return ['Continuer mon bilan approfondi', '#bilan'];
   if (!S.experts?.synth) return ['Lancer mon comité d\'experts', '#comite'];
   return null;

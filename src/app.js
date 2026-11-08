@@ -908,7 +908,31 @@ function gateHTML(ar) {
       </div>
     </div>`;
 }
+// Carte « Ton projet » (parcours « j'ai déjà un projet ») : on écrit, on valide, le projet est transmis au comité et enregistré.
+let projEdit = false;
+function projectCardHTML() {
+  const txt = (S.ans.ideas || '').trim(), done = S.projectSaved && txt && !projEdit;
+  const next = S.paid ? '<a class="btn" href="#bilan">Continuer vers mon bilan</a>' : '<a class="btn" href="#offre">Découvrir la version complète</a>';
+  if (done) return `<div class="card proj"><div><p class="eyebrow">Ton projet · enregistré ✓</p><h3>Ton idée est bien notée</h3><p class="muted" style="margin-top:4px">${S.paid ? 'Ton comité d\'experts partira de ce projet : il le confrontera à ton profil, te proposera une piste alternative et un plan de test sur 30 jours.' : 'Dans la version complète, ton comité d\'experts part de ce projet : il le confronte à ton profil, te propose une piste alternative et un plan de test sur 30 jours.'}</p></div>
+    <div class="proj-done"><blockquote class="pitch">${esc(txt)}</blockquote><div class="actions">${next}<button type="button" class="btn ghost" id="projEdit">Modifier</button></div></div></div>`;
+  return `<div class="card proj"><div><p class="eyebrow">Ton projet</p><h3>Tu as déjà une idée : décris-la</h3><p class="muted" style="margin-top:4px">Quelques phrases suffisent : ce que tu veux proposer, pour qui, et ce qui te bloque aujourd'hui. Clique ensuite sur « Valider mon projet ».</p></div>
+    <form id="projForm" class="mail-form" novalidate><label for="projTxt" class="sr">Ton projet en quelques mots</label><textarea id="projTxt" maxlength="1500" placeholder="Ex. : des ateliers de couture pour débutantes, mais je ne sais pas comment trouver mes premières clientes">${esc(S.ans.ideas || '')}</textarea>
+    <div class="actions"><button type="submit" class="btn">Valider mon projet</button>${projEdit ? '<button type="button" class="btn ghost" id="projCancel">Annuler</button>' : ''}</div><p class="hint" id="projMsg" role="alert"></p></form></div>`;
+}
 document.addEventListener('input', e => { if (e.target.id === 'projTxt') { S.ans.ideas = e.target.value; save(); } });
+document.addEventListener('submit', async e => {
+  if (e.target.id !== 'projForm') return;
+  e.preventDefault();
+  const txt = $('#projTxt').value.trim();
+  if (txt.length < 10) { $('#projMsg').textContent = 'Décris ton projet en quelques mots (au moins une phrase).'; $('#projTxt').focus(); return; }
+  S.ans.ideas = txt; S.projectSaved = true; projEdit = false; save();
+  renderResults(); renderWizard(); toast('Projet enregistré ✓ Ton comité d\'experts partira de cette idée.');
+  if (S.email) api('/api/project', { email: S.email, project: txt }).catch(() => { });
+});
+document.addEventListener('click', e => {
+  if (e.target.id === 'projEdit') { projEdit = true; renderResults(); $('#projTxt')?.focus(); }
+  if (e.target.id === 'projCancel') { projEdit = false; renderResults(); }
+});
 function renderResults() {
   const box = $('#resultsBox');
   if (!quizDone()) {
@@ -940,7 +964,7 @@ function renderResults() {
         <div><a class="btn" href="#offre">Découvrir la version complète</a></div>
       </div>
     </div>
-    ${S.quick.path === 'projet' && !S.example ? `<div class="card proj"><div><p class="eyebrow">Ton projet</p><h3>Tu as déjà une idée : note-la ici</h3><p class="muted" style="margin-top:4px">Elle est enregistrée sur ton appareil. Dans la version complète, ton comité d'experts la confronte à ton profil, te propose une piste alternative et un plan de test sur 30 jours.</p></div><label for="projTxt" class="sr">Ton projet en quelques mots</label><textarea id="projTxt" placeholder="Ex. : des ateliers de couture pour débutantes, mais je ne sais pas comment trouver mes premières clientes">${esc(S.ans.ideas || '')}</textarea></div>` : ''}
+    ${S.quick.path === 'projet' && !S.example ? projectCardHTML() : ''}
     ${S.example ? '' : `<p class="sent">${S.emailSent ? `Ton profil a été envoyé à <b>${esc(S.email)}</b>. Pense à regarder tes courriers indésirables.` : `Ton profil n'a pas pu être envoyé à <b>${esc(S.email)}</b>.`} <button type="button" class="linkbtn" id="resend">Renvoyer</button> · <button type="button" class="linkbtn" id="changeMail">Changer d'adresse</button></p>`}
   </div>`;
 }

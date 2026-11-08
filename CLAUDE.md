@@ -15,6 +15,7 @@ Page de vente et outil en ligne (français, tutoiement). **Bloc gratuit** : char
   - `sumup-webhook.js` : notification SumUp ; relit le checkout chez SumUp avant de confirmer.
   - Mode test ouvert : `FREE_ACCESS=1` → `/api/config` renvoie `{freeAccess: true}`, le paywall devient « Offert », `verify.js` `{free: true}` délivre un jeton `test-<uuid>` (hors quota IA et statistiques), qui reste valable après le test, sauf si `REVOKE_TEST_ACCESS=1`.
   - `config.js` : réglages publics (`freeAccess`).
+  - `project.js` : enregistre le projet validé (parcours « déjà un projet ») dans `boussole_leads.quiz.projet`. Côté page, le texte va dans `S.ans.ideas` (module « Tes idées » du bilan, lu par le comité) et `S.projectSaved = true`.
   - `restore.js` : « Déjà acheté ? » → renvoie le lien d'accès (`/?acces=<jeton>`) à l'e-mail d'achat ; réponse identique que l'adresse soit cliente ou non.
   - `claude.js` : relais vers `POST /v1/messages`, réservé aux détenteurs d'un jeton valide, plafonné par achat (`AI_CALLS_LIMIT`, RPC `boussole_use_ai`) ; renvoie `{data}` (JSON parsé).
   - `send-email.js` : Brevo. Type `carte` (profil gratuit) : enregistre le prospect dans `boussole_leads` (1 envoi/min, 10 max par adresse). Type `recap` exige le jeton.

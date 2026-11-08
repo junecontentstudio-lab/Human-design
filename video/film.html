@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8">
+<style>
+@font-face{font-family:F;src:url(../assets/fonts/fraunces-latin-400-normal.woff)}
+@font-face{font-family:F;font-weight:600;src:url(../assets/fonts/fraunces-latin-600-normal.woff)}
+@font-face{font-family:F;font-style:italic;src:url(../assets/fonts/fraunces-latin-400-italic.woff)}
+@font-face{font-family:G;src:url(../assets/fonts/figtree-latin-400-normal.woff)}
+@font-face{font-family:G;font-weight:600;src:url(../assets/fonts/figtree-latin-600-normal.woff)}
+:root{--cream:#FBF8F2;--paper:#FFFEFB;--sand:#F3ECE1;--ink:#1C130D;--ink2:#21170F;--muted:#5E4A3A;--brown:#7B4A26;--copper:#B9824A;--gold:#D9A35E;--honey:#E3C59C}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1080px;height:1920px;overflow:hidden;background:var(--ink)}
+#stage{position:relative;width:1080px;height:1920px;overflow:hidden;background:var(--ink)}
+.sc{position:absolute;inset:0;overflow:hidden}
+canvas{position:absolute;inset:0}
+.abs{position:absolute}
+.line{position:absolute;left:0;right:0;text-align:center;white-space:nowrap}
+.w{display:inline-block;will-change:transform}
+.disp{font-family:F;font-weight:400;letter-spacing:-.02em}
+.it{font-family:F;font-style:italic;font-weight:400}
+.eb{font-family:G;font-weight:600;font-size:26px;letter-spacing:.32em;text-transform:uppercase}
+#s1{background:var(--ink)}
+#s2,#s3,#s5{background:var(--cream)}
+#s4{background:var(--ink)}
+.chip{position:absolute;font-family:G;font-size:30px;color:var(--ink2);background:var(--paper);border:1.5px solid #E2D6C4;border-radius:999px;padding:16px 28px;white-space:nowrap;box-shadow:0 14px 34px rgba(60,35,15,.10)}
+.chip b{font-weight:600;color:var(--brown)}
+.card{position:absolute;left:90px;width:900px;height:182px;background:var(--cream);border-radius:28px;padding:30px 40px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 30px 60px rgba(0,0,0,.35)}
+.card .k{font-family:G;font-weight:600;font-size:22px;letter-spacing:.24em;color:var(--copper)}
+.card .t{font-family:F;font-weight:600;font-size:46px;color:var(--ink2);margin-top:8px;letter-spacing:-.01em}
+.card .s{text-align:right;font-family:F;font-size:96px;line-height:.9;color:var(--brown)}
+.card .s small{display:block;font-family:G;font-weight:600;font-size:18px;letter-spacing:.24em;color:var(--muted);margin-top:8px}
+#phone{position:absolute;left:240px;top:470px;width:600px;height:1036px;border-radius:78px;background:#1C130D;padding:20px;box-shadow:0 70px 120px rgba(60,35,15,.28),0 20px 40px rgba(60,35,15,.18);transform-style:preserve-3d}
+#screen{width:560px;height:996px;border-radius:60px;overflow:hidden;position:relative;background:var(--cream)}
+#screen img{position:absolute;left:0;top:0;width:560px}
+#ripple{position:absolute;border-radius:50%;border:4px solid var(--brown);pointer-events:none}
+#grain{mix-blend-mode:overlay;opacity:.16}
+#vig{position:absolute;inset:0;pointer-events:none}
+</style></head><body>
+<div id="stage">
+  <!-- 1. Nuit : la boussole -->
+  <div class="sc" id="s1">
+    <canvas id="dust1" width="1080" height="1920"></canvas>
+    <p class="line eb" id="s1eb" style="top:300px;color:var(--copper)">Ma Boussole Business</p>
+    <svg class="abs" id="compass1" width="1080" height="1920" viewBox="0 0 1080 1920"></svg>
+    <p class="line disp" id="s1a" style="top:1210px;font-size:112px;color:#F6EEE1"></p>
+    <p class="line it" id="s1b" style="top:1345px;font-size:122px;color:var(--gold)"></p>
+  </div>
+  <!-- 2. La charte -->
+  <div class="sc" id="s2">
+    <p class="line eb" id="s2eb" style="top:150px;color:var(--brown)">Étape 1 · gratuit</p>
+    <p class="line disp" id="s2a" style="top:205px;font-size:100px;color:var(--ink2)"></p>
+    <p class="line it" id="s2b" style="top:318px;font-size:108px;color:var(--brown)"></p>
+    <svg class="abs" id="ring" width="1080" height="1920" viewBox="0 0 1080 1920" style="left:0;top:0"></svg>
+    <svg class="abs" id="bg" width="640" height="960" viewBox="0 0 360 540" style="left:220px;top:540px;overflow:visible"></svg>
+    <div id="chips2"></div>
+  </div>
+  <!-- 3. Le quiz -->
+  <div class="sc" id="s3">
+    <p class="line disp" id="s3a" style="top:150px;font-size:112px;color:var(--ink2)"></p>
+    <p class="line it" id="s3b" style="top:272px;font-size:112px;color:var(--brown)"></p>
+    <div class="abs" id="persp" style="inset:0;perspective:1900px">
+      <div id="phone"><div id="screen"><img id="quizimg" src="quiz.png" alt=""><div id="ripple"></div></div></div>
+    </div>
+    <div id="chips3"></div>
+  </div>
+  <!-- 4. La révélation -->
+  <div class="sc" id="s4">
+    <canvas id="dust4" width="1080" height="1920"></canvas>
+    <p class="line eb" id="s4eb" style="top:300px;color:var(--gold)">Ton archétype</p>
+    <p class="line it" id="s4a" style="top:370px;font-size:168px;color:#F6EEE1"></p>
+    <p class="line it" id="s4b" style="top:560px;font-size:140px;color:#F6EEE1"></p>
+    <div class="abs" id="s4rule" style="top:790px;left:540px;height:3px;background:var(--gold)"></div>
+    <div id="cards"></div>
+    <p class="line" id="s4c" style="top:1560px;font-family:G;font-size:40px;color:#CDB89E">Tes 3 pistes de business, notées sur 100</p>
+  </div>
+  <!-- 5. Signature -->
+  <div class="sc" id="s5">
+    <svg class="abs" id="compass5" width="1080" height="1920" viewBox="0 0 1080 1920"></svg>
+    <p class="line disp" id="s5a" style="top:840px;font-size:104px;color:var(--ink2)"></p>
+    <p class="line it" id="s5b" style="top:955px;font-size:112px;color:var(--brown)"></p>
+    <div class="abs" id="cta" style="left:220px;top:1150px;width:640px;height:124px;border-radius:999px;background:var(--brown);color:var(--cream);font-family:G;font-weight:600;font-size:56px;display:flex;align-items:center;justify-content:center;letter-spacing:.01em">businessdesign.fr</div>
+    <p class="line" id="s5w" style="top:1350px;font-family:F;font-weight:600;font-size:48px;color:var(--ink2)">Ma Boussole Business</p>
+    <p class="line eb" id="s5w2" style="top:1418px;font-size:22px;color:var(--brown)">by Business Design</p>
+    <p class="line" id="s5d" style="top:1520px;font-family:G;font-size:26px;color:var(--muted)">Le Human Design, une grille de réflexion.</p>
+  </div>
+  <canvas id="grain" width="540" height="960" style="width:1080px;height:1920px"></canvas>
+  <div id="vig"></div>
+  <div id="flash" style="position:absolute;inset:0;background:radial-gradient(circle at 50% 30%, #FFE7BF 0%, rgba(255,231,191,.0) 70%);opacity:0;pointer-events:none"></div>
+</div>
+<script>
+const $ = id => document.getElementById(id);
+const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+const seg = (t, a, b) => clamp((t - a) / (b - a));
+const lerp = (a, b, p) => a + (b - a) * p;
+const E = {
+  out: x => 1 - Math.pow(1 - x, 3), out5: x => 1 - Math.pow(1 - x, 5),
+  expo: x => x >= 1 ? 1 : 1 - Math.pow(2, -10 * x),
+  io: x => x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2,
+  back: x => { const c1 = 1.5, c3 = c1 + 1; return 1 + c3 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2); }
+};
+// pseudo-aléatoire déterministe
+let sd = 7; const rnd = () => (sd = (sd * 16807) % 2147483647) / 2147483647;
+const NS = 'http://www.w3.org/2000/svg';
+const el = (tag, attrs, parent) => { const n = document.createElementNS(NS, tag); for (const k in attrs) n.setAttribute(k, attrs[k]); parent && parent.appendChild(n); return n; };
+
+/* ---------- textes découpés en mots / lettres ---------- */
+function split(id, text, mode = 'w') {
+  const p = $(id); p.innerHTML = '';
+  const parts = mode === 'w' ? text.split(' ') : [...text];
+  return parts.map((s, i) => { const sp = document.createElement('span'); sp.className = 'w'; sp.textContent = s === ' ' ? ' ' : s; p.appendChild(sp); if (mode === 'w' && i < parts.length - 1) p.appendChild(document.createTextNode(' ')); return sp; });
+}
+function reveal(spans, t, start, stag = .12, dur = .7, dy = 90, blur = 16) {
+  spans.forEach((s, i) => { const p = E.out5(seg(t, start + i * stag, start + i * stag + dur)); s.style.transform = `translateY(${(1 - p) * dy}px)`; s.style.opacity = p; s.style.filter = p < 1 ? `blur(${(1 - p) * blur}px)` : 'none'; });
+}
+const T = {
+  s1a: split('s1a', 'Et si ton travail'), s1b: split('s1b', 'te ressemblait ?'),
+  s2a: split('s2a', 'Découvre ta charte'), s2b: split('s2b', 'Human Design'),
+  s3a: split('s3a', '9 questions.'), s3b: split('s3b', '2 minutes.'),
+  s4a: split('s4a', 'Guide', 'l'), s4b: split('s4b', 'bienveillant·e', 'l'),
+  s5a: split('s5a', 'Ton profil gratuit'), s5b: split('s5b', 'en 5 minutes.')
+};
+
+/* ---------- boussole ---------- */
+const WHEEL = [41,19,13,49,30,55,37,63,22,36,25,17,21,51,42,3,27,24,2,23,8,20,16,35,45,12,15,52,39,53,62,56,31,33,7,4,29,59,40,64,47,6,46,18,48,57,32,50,28,44,1,43,14,34,9,5,26,11,10,58,38,54,61,60];
+function compass(svg, cx, cy, r, light) {
+  const g = el('g', {}, svg);
+  const circ = el('circle', { cx, cy, r, fill: 'none', stroke: light ? '#D9A35E' : '#7B4A26', 'stroke-width': 3 }, g);
+  const len = 2 * Math.PI * r; circ.setAttribute('stroke-dasharray', len);
+  const ticks = WHEEL.map((n, i) => { const a = i / 64 * Math.PI * 2 - Math.PI / 2, long = i % 8 === 0; return el('line', { x1: cx + Math.cos(a) * (r + 18), y1: cy + Math.sin(a) * (r + 18), x2: cx + Math.cos(a) * (r + (long ? 52 : 34)), y2: cy + Math.sin(a) * (r + (long ? 52 : 34)), stroke: light ? '#B9824A' : '#B9824A', 'stroke-width': long ? 3 : 2, 'stroke-linecap': 'round' }, g); });
+  const inner = el('circle', { cx, cy, r: r * .72, fill: 'none', stroke: light ? 'rgba(217,163,94,.35)' : 'rgba(123,74,38,.25)', 'stroke-width': 1.5 }, g);
+  const needle = el('g', {}, g);
+  const k = r / 210;
+  el('polygon', { points: `0,${-172 * k} ${24 * k},0 ${-24 * k},0`, fill: light ? '#D9A35E' : '#7B4A26' }, needle);
+  el('polygon', { points: `0,${172 * k} ${24 * k},0 ${-24 * k},0`, fill: light ? 'rgba(246,238,225,.55)' : 'rgba(123,74,38,.35)' }, needle);
+  el('circle', { cx: 0, cy: 0, r: 9 * k, fill: light ? '#F6EEE1' : '#FBF8F2', stroke: light ? '#D9A35E' : '#7B4A26', 'stroke-width': 3 }, needle);
+  return { g, circ, len, ticks, inner, needle, cx, cy };
+}
+const C1 = compass($('compass1'), 540, 760, 210, true);
+const C5 = compass($('compass5'), 540, 600, 150, false);
+
+/* ---------- bodygraph ---------- */
+const POS = { head: [180, 52], ajna: [180, 128], throat: [180, 210], g: [180, 300], heart: [248, 338], sacral: [180, 420], spleen: [64, 398], solar: [296, 398], root: [180, 500] };
+const CH = [["head","ajna",64,47],["head","ajna",61,24],["head","ajna",63,4],["ajna","throat",17,62],["ajna","throat",43,23],["ajna","throat",11,56],["throat","spleen",16,48],["throat","spleen",20,57],["throat","g",20,10],["throat","sacral",20,34],["throat","g",31,7],["throat","g",8,1],["throat","g",33,13],["throat","heart",45,21],["throat","solar",35,36],["throat","solar",12,22],["g","sacral",10,34],["g","spleen",10,57],["g","sacral",15,5],["g","sacral",2,14],["g","sacral",46,29],["g","heart",25,51],["heart","spleen",26,44],["heart","solar",40,37],["sacral","spleen",27,50],["sacral","solar",59,6],["sacral","spleen",34,57],["sacral","root",3,60],["sacral","root",42,53],["sacral","root",9,52],["spleen","root",18,58],["spleen","root",28,38],["spleen","root",32,54],["root","solar",19,49],["root","solar",39,55],["root","solar",41,30]];
+const DEF = new Set(['64-47', '43-23', '20-34', '2-14', '59-6', '39-55']);
+const DEFC = new Set(['head', 'ajna', 'throat', 'g', 'sacral', 'solar', 'root']);
+const bg = $('bg'), lines = [], groups = {};
+CH.forEach(([a, b, x, y]) => { const k = [a, b].sort().join('|'); (groups[k] ||= []).push([a, b, x, y]); });
+for (const k in groups) groups[k].forEach(([a, b, x, y], i, list) => {
+  const [x1, y1] = POS[a], [x2, y2] = POS[b], L = Math.hypot(x2 - x1, y2 - y1), nx = -(y2 - y1) / L, ny = (x2 - x1) / L, off = (i - (list.length - 1) / 2) * 9 * (a < b ? 1 : -1);
+  const base = el('line', { x1: x1 + nx * off, y1: y1 + ny * off, x2: x2 + nx * off, y2: y2 + ny * off, stroke: '#E8DCCB', 'stroke-width': 4, 'stroke-linecap': 'round' }, bg);
+  base.setAttribute('stroke-dasharray', L); const on = DEF.has(`${x}-${y}`) || DEF.has(`${y}-${x}`);
+  let hot = null; if (on) { hot = el('line', { x1: x1 + nx * off, y1: y1 + ny * off, x2: x2 + nx * off, y2: y2 + ny * off, stroke: '#B9824A', 'stroke-width': 6, 'stroke-linecap': 'round' }, bg); hot.setAttribute('stroke-dasharray', L); }
+  lines.push({ base, hot, L, d: rnd() });
+});
+const shapes = {};
+Object.keys(POS).forEach((c, i) => {
+  const [x, y] = POS[c], g = el('g', {}, bg); let s;
+  const A = { fill: '#FFFEFB', stroke: '#5E4A3A', 'stroke-width': 2, 'stroke-linejoin': 'round' };
+  if (c === 'head') s = el('polygon', { ...A, points: `0,-30 -32,22 32,22` }, g);
+  else if (c === 'ajna') s = el('polygon', { ...A, points: `-32,-22 32,-22 0,30` }, g);
+  else if (c === 'g') s = el('polygon', { ...A, points: `0,-36 36,0 0,36 -36,0` }, g);
+  else if (c === 'heart') s = el('polygon', { ...A, points: `0,-18 22,16 -22,16` }, g);
+  else if (c === 'spleen') s = el('polygon', { ...A, points: `-24,-36 32,0 -24,36` }, g);
+  else if (c === 'solar') s = el('polygon', { ...A, points: `24,-36 -32,0 24,36` }, g);
+  else { const z = c === 'throat' ? 25 : 28; s = el('rect', { ...A, x: -z, y: -z, width: 2 * z, height: 2 * z, rx: 6 }, g); }
+  shapes[c] = { g, s, x, y, i, dx: (rnd() - .5) * 600, dy: (rnd() - .5) * 700, rot: (rnd() - .5) * 220 };
+});
+// roue des 64 portes
+const ring = $('ring'), ringG = el('g', {}, ring), RCX = 540, RCY = 1020, RR = 470;
+const ringNums = WHEEL.map((n, i) => { const a = i / 64 * 360; const t = el('text', { x: RCX, y: RCY - RR, 'text-anchor': 'middle', 'font-family': 'G', 'font-size': 22, fill: '#B9824A', transform: `rotate(${a} ${RCX} ${RCY})` }, ringG); t.textContent = n; return t; });
+el('circle', { cx: RCX, cy: RCY, r: RR + 26, fill: 'none', stroke: 'rgba(185,130,74,.28)', 'stroke-width': 1.5 }, ringG);
+el('circle', { cx: RCX, cy: RCY, r: RR - 34, fill: 'none', stroke: 'rgba(185,130,74,.18)', 'stroke-width': 1.5 }, ringG);
+// étiquettes de la charte
+const chips2 = [['Type', 'Manifesteur', 90, 1560], ['Autorité', 'Émotionnelle', 560, 1560], ['Stratégie', 'Informer avant d\'agir', 90, 1680], ['Profil', '1/4', 720, 1680]].map(([k, v, x, y]) => { const d = document.createElement('div'); d.className = 'chip'; d.style.left = x + 'px'; d.style.top = y + 'px'; d.innerHTML = `<b>${k}</b> · ${v}`; $('chips2').appendChild(d); return d; });
+// mots du quiz
+const chips3 = [['Créer', 40, 640, -6], ['Aider', 860, 600, 5], ['Comprendre', 20, 1040, 4], ['Lancer', 870, 980, -5], ['Organiser', 30, 1420, -3], ['Fabriquer', 800, 1380, 6]].map(([w, x, y, r]) => { const d = document.createElement('div'); d.className = 'chip'; d.style.left = x + 'px'; d.style.top = y + 'px'; d.textContent = w; d.dataset.r = r; $('chips3').appendChild(d); return d; });
+// cartes des pistes
+const cardsData = [['Piste n°1', 'Coaching individuel', 90], ['Piste n°2', 'Médiation, facilitation', 85], ['Piste n°3', 'Coach bien-être en ligne', 78]];
+const cards = cardsData.map(([k, t, s], i) => { const d = document.createElement('div'); d.className = 'card'; d.style.top = (900 + i * 210) + 'px'; d.innerHTML = `<div><p class="k">${k.toUpperCase()}</p><p class="t">${t}</p></div><div class="s"><span>0</span><small>SUR 100</small></div>`; $('cards').appendChild(d); return { d, n: d.querySelector('.s span'), s }; });
+
+/* ---------- particules ---------- */
+const dust = Array.from({ length: 140 }, () => ({ x: rnd() * 1080, y: rnd() * 1920, s: .3 + rnd() * 1.2, r: .8 + rnd() * 2.6, ph: rnd() * 6.28 }));
+const burst = Array.from({ length: 220 }, () => ({ a: rnd() * 6.283, v: .25 + rnd() * .95, r: 1 + rnd() * 3.4, ph: rnd() * 6.28 }));
+function drawDust(cv, t, color, k = 1) {
+  const x = cv.getContext('2d'); x.clearRect(0, 0, 1080, 1920);
+  dust.forEach(d => { const y = ((d.y - t * 26 * d.s) % 1920 + 1920) % 1920, xx = d.x + Math.sin(t * .5 + d.ph) * 30; const a = (.25 + .45 * (.5 + .5 * Math.sin(t * 2 + d.ph))) * k; x.fillStyle = `rgba(${color},${a})`; x.beginPath(); x.arc(xx, y, d.r, 0, 6.283); x.fill(); });
+}
+function drawBurst(cv, t, t0, cx, cy) {
+  const x = cv.getContext('2d'); const dt = t - t0; if (dt < 0) return;
+  burst.forEach(b => { const rr = b.v * 760 * (1 - Math.exp(-2.6 * dt)), px = cx + Math.cos(b.a) * rr, py = cy + Math.sin(b.a) * rr - dt * 18; const a = Math.max(0, 1 - dt / 3.6) * (.6 + .4 * Math.sin(dt * 9 + b.ph)); x.fillStyle = `rgba(232,186,120,${a})`; x.beginPath(); x.arc(px, py, b.r * (1 + dt * .2), 0, 6.283); x.fill(); });
+}
+// grain
+const gc = $('grain').getContext('2d'), grains = [0, 1, 2, 3].map(() => { const im = gc.createImageData(540, 960); for (let i = 0; i < im.data.length; i += 4) { const v = rnd() * 255; im.data[i] = im.data[i + 1] = im.data[i + 2] = v; im.data[i + 3] = 255; } return im; });
+
+/* ---------- rendu d'une image au temps t ---------- */
+const show = (id, on) => { $(id).style.display = on ? 'block' : 'none'; };
+const circleClip = (id, cx, cy, r) => { $(id).style.clipPath = `circle(${r}px at ${cx}px ${cy}px)`; };
+window.render = function (t) {
+  gc.putImageData(grains[Math.floor(t * 12) % 4], 0, 0);
+  // --- Scène 1 (0 → 3.5)
+  show('s1', t < 3.6);
+  if (t < 3.6) {
+    drawDust($('dust1'), t, '217,163,94', seg(t, 0, 1.2));
+    $('s1eb').style.opacity = E.out(seg(t, .2, 1)) * (1 - seg(t, 2.4, 2.9));
+    const pc = E.io(seg(t, .15, 1.3)); C1.circ.setAttribute('stroke-dashoffset', C1.len * (1 - pc));
+    C1.ticks.forEach((l, i) => l.style.opacity = E.out(seg(t, .5 + i * .012, .9 + i * .012)));
+    C1.inner.style.opacity = seg(t, .8, 1.4);
+    const p = seg(t, .35, 2.3); let a = (1 - E.expo(p)) * 1260; if (t > 1.7) a += 16 * Math.exp(-5 * (t - 1.7)) * Math.sin(17 * (t - 1.7));
+    C1.needle.setAttribute('transform', `translate(540 760) rotate(${a}) scale(${lerp(.2, 1, E.back(seg(t, .3, 1)))})`);
+    C1.needle.style.opacity = seg(t, .3, .6);
+    const zoom = 1 + E.io(seg(t, 2.7, 3.5)) * .35; C1.g.setAttribute('transform', `translate(540 760) scale(${zoom}) translate(-540 -760)`);
+    reveal(T.s1a, t, .9, .14, .8); reveal(T.s1b, t, 1.35, .16, .9);
+  }
+  // --- Scène 2 (2.9 → 8.6) : la charte
+  const on2 = t >= 2.9 && t < 8.7; show('s2', on2);
+  if (on2) {
+    circleClip('s2', 540, 760, E.io(seg(t, 2.9, 3.6)) * 2300);
+    const ex = E.io(seg(t, 7.9, 8.6)); $('s2').style.transform = `scale(${1 + ex * .18})`; $('s2').style.opacity = 1 - ex; $('s2').style.filter = ex > 0 ? `blur(${ex * 18}px)` : 'none';
+    $('s2eb').style.opacity = E.out(seg(t, 3.3, 3.9));
+    reveal(T.s2a, t, 3.4, .1, .75); reveal(T.s2b, t, 3.75, .12, .8);
+    ringG.setAttribute('transform', `rotate(${(t - 2.9) * 5} ${RCX} ${RCY})`);
+    ringNums.forEach((n, i) => n.style.opacity = E.out(seg(t, 3.5 + i * .015, 3.9 + i * .015)) * .85);
+    ringG.style.opacity = 1;
+    Object.values(shapes).forEach(s => { const p = E.back(seg(t, 4.0 + s.i * .1, 4.85 + s.i * .1)), q = seg(t, 4.0 + s.i * .1, 4.4 + s.i * .1); s.g.setAttribute('transform', `translate(${s.x + (1 - p) * s.dx} ${s.y + (1 - p) * s.dy}) rotate(${(1 - p) * s.rot}) scale(${lerp(.2, 1, Math.min(p, 1.15))})`); s.g.style.opacity = q;
+      const f = E.out(seg(t, 6.3 + s.i * .07, 6.8 + s.i * .07)); if (DEFC.has(Object.keys(shapes)[s.i])) { s.s.setAttribute('fill', f > .5 ? '#E3C59C' : '#FFFEFB'); s.s.style.filter = f > 0 && f < 1 ? `drop-shadow(0 0 ${f * 14}px rgba(217,163,94,.9))` : 'none'; s.s.setAttribute('stroke', f > .5 ? '#21170F' : '#5E4A3A'); } });
+    lines.forEach(l => { const p = E.io(seg(t, 4.7 + l.d * .9, 5.5 + l.d * .9)); l.base.setAttribute('stroke-dashoffset', l.L * (1 - p)); if (l.hot) l.hot.setAttribute('stroke-dashoffset', l.L * (1 - E.io(seg(t, 5.8 + l.d * .5, 6.5 + l.d * .5)))); });
+    const breathe = 1 + Math.sin((t - 6.8) * 2.2) * .008 * seg(t, 6.8, 7.2); $('bg').style.transform = `scale(${breathe})`;
+    chips2.forEach((c, i) => { const p = E.back(seg(t, 6.7 + i * .14, 7.25 + i * .14)); c.style.opacity = seg(t, 6.7 + i * .14, 6.95 + i * .14); c.style.transform = `translateY(${(1 - p) * 60}px) scale(${lerp(.8, 1, p)})`; });
+  }
+  // --- Scène 3 (8.1 → 11.9) : le quiz
+  const on3 = t >= 8.1 && t < 12.0; show('s3', on3);
+  if (on3) {
+    $('s3').style.opacity = E.out(seg(t, 8.1, 8.6));
+    reveal(T.s3a, t, 8.35, .14, .7); reveal(T.s3b, t, 8.7, .14, .75);
+    const pe = E.expo(seg(t, 8.2, 9.4)), sw = Math.sin((t - 8.2) * 1.3);
+    $('phone').style.transform = `translateY(${(1 - pe) * 1500}px) rotateX(${lerp(28, 7, pe) + sw * 1.2}deg) rotateY(${lerp(-18, -7, pe) + sw * 2}deg) rotateZ(${lerp(-8, -2.5, pe)}deg)`;
+    $('quizimg').style.transform = `translateY(${-E.io(seg(t, 9.2, 11.2)) * 120}px)`;
+    const rp = seg(t, 10.25, 10.95); const rip = $('ripple'); rip.style.opacity = rp > 0 ? (1 - rp) : 0; const rs = 40 + E.out(rp) * 260; rip.style.width = rip.style.height = rs + 'px'; rip.style.left = (280 - rs / 2) + 'px'; rip.style.top = (790 - rs / 2) + 'px';
+    chips3.forEach((c, i) => { const p = E.back(seg(t, 9.0 + i * .13, 9.6 + i * .13)); c.style.opacity = seg(t, 9.0 + i * .13, 9.3 + i * .13) * (i % 2 ? .95 : 1); const fl = Math.sin(t * 1.6 + i) * 10; c.style.transform = `translate(${(1 - p) * (c.offsetLeft < 500 ? -120 : 120)}px, ${fl}px) rotate(${c.dataset.r}deg) scale(${lerp(.7, 1, p)})`; });
+  }
+  // --- Scène 4 (10.9 → 16.8) : la révélation
+  const on4 = t >= 10.9 && t < 16.9; show('s4', on4);
+  if (on4) {
+    circleClip('s4', 540, 1290, E.io(seg(t, 10.9, 11.75)) * 2300);
+    drawDust($('dust4'), t, '217,163,94', .7); drawBurst($('dust4'), t, 11.85, 540, 520);
+    $('s4eb').style.opacity = E.out(seg(t, 11.8, 12.3)); $('s4eb').style.letterSpacing = lerp(.6, .32, E.out(seg(t, 11.8, 12.5))) + 'em';
+    reveal(T.s4a, t, 11.9, .06, .8, 120, 22); reveal(T.s4b, t, 12.2, .045, .8, 120, 22);
+    const lift = E.io(seg(t, 13.3, 14.0)) * -40; ['s4eb', 's4a', 's4b', 's4rule'].forEach(id => $(id).style.translate = `0 ${lift}px`);
+    const rw = E.io(seg(t, 12.9, 13.5)) * 440; $('s4rule').style.width = rw + 'px'; $('s4rule').style.left = (540 - rw / 2) + 'px';
+    cards.forEach((c, i) => { const s0 = 13.55 + i * .3, p = E.expo(seg(t, s0, s0 + .9)); c.d.style.opacity = seg(t, s0, s0 + .25); c.d.style.transform = `translateY(${(1 - p) * 420}px) rotate(${(1 - p) * (i % 2 ? 4 : -4)}deg)`; c.n.textContent = Math.round(E.out(seg(t, s0 + .2, s0 + 1.1)) * c.s); });
+    $('s4c').style.opacity = E.out(seg(t, 14.7, 15.3));
+  }
+  // --- Scène 5 (16.1 → 20) : signature
+  const on5 = t >= 16.1; show('s5', on5);
+  if (on5) {
+    circleClip('s5', 540, 1920, E.io(seg(t, 16.1, 16.9)) * 2400);
+    const pc = E.io(seg(t, 16.5, 17.4)); C5.circ.setAttribute('stroke-dashoffset', C5.len * (1 - pc));
+    C5.ticks.forEach((l, i) => l.style.opacity = E.out(seg(t, 16.8 + i * .008, 17.1 + i * .008)));
+    C5.inner.style.opacity = seg(t, 17, 17.5);
+    const p = seg(t, 16.6, 18.0); let a = (1 - E.expo(p)) * -540; if (t > 17.5) a += 10 * Math.exp(-5 * (t - 17.5)) * Math.sin(16 * (t - 17.5));
+    C5.needle.setAttribute('transform', `translate(540 600) rotate(${a}) scale(${E.back(seg(t, 16.6, 17.2))})`); C5.needle.style.opacity = seg(t, 16.6, 16.9);
+    reveal(T.s5a, t, 16.95, .12, .75); reveal(T.s5b, t, 17.3, .13, .8);
+    const cp = E.back(seg(t, 17.85, 18.4)); $('cta').style.opacity = seg(t, 17.85, 18.05); $('cta').style.transform = `scale(${lerp(.6, 1, cp)})`;
+    const sh = seg(t, 18.6, 19.4); $('cta').style.boxShadow = `0 18px 40px rgba(123,74,38,${.25 + .15 * Math.sin(sh * Math.PI)})`;
+    ['s5w', 's5w2'].forEach((id, i) => { const q = E.out(seg(t, 18.2 + i * .12, 18.8 + i * .12)); $(id).style.opacity = q; $(id).style.transform = `translateY(${(1 - q) * 30}px)`; });
+    $('s5d').style.opacity = E.out(seg(t, 18.6, 19.2));
+    $('stage').style.opacity = 1;
+  }
+  // vignettage selon la scène
+  const dark = (t < 3.0) || (t > 11.5 && t < 16.4);
+  const fl = t >= 11.8 ? Math.exp(-7 * (t - 11.8)) : 0; $('flash').style.opacity = fl * .85;
+  const sk = t >= 11.8 ? Math.exp(-6 * (t - 11.8)) * 9 : 0; $('stage').style.transform = sk > .3 ? `translate(${Math.sin(t * 90) * sk}px, ${Math.cos(t * 77) * sk}px)` : 'none';
+  $('vig').style.background = dark ? 'radial-gradient(ellipse at 50% 42%, rgba(0,0,0,0) 45%, rgba(0,0,0,.55) 100%)' : 'radial-gradient(ellipse at 50% 45%, rgba(0,0,0,0) 60%, rgba(70,40,15,.10) 100%)';
+};
+window.ready = document.fonts.ready.then(() => new Promise(r => { const im = $('quizimg'); im.complete ? r() : im.onload = r; }));
+</script>
+</body></html>

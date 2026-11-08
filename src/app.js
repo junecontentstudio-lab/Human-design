@@ -22,6 +22,7 @@ const blankState = () => ({ birth: { name: '', date: '', time: '', unknown: fals
 let S = load() || blankState();
 S.quick ||= {};
 if (typeof S.quick.sell === 'string') S.quick.sell = [S.quick.sell];
+if (S.emailSent === 'pending') S.emailSent = false; // onglet fermé pendant l'envoi : proposer « Renvoyer »
 let step = 0;
 function load() { try { const v = localStorage.getItem(KEY); return v ? JSON.parse(v) : null; } catch (e) { return null; } }
 function save() { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) { } }
@@ -977,7 +978,7 @@ function renderResults() {
     </div>
     ${S.paid && !S.example ? '' : `<div class="card next-card"><div><p class="eyebrow">Aller plus loin</p><h3>Transforme une piste en projet concret</h3><p class="muted" style="margin-top:4px">Idées 100 % sur mesure, bilan approfondi, comité de 6 experts, ton offre, ton plan d'action sur 30 jours et ton récap complet.</p></div><a class="btn" href="#offre">Découvrir la version complète</a></div>`}
     ${S.quick.path === 'projet' && !S.example ? projectCardHTML() : ''}
-    ${S.example ? '' : `<p class="sent">${S.emailSent ? `Ton profil a été envoyé à <b>${esc(S.email)}</b>. Pense à regarder tes courriers indésirables.` : `Ton profil n'a pas pu être envoyé à <b>${esc(S.email)}</b>.`} <button type="button" class="linkbtn" id="resend">Renvoyer</button> · <button type="button" class="linkbtn" id="changeMail">Changer d'adresse</button></p>`}
+    ${S.example ? '' : `<p class="sent">${S.emailSent === 'pending' ? `Envoi de ton profil (PDF) à <b>${esc(S.email)}</b> en cours…` : S.emailSent ? `Ton profil a été envoyé à <b>${esc(S.email)}</b>. Pense à regarder tes courriers indésirables.` : `Ton profil n'a pas pu être envoyé à <b>${esc(S.email)}</b>.`} <button type="button" class="linkbtn" id="resend">Renvoyer</button> · <button type="button" class="linkbtn" id="changeMail">Changer d'adresse</button></p>`}
   </div>`;
 }
 async function sendFree() {
@@ -997,9 +998,11 @@ document.addEventListener('submit', async e => {
   if (!EMAIL_RE.test(v)) { msg.textContent = 'Indique une adresse e-mail valide, par exemple prenom@exemple.fr.'; $('#gMail').focus(); return; }
   const nm = $('#gName').value.trim(); if (nm) S.birth.name = nm;
   S.email = v; S.optin = $('#gOptin').checked; save();
-  btn.disabled = true; msg.textContent = 'Préparation de ton profil…';
-  S.emailSent = await sendFree(); save();
+  // Le profil s'affiche tout de suite ; l'e-mail (avec le PDF) part en arrière-plan.
+  btn.disabled = true; S.emailSent = 'pending'; save();
   renderAll(); $('#resultats').scrollIntoView({ block: 'start' });
+  S.emailSent = await sendFree(); save(); renderResults();
+  toast(S.emailSent ? `Ton profil est aussi parti à ${S.email}` : 'L\'e-mail n\'a pas pu partir : utilise « Renvoyer » sous ton profil.');
 });
 document.addEventListener('click', async e => {
   if (e.target.id === 'resend') { toast('Envoi en cours…'); S.emailSent = await sendFree(); save(); renderResults(); toast(S.emailSent ? `Profil renvoyé à ${S.email}` : 'L\'envoi n\'a pas fonctionné. Réessaie dans une minute.'); }
@@ -1037,6 +1040,7 @@ function paywallHTML() {
         <p class="eyebrow">Accès complet</p>
         <p class="pw-price">${PRICE}</p>
         <p class="pw-next">Prix de lancement · il passera à ${NEXT_PRICE} après la période de lancement</p>
+        ${CONFIG.testCharge ? `<p class="hint test-note">Mode test : le paiement réellement encaissé est de ${CONFIG.testCharge} €.</p>` : ''}
         <p class="muted">Paiement unique et sécurisé par SumUp · accès immédiat</p>
         <label for="payMail">Ton adresse e-mail<input type="email" id="payMail" autocomplete="email" placeholder="prenom@exemple.fr" value="${esc(S.example ? '' : S.email || '')}"><span class="hint">Ton lien d'accès personnel y sera envoyé.</span></label>
         <label class="check" for="fCgv" style="align-items:flex-start"><input type="checkbox" id="fCgv" style="margin-top:4px"> <span class="hint">J'accepte les <a href="/cgv.html" target="_blank">conditions générales de vente</a>. Je demande l'accès immédiat au contenu et je renonce à mon droit de rétractation.</span></label>

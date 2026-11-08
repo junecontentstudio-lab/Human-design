@@ -1,9 +1,9 @@
 # Ma Boussole Business by Business Design
 
-Page de vente et outil en ligne (français, tutoiement). **Bloc gratuit** : charte Human Design → quiz express (9 questions, dont le choix du parcours « pas encore d'idée » / « déjà un projet ») → e-mail demandé pour révéler le profil (archétype d'entrepreneur·e + 3 pistes de business, envoyé par e-mail). **Version complète à 22 €** (à partir des idées sur mesure) : idées par IA, bilan approfondi en 7 modules, comité de 6 experts IA, coach IA conversationnel (questions une par une → offre finale + plan 4 semaines, `S.coach`, `S.coachPlan` remplace le plan par défaut du récap), offre + récap. Hébergement Vercel, base Supabase, paiement SumUp, e-mails Brevo, IA Claude (API Anthropic).
+Page de vente et outil en ligne (français, tutoiement). **Bloc gratuit** : charte Human Design → quiz express (9 questions, dont le choix du parcours « pas encore d'idée » / « déjà un projet ») → e-mail demandé pour révéler le profil (archétype d'entrepreneur·e + 3 pistes de business, envoyé par e-mail). **Version complète à 22 €** (à partir des idées sur mesure) : idées par IA, bilan approfondi en 7 modules, comité de 6 experts IA, offre + récap. Hébergement Vercel, base Supabase, paiement SumUp, e-mails Brevo, IA Claude (API Anthropic).
 
 ## Structure
-- `src/page.html` : gabarit HTML + tout le CSS (palette crème/beige/marron en tokens, thème sombre inclus). Contient les marqueurs `/*ENGINE*/ /*CONTENT*/ /*APP*/`.
+- `src/page.html` : gabarit HTML + tout le CSS (palette crème blanc cassé / marron en tokens, contraste renforcé ; toujours en clair, le thème sombre ne s'active que via `data-theme="dark"`). Contient les marqueurs `/*ENGINE*/ /*CONTENT*/ /*APP*/`.
 - `src/engine.js` : calcul de la charte (éphémérides simplifiées de Schlyter, portes, canaux, type, autorité, profil). Aucune dépendance.
 - `src/content.js` : tous les textes (types, autorités, profils, centres, canaux, questions du bilan, 30 idées de business, textes « business » des 4 clés, `QUIZ` express, `ARCHETYPES`).
 - `src/app.js` : logique de la page (formulaire, quiz express, porte e-mail, profil gratuit, paywall, bilan en 7 modules, scoring des idées, comité d'experts, récap, mode exemple, barre « étape suivante »).
@@ -17,7 +17,7 @@ Page de vente et outil en ligne (français, tutoiement). **Bloc gratuit** : char
   - `config.js` : réglages publics (`freeAccess`).
   - `project.js` : enregistre le projet validé (parcours « déjà un projet ») dans `boussole_leads.quiz.projet`. Côté page, le texte va dans `S.ans.ideas` (module « Tes idées » du bilan, lu par le comité) et `S.projectSaved = true`.
   - `restore.js` : « Déjà acheté ? » → renvoie le lien d'accès (`/?acces=<jeton>`) à l'e-mail d'achat ; réponse identique que l'adresse soit cliente ou non.
-  - `claude.js` : relais vers `POST /v1/messages`, réservé aux détenteurs d'un jeton valide, plafonné par achat (`AI_CALLS_LIMIT`, 100 par défaut, RPC `boussole_use_ai`) ; renvoie `{data}` (JSON parsé).
+  - `claude.js` : relais vers `POST /v1/messages`, réservé aux détenteurs d'un jeton valide, plafonné par achat (`AI_CALLS_LIMIT`, 60 par défaut, RPC `boussole_use_ai`) ; renvoie `{data}` (JSON parsé).
   - `send-email.js` : Brevo. Type `carte` (profil gratuit) : enregistre le prospect dans `boussole_leads` (1 envoi/min, 10 max par adresse). Type `recap` exige le jeton.
 - `lib/` : `db.js` (Supabase REST, service_role ; renvoie `null` si non configuré, le site continue de marcher), `brevo.js`, `payments.js` (`confirmCheckout` : passe à PAID une seule fois, marque le prospect client, envoie l'e-mail avec le lien d'accès), `token.js`.
 - `supabase/migrations/` : schéma SQL (tables `boussole_leads`, `boussole_purchases`, fonction `boussole_use_ai`, vue `boussole_stats`). À exécuter dans le SQL Editor de Supabase. Tables préfixées car la base est partagée avec d'autres projets.

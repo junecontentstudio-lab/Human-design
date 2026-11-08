@@ -461,7 +461,7 @@ document.addEventListener('click', e => {
   const [src, i] = t.dataset.pick.split(':');
   const x = src === 'rule' ? LAST_RULE[+i] : aiCache?.[+i];
   if (!x) return;
-  S.offer = src === 'rule' ? offerFromRule(x) : offerFromAI(x); delete S.coachPlan;
+  S.offer = src === 'rule' ? offerFromRule(x) : offerFromAI(x);
   save(); renderCompass(); renderRecap();
   $('#recap').scrollIntoView();
 });
@@ -479,7 +479,6 @@ const OFFER_FIELDS = [
   ['step', 'Ton premier pas cette semaine', '', true]
 ];
 function plan(o) {
-  if (Array.isArray(S.coachPlan) && S.coachPlan.length) return S.coachPlan.slice(0, 6).map(w => [String(w.semaine || ''), String(w.objectif || ''), (Array.isArray(w.actions) ? w.actions : []).map(String).join(' · ')]);
   const ch = S.chart, unk = S.birth.unknown;
   const decide = ch && !unk ? AUTH_BIZ[ch.authority] : "Laisse-toi au moins une nuit avant de valider.";
   const launch = ch ? STRAT_BIZ[ch.type][1] : "Présente ton offre simplement, à des personnes réelles.";
@@ -556,7 +555,7 @@ function recapText(d) {
   if (d.ex.synth && (d.ex.synth.feuille_de_route || []).length) { L.push('', 'MA FEUILLE DE ROUTE SUR 90 JOURS'); d.ex.synth.feuille_de_route.forEach(m => { L.push(`${m.mois} — ${m.objectif}`); (m.actions || []).forEach(x => L.push(`  - ${x}`)); }); if (d.ex.synth.indicateur) L.push(`Indicateur de réussite : ${d.ex.synth.indicateur}`); }
   return L.join('\n');
 }
-const RECAP_CSS = `body{margin:0;background:#F4EDE1;color:#3A2819;font-family:Georgia,'Times New Roman',serif;line-height:1.55}
+const RECAP_CSS = `body{margin:0;background:#FBF8F2;color:#21170F;font-family:Georgia,'Times New Roman',serif;line-height:1.55}
 .doc{max-width:760px;margin:0 auto;padding:40px 24px}
 .rc-head{border-bottom:2px solid #8A5A35;padding-bottom:18px;margin-bottom:8px}
 .rc-eyebrow,.rc-k-label,dt,.rc-w{font-family:system-ui,-apple-system,'Segoe UI',sans-serif;font-size:12px;text-transform:uppercase;letter-spacing:.12em;color:#7A614B;font-weight:600;margin:0}
@@ -594,7 +593,6 @@ function renderRecap() {
     return;
   }
   box.innerHTML = `
-    <div class="card coach" id="coachBox"></div>
     <div class="recap-grid">
       <div class="card offer-form">
         <div><p class="eyebrow">Construis ton offre</p><h3>Ton angle clair</h3><p class="muted" style="margin-top:4px">Pré-rempli à partir de ta piste. Modifie chaque champ avec tes mots : ton récap se met à jour en direct.</p></div>
@@ -605,101 +603,8 @@ function renderRecap() {
         <div class="card recap-actions" id="recapActions"></div>
       </div>
     </div>`;
-  renderRecapDoc(); renderRecapActions(); renderCoach();
+  renderRecapDoc(); renderRecapActions();
 }
-
-/* ---------- coach IA : questions une par une, puis offre finale et plan ---------- */
-const COACH_MAX = 12;
-let coachBusy = false;
-function coachPrompt() {
-  const o = currentOffer(), msgs = S.coach?.msgs || [];
-  const asked = msgs.filter(m => m.r === 'u').length;
-  const hist = msgs.map(m => `${m.r === 'u' ? 'PERSONNE' : 'COACH'} : ${m.t}`).join('\n');
-  return `Tu es le coach business de Ma Boussole Business : chaleureux, direct et concret. Tu écris en français et tu tutoies. Ta mission : aider cette personne à affiner son offre finale et son plan d'action sur 30 jours, en lui posant des questions une par une.
-
-Règles :
-- Pose UNE seule question à la fois, courte, et rebondis sur sa réponse précédente avec un retour utile.
-- Couvre, dans l'ordre le plus utile : son client idéal précis, le problème qu'elle résout, le résultat promis, le format et le prix, le temps dont elle dispose, où trouver ses premiers clients, ce qui la freine.
-- Après 4 à 6 réponses (elle en a donné ${asked}), ou dès qu'elle le demande, propose l'offre finale et le plan dans les champs "offre" et "plan" ; avant cela, laisse-les à null.
-- Ensuite, si elle demande des ajustements, renvoie l'offre et le plan mis à jour.
-- Le plan compte 4 semaines, avec 2 à 3 actions concrètes et mesurables par semaine, dont au moins un vrai test auprès de clients potentiels.
-- Le Human Design n'est qu'une grille de réflexion : il peut nuancer la façon de travailler ou de vendre, jamais décider du projet. Aucune promesse de revenus. Ne conseille jamais de démissionner ou d'investir sur la seule base du Human Design. Respecte toutes ses contraintes.
-
-PROFIL :
-${profileText()}
-
-${o ? `OFFRE ACTUELLE : ${o.name} · pour : ${o.client || 'à préciser'} · promesse : ${o.promise || '—'} · format : ${o.format || '—'} · prix : ${o.price || '—'}.` : offerContext()}
-${S.experts?.strat ? 'ANALYSE DU STRATÈGE : ' + JSON.stringify(S.experts.strat).slice(0, 3000) : ''}
-
-CONVERSATION :
-${hist || '(Début : présente-toi en une phrase, puis pose ta première question.)'}
-
-Réponds uniquement avec un objet JSON : {"message": "ton message, 2 à 4 phrases, qui se termine par ta question (sauf si tu proposes l'offre)", "offre": null ou {"nom": "", "client": "", "promesse": "", "format": "", "prix": "", "premier_pas": ""}, "plan": null ou [{"semaine": "Semaine 1", "objectif": "", "actions": ["", ""]}]}`;
-}
-function coachProposal(m) {
-  const o = m.offre || {}, applied = S.coachApplied === m.id;
-  return `<div class="proposal">
-    <p class="eyebrow">Proposition de ton coach</p>
-    ${m.offre ? `<div class="offer-box"><h5 class="offer-name">${esc(o.nom)}</h5><dl class="rc-dl"><div><dt>Pour qui</dt><dd>${esc(o.client)}</dd></div><div><dt>Promesse</dt><dd>${esc(o.promesse)}</dd></div><div><dt>Format</dt><dd>${esc(o.format)}</dd></div><div><dt>Prix de lancement</dt><dd>${esc(o.prix)}</dd></div><div><dt>Premier pas</dt><dd>${esc(o.premier_pas)}</dd></div></dl></div>` : ''}
-    ${m.plan ? `<div class="road">${m.plan.slice(0, 4).map(w => `<div class="month"><p class="eyebrow">${esc(w.semaine)}</p><p class="m-goal">${esc(w.objectif)}</p><ul>${li(w.actions)}</ul></div>`).join('')}</div>` : ''}
-    <div class="actions"><button type="button" class="btn ${applied ? 'ghost' : ''}" data-coach-apply="${m.id}">${applied ? 'Ajouté à ton récap ✓' : 'Utiliser cette offre et ce plan'}</button></div>
-  </div>`;
-}
-function renderCoach() {
-  const box = $('#coachBox'); if (!box) return;
-  const msgs = S.coach?.msgs || [], users = msgs.filter(m => m.r === 'u').length;
-  const last = [...msgs].reverse().find(m => m.r === 'c' && (m.offre || m.plan));
-  const input = !msgs.length
-    ? (S.example ? '<p class="hint">Le coach IA est disponible avec ton propre accès.</p>' : `<div><button class="btn" type="button" id="coachGo" ${coachBusy ? 'disabled' : ''}>Commencer avec mon coach</button></div>`)
-    : users >= COACH_MAX ? '<p class="hint">Tu as atteint le nombre d\'échanges prévu pour cette conversation. Clique sur « Recommencer » pour en ouvrir une nouvelle.</p>'
-    : `<form id="coachForm" class="coach-form"><label for="coachIn" class="sr">Ta réponse</label><textarea id="coachIn" rows="2" placeholder="Ta réponse… (Entrée pour envoyer)" ${coachBusy ? 'disabled' : ''}></textarea><button class="btn" type="submit" ${coachBusy ? 'disabled' : ''}>Envoyer</button></form>
-      ${!last && users >= 2 && !coachBusy ? '<button type="button" class="linkbtn" id="coachNow">Propose-moi directement mon offre et mon plan</button>' : ''}`;
-  box.innerHTML = `
-    <div class="coach-head"><div><p class="eyebrow">Ton coach IA</p><h3>Affine ton offre finale et ton plan d'action</h3><p class="muted" style="margin-top:4px">Il te pose quelques questions, une à la fois, puis te propose ton offre et ton plan sur 30 jours. Tu peux ensuite lui demander des ajustements.</p></div>${msgs.length && !coachBusy ? '<button class="linkbtn" id="coachReset" type="button">Recommencer</button>' : ''}</div>
-    ${msgs.length ? `<div class="chat" id="chat">${msgs.map(m => `<div class="msg ${m.r}"><p>${esc(m.t)}</p></div>`).join('')}${coachBusy ? '<div class="msg c typing" aria-label="Le coach écrit"><span></span><span></span><span></span></div>' : ''}</div>` : ''}
-    ${last ? coachProposal(last) : ''}
-    ${input}
-    <p class="ai-status" id="coachMsg" aria-live="polite"></p>`;
-  const chat = $('#chat'); if (chat) chat.scrollTop = chat.scrollHeight;
-}
-async function coachSend(text) {
-  if (coachBusy || !sampleFn) return;
-  S.coach ||= { msgs: [] };
-  if (text) S.coach.msgs.push({ r: 'u', t: text.slice(0, 1500) });
-  coachBusy = true; save(); renderCoach();
-  let err = null;
-  try {
-    const r = await sampleFn.json(coachPrompt(), { cache: false });
-    if (!r || typeof r.message !== 'string') throw { code: 'invalid_json' };
-    const ok = x => x && typeof x === 'object';
-    S.coach.msgs.push({ r: 'c', t: r.message, id: Date.now(), offre: ok(r.offre) && !Array.isArray(r.offre) ? r.offre : null, plan: Array.isArray(r.plan) && r.plan.length ? r.plan.filter(ok) : null });
-  } catch (e) { err = e; if (text) S.coach.msgs.pop(); }
-  coachBusy = false; save(); renderCoach();
-  if (err) {
-    const msg = { locked: 'Le coach est inclus dans la version complète.', quota: 'Tu as utilisé toutes les réponses IA incluses dans ton accès.', rate_limited: 'Trop de demandes pour le moment : réessaie dans une minute.' };
-    $('#coachMsg').textContent = msg[err.code] ?? 'Le coach n\'a pas pu répondre. Réessaie dans un instant.';
-    if (text && $('#coachIn')) $('#coachIn').value = text;
-  } else $('#coachIn')?.focus();
-}
-document.addEventListener('submit', e => {
-  if (e.target.id !== 'coachForm') return;
-  e.preventDefault();
-  const v = $('#coachIn').value.trim(); if (v) coachSend(v);
-});
-document.addEventListener('keydown', e => {
-  if (e.target.id === 'coachIn' && e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); e.target.form.requestSubmit(); }
-});
-document.addEventListener('click', e => {
-  const t = e.target;
-  if (t.id === 'coachGo') coachSend('');
-  if (t.id === 'coachNow') coachSend('Propose-moi maintenant mon offre finale et mon plan d\'action sur 4 semaines.');
-  if (t.id === 'coachReset' && confirm('Recommencer une nouvelle conversation avec ton coach ?')) { S.coach = { msgs: [] }; save(); renderCoach(); }
-  const ap = t.closest?.('[data-coach-apply]'); if (!ap) return;
-  const m = S.coach?.msgs.find(x => String(x.id) === ap.dataset.coachApply); if (!m) return;
-  if (m.offre) { const o = m.offre; S.offer = { title0: S.offer?.title0 || String(o.nom || ''), name: String(o.nom || ''), client: String(o.client || ''), promise: String(o.promesse || ''), format: String(o.format || ''), price: String(o.prix || ''), step: String(o.premier_pas || ''), score: S.offer?.score || 0 }; }
-  if (m.plan) S.coachPlan = m.plan;
-  S.coachApplied = m.id; save(); renderRecap(); toast('Ton offre et ton plan sont ajoutés à ton récap ✓');
-});
 function renderRecapDoc() {
   const d = recapData(); const el = $('#recapDoc'); if (!d || !el) return;
   el.innerHTML = (S.example ? '<p style="margin-bottom:10px"><span class="tag ex">Exemple</span></p>' : '') + recapDocHTML(d);
@@ -869,7 +774,6 @@ document.addEventListener('click', e => {
   if (t.id === 'teamStop') teamCtl?.abort();
   if (t.id === 'useOffer') {
     const o = S.experts?.strat?.offre; if (!o) return;
-    delete S.coachPlan;
     S.offer = { title0: String(o.nom || ''), name: String(o.nom || ''), client: String(o.client || ''), promise: String(o.promesse || ''), format: String(o.format || ''), price: String(o.prix || ''), step: String(S.experts.strat.test_validation || ''), score: 0 };
     save(); renderCompass(); renderRecap(); $('#recap').scrollIntoView();
   }
@@ -1055,7 +959,7 @@ function renderResults() {
     <div class="res-ideas">
       ${ideas.length ? ideas.map((x, i) => ideaCardFree(x, i)).join('') : '<div class="card"><p>Aucune piste ne correspond à tes contraintes actuelles : le bilan approfondi permet de les ajuster finement.</p></div>'}
     </div>
-    ${S.paid && !S.example ? '' : `<div class="card next-card"><div><p class="eyebrow">Aller plus loin</p><h3>Transforme une piste en projet concret</h3><p class="muted" style="margin-top:4px">Idées 100 % sur mesure, comité de 6 experts, coach IA qui affine ton offre avec toi, plan d'action sur 30 jours et récap complet.</p></div><a class="btn" href="#offre">Découvrir la version complète</a></div>`}
+    ${S.paid && !S.example ? '' : `<div class="card next-card"><div><p class="eyebrow">Aller plus loin</p><h3>Transforme une piste en projet concret</h3><p class="muted" style="margin-top:4px">Idées 100 % sur mesure, bilan approfondi, comité de 6 experts, ton offre, ton plan d'action sur 30 jours et ton récap complet.</p></div><a class="btn" href="#offre">Découvrir la version complète</a></div>`}
     ${S.quick.path === 'projet' && !S.example ? projectCardHTML() : ''}
     ${S.example ? '' : `<p class="sent">${S.emailSent ? `Ton profil a été envoyé à <b>${esc(S.email)}</b>. Pense à regarder tes courriers indésirables.` : `Ton profil n'a pas pu être envoyé à <b>${esc(S.email)}</b>.`} <button type="button" class="linkbtn" id="resend">Renvoyer</button> · <button type="button" class="linkbtn" id="changeMail">Changer d'adresse</button></p>`}
   </div>`;
@@ -1119,7 +1023,6 @@ function paywallHTML() {
           <li><b>Des idées 100 % sur mesure</b> générées par IA à partir de tes réponses et de ton projet</li>
           <li><b>Ton bilan approfondi</b> en 7 modules, qui affine tes pistes et le détail de leur score</li>
           <li><b>Ton comité de 6 experts IA</b> : Human Design, orientation, stratégie, marketing, mindset, synthèse</li>
-          <li><b>Ton coach IA</b> qui te pose les bonnes questions pour affiner ton offre finale et ton plan d'action</li>
           <li><b>Ton offre signature</b>, ton positionnement, ta vision et ta feuille de route sur 90 jours</li>
           <li><b>Ton récap complet</b> par e-mail, à imprimer ou à enregistrer en PDF</li>
         </ul>

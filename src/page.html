@@ -8,15 +8,13 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400&family=Figtree:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <style>
-/* Layout: a single scrolling journey in three chapters (charte → bilan → pistes), each a wide sand band holding one working card */
+/* Thème clair crème/blanc cassé pour tout le monde (le thème sombre ne s'active que via data-theme="dark").
+   Layout: a single scrolling journey in three chapters (charte → bilan → pistes), each a wide sand band holding one working card */
 :root{
-  --bg:#F4EDE1; --surface:#FBF7F1; --sand:#E9DCC8; --line:#D8C6AC; --ink:#3A2819; --muted:#7A614B;
-  --accent:#8A5A35; --accent-ink:#FBF7F1; --design:#C08C4E; --center-on:#DDBE93; --line-off:#E4D6C1; --focus:#B07A45;
+  --bg:#FBF8F2; --surface:#FFFEFB; --sand:#F3ECE1; --line:#E2D6C4; --ink:#21170F; --muted:#5E4A3A;
+  --accent:#7B4A26; --accent-ink:#FFFEFB; --design:#B9824A; --center-on:#E3C59C; --line-off:#EDE4D7; --focus:#9C6436;
   --display:'Fraunces', Georgia, 'Times New Roman', serif; --body:'Figtree', system-ui, -apple-system, 'Segoe UI', sans-serif; --mono:'IBM Plex Mono', ui-monospace, Menlo, monospace;
 }
-@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
-  --bg:#1B140F; --surface:#261D16; --sand:#30251B; --line:#4A3A2B; --ink:#F1E6D6; --muted:#BDA58B;
-  --accent:#D4A373; --accent-ink:#1B140F; --design:#D9A35E; --center-on:#86603A; --line-off:#3A2D22; --focus:#E3B686; color-scheme:dark } }
 :root[data-theme="dark"]{
   --bg:#1B140F; --surface:#261D16; --sand:#30251B; --line:#4A3A2B; --ink:#F1E6D6; --muted:#BDA58B;
   --accent:#D4A373; --accent-ink:#1B140F; --design:#D9A35E; --center-on:#86603A; --line-off:#3A2D22; --focus:#E3B686; color-scheme:dark }
@@ -261,7 +259,7 @@ footer .wrap{display:grid;gap:6px}
 .two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 .three{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
 .offer-box{background:var(--bg);border-radius:14px;padding:16px;display:grid;gap:10px}
-.report .offer-name,.proposal .offer-name{font-family:var(--display);font-size:1.3rem;font-weight:600;margin:0;text-transform:none;letter-spacing:0;color:var(--ink)}
+.report .offer-name{font-family:var(--display);font-size:1.3rem;font-weight:600;margin:0;text-transform:none;letter-spacing:0;color:var(--ink)}
 .pitch{margin:0;border-left:3px solid var(--design);padding:4px 0 4px 14px;font-style:italic}
 .chan-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
 .chan-cards div{background:var(--bg);border-radius:12px;padding:12px;display:grid;gap:4px;font-size:.9rem}
@@ -383,22 +381,7 @@ footer .wrap{display:grid;gap:6px}
 .res-ideas .idea{animation:rise .6s ease both}
 .res-ideas .idea:nth-child(2){animation-delay:.12s}.res-ideas .idea:nth-child(3){animation-delay:.24s}
 .res-ideas .idea h4{font-size:1.12rem}
-/* coach IA */
-.coach{display:grid;gap:14px;margin-bottom:14px}
-.coach-head{display:flex;justify-content:space-between;gap:12px;align-items:start}
-.coach-head h3{font-size:1.3rem;font-weight:400;margin-top:4px}
-.chat{display:grid;gap:8px;max-height:420px;overflow-y:auto;padding:4px 2px}
-.msg{max-width:min(78%,620px);padding:10px 14px;border-radius:16px;font-size:.95rem;white-space:pre-wrap;animation:rise .3s ease both}
-.msg.c{background:var(--bg);border:1px solid var(--line);border-bottom-left-radius:4px;justify-self:start}
-.msg.u{background:var(--accent);color:var(--accent-ink);border-bottom-right-radius:4px;justify-self:end}
-.typing{display:flex;gap:5px;align-items:center}
-.typing span{width:7px;height:7px;border-radius:50%;background:var(--muted);animation:pulse 1.2s infinite}
-.typing span:nth-child(2){animation-delay:.2s}.typing span:nth-child(3){animation-delay:.4s}
-.coach-form{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:end}
-.coach-form textarea{min-height:52px}
-.proposal{display:grid;gap:12px;border:1px dashed var(--design);border-radius:14px;padding:14px}
-.proposal .road{grid-template-columns:repeat(4,minmax(0,1fr))}
-@media (max-width:900px){.res-ideas,.proposal .road{grid-template-columns:1fr}.msg{max-width:92%}}
+@media (max-width:900px){.res-ideas{grid-template-columns:1fr}}
 .sent{font-size:.9rem;color:var(--muted)}
 /* offre */
 .faq{display:grid;gap:8px}
@@ -467,7 +450,7 @@ html{scroll-behavior:smooth}
         <li><div><b>Ton profil et tes 3 pistes</b><span>Ton archétype et 3 pistes de business, envoyés par e-mail.</span></div></li>
       </ol></div>
       <div class="rung paid"><p class="eyebrow">Version complète · <span class="price-tag">22 € · prix de lancement</span></p><ul class="pw-mini">
-        <li>Idées sur mesure par IA + bilan approfondi</li><li>Comité de 6 experts IA</li><li>Coach IA pour ton offre et ton plan d'action</li>
+        <li>Idées sur mesure par IA + bilan approfondi</li><li>Comité de 6 experts IA</li><li>Ton offre, ton plan d'action et ton récap</li>
       </ul></div>
     </div>
   </div>

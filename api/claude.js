@@ -19,7 +19,7 @@ export default async function handler(req, res) {
   // Plafond d'appels IA par achat (comité complet = 6 appels), pour protéger le budget API.
   // Les accès de test n'ont pas de ligne d'achat : ils restent hors des statistiques de ventes.
   if (dbOn() && !isTestToken(token)) {
-    const ok = await db('rpc/boussole_use_ai', { method: 'POST', body: { p_checkout: tokenId(token), p_limit: Number(process.env.AI_CALLS_LIMIT || 100) } });
+    const ok = await db('rpc/boussole_use_ai', { method: 'POST', body: { p_checkout: tokenId(token), p_limit: Number(process.env.AI_CALLS_LIMIT || 60) } });
     if (ok === false) return res.status(429).json({ error: 'Limite atteinte', code: 'quota' });
   }
   try {

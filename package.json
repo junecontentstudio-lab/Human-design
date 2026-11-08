@@ -9,6 +9,7 @@
     "build": "node build.mjs"
   },
   "dependencies": {
-    "nodemailer": "^6.10.1"
+    "nodemailer": "^6.10.1",
+    "pdfkit": "^0.20.2"
   }
 }

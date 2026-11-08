@@ -1577,6 +1577,46 @@ function recapData() {
     alt: S.experts?.strat?.alternative || ''
   };
 }
+const slugOf = n => (n || 'mon').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'mon';
+// Données envoyées au serveur pour fabriquer le PDF (profil gratuit ou guide complet).
+function guideData(kind) {
+  const ch = computeChart(), b = S.birth, unk = b.unknown, ar = archetype(), a = activeAns(), rs = riasecScores(a);
+  const order = Object.keys(rs).sort((x, y) => rs[y] - rs[x]), T = ch ? TYPES[ch.type] : null;
+  const g = {
+    kind, name: b.name || '', date: new Date().toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' }),
+    archetype: ar ? { name: ar.name, line: ar.line, biz: ar.biz, forces: ar.forces, nuance: T ? ar.nuance[1] : '' } : null,
+    code: a.riasec.filter(Boolean).length >= 12 ? order.slice(0, 3).map(l => RIASEC[l][0]).join(' · ') : '',
+    skills: SKILLS.flatMap(([, l]) => l).filter(([k]) => (a.skills[k] || 0) >= 2).map(([, n]) => n),
+    values: a.values.map(v => VALUES.find(x => x[0] === v)[1]),
+    pistes: quizDone() || S.example ? scoreIdeas().slice(0, 3).map(x => ({ t: x.t, d: x.d, total: x.total, model: MODEL_LABEL[x.model], price: x.price, loc: x.loc === 'online' ? 'En ligne' : x.loc === 'local' ? 'Local' : 'En ligne ou local', step: x.stepTxt })) : []
+  };
+  if (ch) {
+    const [l1, l2] = ch.profile.split('/');
+    g.chart = {
+      type: T.name,
+      defs: [
+        { term: 'Type', value: T.name, what: GLOSSARY.type }, { term: 'Stratégie', value: T.strat, what: GLOSSARY.strat },
+        { term: 'Autorité', value: unk ? 'À confirmer' : AUTH[ch.authority][0], what: GLOSSARY.auth },
+        { term: 'Profil', value: unk ? 'À confirmer' : `${ch.profile} · ${LINES[l1][0]} / ${LINES[l2][0]}`, what: GLOSSARY.profile },
+        { term: 'Définition', value: DEFS[ch.definition], what: DEF_TXT[ch.definition] }, { term: 'Signature', value: T.sig, what: GLOSSARY.sig },
+        { term: 'Thème du non-soi', value: T.ns, what: GLOSSARY.ns }, { term: 'Croix d\'incarnation', value: `${ch.cross.p.join('/')} | ${ch.cross.d.join('/')}`, what: GLOSSARY.cross }
+      ],
+      centers: Object.keys(CENTER_TXT).map(k => { const on = ch.defined.includes(k); return { k, name: CENTER_TXT[k][0], on, txt: on ? CENTER_TXT[k][1] : CENTER_TXT[k][2] }; }),
+      channels: ch.channels.map(([x, y]) => { const c = CHANNEL_TXT[`${x}-${y}`] || CHANNEL_TXT[`${y}-${x}`] || []; return { a: HD.GATE_CENTER[x], b: HD.GATE_CENTER[y], name: c[0], txt: c[1] }; }),
+      keys: hdCards(ch, unk).map(c => ({ label: c.label, title: c.title, why: c.why, evolve: c.evolve, q: c.q }))
+    };
+  }
+  if (kind === 'guide') {
+    const d = recapData();
+    if (d) {
+      Object.assign(g, { offer: { name: d.o.name, client: d.o.client, promise: d.o.promise, format: d.o.format, price: d.o.price, step: d.o.step }, plan: d.plan, valid: d.valid, alt: d.alt });
+      if (d.ex.mkt) Object.assign(g, { positionnement: d.ex.mkt.positionnement, pitch: d.ex.mkt.pitch, canaux: (d.ex.mkt.canaux || []).map(c => ({ canal: c.canal, action: c.action })) });
+      if (d.ex.synth) g.vision = d.ex.synth;
+      if (d.ex.mind?.phrase_ancre) g.ancre = d.ex.mind.phrase_ancre;
+    }
+  }
+  return g;
+}
 function recapDocHTML(d) {
   const o = d.o;
   return `
@@ -1619,33 +1659,6 @@ function recapText(d) {
   if (d.ex.synth && (d.ex.synth.feuille_de_route || []).length) { L.push('', 'MA FEUILLE DE ROUTE SUR 90 JOURS'); d.ex.synth.feuille_de_route.forEach(m => { L.push(`${m.mois} — ${m.objectif}`); (m.actions || []).forEach(x => L.push(`  - ${x}`)); }); if (d.ex.synth.indicateur) L.push(`Indicateur de réussite : ${d.ex.synth.indicateur}`); }
   return L.join('\n');
 }
-const RECAP_CSS = `body{margin:0;background:#FBF8F2;color:#21170F;font-family:Georgia,'Times New Roman',serif;line-height:1.55}
-.doc{max-width:760px;margin:0 auto;padding:40px 24px}
-.rc-head{border-bottom:2px solid #8A5A35;padding-bottom:18px;margin-bottom:8px}
-.rc-eyebrow,.rc-k-label,dt,.rc-w{font-family:system-ui,-apple-system,'Segoe UI',sans-serif;font-size:12px;text-transform:uppercase;letter-spacing:.12em;color:#7A614B;font-weight:600;margin:0}
-h2{font-size:32px;font-weight:400;margin:10px 0 6px}
-.rc-angle{font-size:20px;font-style:italic;color:#8A5A35;margin:0}
-.rc-sec{padding:18px 0;border-bottom:1px solid #D8C6AC;break-inside:avoid}
-h3{font-size:19px;margin:0 0 12px}
-.rc-dl{margin:0;display:grid;gap:10px}
-.rc-dl div{display:grid;grid-template-columns:170px 1fr;gap:12px}
-dd{margin:0}
-.rc-keys{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.rc-key{background:#FBF7F1;border:1px solid #D8C6AC;border-radius:12px;padding:12px 14px}
-.rc-key p{margin:0}
-.rc-k-title{font-size:16px;font-weight:600;margin:4px 0 6px!important}
-.rc-key p:last-child{font-size:14px}
-.rc-plan{margin:0;padding-left:20px;display:grid;gap:10px}
-.rc-plan p{margin:0}
-.rc-empty{color:#7A614B;font-style:italic}
-.rc-foot{font-size:13px;color:#7A614B;margin-top:18px}
-.rc-vision{font-size:19px;font-style:italic;color:#8A5A35;margin:0 0 8px}
-.rc-ul{margin:6px 0 0;padding-left:18px;font-size:14px}
-@media (max-width:560px){.rc-dl div,.rc-keys{grid-template-columns:1fr}}
-@media print{body{background:#fff}.doc{padding:0}}`;
-
-let downloadsApi = null;
-downloadsApi = { save: async ({ filename, data }) => { const url = URL.createObjectURL(new Blob([data], { type: 'text/html' })); const l = document.createElement('a'); l.href = url; l.download = filename; document.body.appendChild(l); l.click(); l.remove(); setTimeout(() => URL.revokeObjectURL(url), 4000); return { status: 'saved' }; } };
 
 function renderRecap() {
   const box = $('#recapBox');
@@ -1679,18 +1692,15 @@ function renderRecapActions() {
     <div><p class="eyebrow">Garder ton récap</p><h3>Reçois-le, imprime-le ou enregistre-le</h3></div>
     <form id="rcMailForm" class="mail-form" novalidate>
       <label for="rcMail">Ton adresse e-mail<input type="email" id="rcMail" autocomplete="email" placeholder="prenom@exemple.fr" value="${esc(S.email || '')}"></label>
-      <div class="actions"><button type="submit" class="btn">Recevoir mon récap par e-mail</button><button type="button" class="btn ghost" id="rcDownload">Télécharger</button><button type="button" class="btn ghost" id="rcCopy">Copier le texte</button></div>
+      <div class="actions"><button type="submit" class="btn">Recevoir mon guide par e-mail</button><button type="button" class="btn ghost" id="rcDownload">Télécharger le PDF</button><button type="button" class="btn ghost" id="rcCopy">Copier le texte</button></div>
     </form>
     <p class="ai-status" id="rcStatus" aria-live="polite"></p>
     <ul class="howto">
-      <li><b>Par e-mail</b> : ton récap complet arrive dans ta boîte, avec le fichier en pièce jointe.</li>
-      <li><b>Télécharger</b> : tu obtiens un fichier à ouvrir dans ton navigateur, pour l'imprimer ou l'enregistrer en PDF.</li>
+      <li><b>Par e-mail</b> : ton guide arrive dans ta boîte, avec le PDF en pièce jointe.</li>
+      <li><b>Télécharger</b> : tu obtiens ton guide en PDF, prêt à imprimer ou à garder.</li>
       <li><b>Sur cet appareil</b> : ton offre et tes réponses restent enregistrées ; rouvre simplement cette page pour les retrouver.</li>
     </ul>
     <textarea id="rcText" class="copy-area" readonly hidden aria-label="Texte du récap"></textarea>`;
-}
-function recapFileHTML(d) {
-  return `<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Récap business passion${d.name ? ' — ' + esc(d.name) : ''}</title><style>${RECAP_CSS}</style></head><body><main class="doc">${recapDocHTML(d)}</main></body></html>`;
 }
 document.addEventListener('submit', async e => {
   if (e.target.id !== 'rcMailForm') return;
@@ -1700,7 +1710,7 @@ document.addEventListener('submit', async e => {
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)) { st.textContent = 'Indique une adresse e-mail valide.'; return; }
   if (!S.paid) { st.textContent = 'L\'envoi par e-mail est inclus dans l\'accès complet.'; return; }
   S.email = v; save(); st.textContent = 'Envoi en cours…';
-  try { await api('/api/send-email', { type: 'recap', email: v, name: d.name, token: S.token, html: recapFileHTML(d) }); st.textContent = `Ton récap est parti à ${v}. Pense à vérifier tes courriers indésirables.`; }
+  try { await api('/api/send-email', { type: 'recap', email: v, name: d.name, token: S.token, guide: guideData('guide') }); st.textContent = `Ton guide (PDF) est parti à ${v}. Pense à vérifier tes courriers indésirables.`; }
   catch (err) { st.textContent = 'L\'envoi n\'a pas fonctionné. Réessaie, ou télécharge ton récap.'; }
 });
 
@@ -1718,13 +1728,19 @@ $('#recap').addEventListener('click', async e => {
     try { await navigator.clipboard.writeText(txt); st.textContent = 'Texte copié. Colle-le dans un nouvel e-mail adressé à toi-même.'; }
     catch (err) { const ta = $('#rcText'); ta.hidden = false; ta.value = txt; ta.focus(); ta.select(); st.textContent = 'Sélectionne le texte ci-dessous et copie-le (Ctrl+C ou appui long).'; }
   }
-  if (t.id === 'rcDownload' && downloadsApi) {
-    const slug = (d.name || 'mon').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'mon';
-    const doc = `<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Récap business passion${d.name ? ' — ' + esc(d.name) : ''}</title><style>${RECAP_CSS}</style></head><body><main class="doc">${recapDocHTML(d)}</main></body></html>`;
-    st.textContent = 'Confirme le téléchargement dans la fenêtre qui s\'ouvre…';
-    try { await downloadsApi.save({ filename: `recap-business-passion-${slug}.html`, data: doc }); st.textContent = 'Récap téléchargé. Ouvre-le dans ton navigateur pour l\'imprimer ou l\'enregistrer en PDF.'; }
-    catch (err) { st.textContent = err?.code === 'declined' ? 'Téléchargement annulé.' : 'Le téléchargement n\'est pas disponible ici. Utilise plutôt « Copier le texte ».'; if (['unavailable', 'not_granted', 'capability_disabled'].includes(err?.code)) { downloadsApi = null; renderRecapActions(); } }
+  if (t.id === 'rcDownload') {
+    if (!S.paid || !S.token) { st.textContent = 'Le guide en PDF est inclus dans l\'accès complet.'; return; }
+    st.textContent = 'Préparation de ton guide…'; t.disabled = true;
+    try {
+      const r = await fetch('/api/guide', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ token: S.token, guide: guideData('guide') }) });
+      if (!r.ok) throw new Error(r.status);
+      const url = URL.createObjectURL(await r.blob()), a = document.createElement('a');
+      a.href = url; a.download = `guide-business-design-${slugOf(d.name)}.pdf`; document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(url), 4000);
+      st.textContent = 'Ton guide est téléchargé. Tu le retrouves aussi par e-mail si tu le demandes.';
+    } catch (err) { st.textContent = 'Le téléchargement n\'a pas fonctionné. Réessaie, ou reçois ton guide par e-mail.'; }
+    finally { t.disabled = false; }
   }
+
 });
 
 /* ---------- comité d'experts ---------- */
@@ -2028,27 +2044,11 @@ function renderResults() {
     ${S.example ? '' : `<p class="sent">${S.emailSent ? `Ton profil a été envoyé à <b>${esc(S.email)}</b>. Pense à regarder tes courriers indésirables.` : `Ton profil n'a pas pu être envoyé à <b>${esc(S.email)}</b>.`} <button type="button" class="linkbtn" id="resend">Renvoyer</button> · <button type="button" class="linkbtn" id="changeMail">Changer d'adresse</button></p>`}
   </div>`;
 }
-const HEX = s => s.replace(/var\(--center-on\)/g, '#DDBE93').replace(/var\(--surface\)/g, '#FBF7F1').replace(/var\(--ink\)/g, '#3A2819').replace(/var\(--muted\)/g, '#7A614B').replace(/var\(--design\)/g, '#C08C4E').replace(/var\(--line-off\)/g, '#E4D6C1');
-function freeResultsHTML() {
-  const ch = computeChart(), b = S.birth, ar = archetype(), top = scoreIdeas()[0], T = ch ? TYPES[ch.type] : null;
-  return `<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Mon profil Boussole Business${b.name ? ' — ' + esc(b.name) : ''}</title><style>${RECAP_CSS}.grid{display:grid;grid-template-columns:240px 1fr;gap:24px;align-items:start}.grid svg{width:100%;height:auto}@media(max-width:560px){.grid{grid-template-columns:1fr}}</style></head><body><main class="doc">
-  <header class="rc-head"><p class="rc-eyebrow">Ma Boussole Business by Business Design · mon profil d'entrepreneur·e</p><h2>${b.name ? esc(b.name) + ', ' : ''}${ar.name}</h2><p class="rc-angle">${ar.line}</p></header>
-  <section class="rc-sec"><h3>Ton archétype</h3><p>${ar.biz}</p>${T ? `<p><b>Avec ton type ${T.name} :</b> ${TYPE_BIZ[ch.type][1]}</p>` : ''}<p class="rc-w" style="margin-top:10px">Tes forces</p><ul class="rc-ul">${ar.forces.map(f => `<li>${f}</li>`).join('')}</ul></section>
-  ${top ? `<section class="rc-sec"><h3>Tes 3 pistes de business</h3>${scoreIdeas().slice(0, 3).map((x, i) => `<div style="margin-bottom:14px"><p class="rc-k-title" style="font-size:18px;margin:0 0 4px">${i + 1}. ${x.t} · ${x.total}/100</p><p style="margin:0 0 4px">${x.d}</p><p style="margin:0"><b>Premier pas :</b> ${x.stepTxt} · <b>Prix indicatif :</b> ${x.price}</p></div>`).join('')}</section>` : ''}
-  ${ch ? `<section class="rc-sec grid"><div>${HEX(bodygraph(ch))}</div><dl class="rc-dl">
-    <div><dt>Type</dt><dd>${T.name}</dd></div><div><dt>Stratégie</dt><dd>${T.strat}</dd></div>
-    <div><dt>Autorité</dt><dd>${b.unknown ? 'À confirmer' : AUTH[ch.authority][0]}</dd></div><div><dt>Profil</dt><dd>${b.unknown ? 'À confirmer' : ch.profile}</dd></div>
-    <div><dt>Définition</dt><dd>${DEFS[ch.definition]}</dd></div><div><dt>Signature</dt><dd>${T.sig}</dd></div>
-    <div><dt>Centres définis</dt><dd>${ch.defined.map(c => CENTER_TXT[c][0]).join(', ') || 'Aucun'}</dd></div>
-  </dl></section>
-  <section class="rc-sec"><h3>Tes 4 clés pour entreprendre</h3><div class="rc-keys">${hdCards(ch, b.unknown).map(k => `<div class="rc-key"><p class="rc-k-label">${k.label}</p><p class="rc-k-title">${k.title}</p><p>${k.why}</p></div>`).join('')}</div></section>` : ''}
-  <p class="rc-foot">Le Human Design est une grille de lecture de soi, pas une science validée : garde ce qui te parle et teste-le dans la réalité.</p></main></body></html>`;
-}
 async function sendFree() {
   const ar = archetype(), top = scoreIdeas()[0], ch = S.chart, unk = S.birth.unknown;
   try {
     await api('/api/send-email', {
-      type: 'carte', email: S.email, name: S.birth.name || '', optin: !!S.optin, html: freeResultsHTML(),
+      type: 'carte', email: S.email, name: S.birth.name || '', optin: !!S.optin, guide: guideData('profil'),
       lead: { hd_type: ch ? TYPES[ch.type].name : null, hd_authority: ch && !unk ? AUTH[ch.authority][0] : null, hd_profile: ch && !unk ? ch.profile : null, archetype: ar?.name, top_idea: top?.t, quiz: S.quick, utm: S.utm || null }
     });
     return true;

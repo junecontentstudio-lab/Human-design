@@ -1,5 +1,5 @@
 import { db, enc } from '../lib/db.js';
-import { isEmail } from '../lib/brevo.js';
+import { isEmail } from '../lib/mail.js';
 
 // Enregistre le projet décrit par une prospecte (parcours « j'ai déjà un projet ») dans sa fiche Supabase.
 export default async function handler(req, res) {

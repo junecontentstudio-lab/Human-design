@@ -1,6 +1,6 @@
 import crypto from 'node:crypto';
 import { db } from '../lib/db.js';
-import { site, isEmail } from '../lib/brevo.js';
+import { site, isEmail } from '../lib/mail.js';
 import { price } from '../lib/payments.js';
 
 // Crée une page de paiement SumUp (Hosted Checkout), l'enregistre dans Supabase et renvoie son adresse.

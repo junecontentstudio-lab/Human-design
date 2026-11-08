@@ -1,6 +1,6 @@
 # Ma Boussole Business by Business Design
 
-Page de vente et outil en ligne (français, tutoiement). **Bloc gratuit** : charte Human Design → quiz express (9 questions, dont le choix du parcours « pas encore d'idée » / « déjà un projet ») → e-mail demandé pour révéler le profil (archétype d'entrepreneur·e + 3 pistes de business, envoyé par e-mail). **Version complète à 22 €** (à partir des idées sur mesure) : idées par IA, bilan approfondi en 7 modules, comité de 6 experts IA, offre + récap. Hébergement Vercel, base Supabase, paiement SumUp, e-mails Gmail (ou Brevo), IA Claude (API Anthropic).
+Page de vente et outil en ligne (français, tutoiement). **Bloc gratuit** : charte Human Design → quiz express (9 questions, dont le choix du parcours « pas encore d'idée » / « déjà un projet ») → e-mail demandé pour révéler le profil (archétype d'entrepreneur·e + 3 pistes de business, envoyé par e-mail). **Version complète à 22 €** (à partir des idées sur mesure) : idées par IA, bilan approfondi en 7 modules, comité de 6 experts IA, offre + récap. Hébergement Vercel, base Supabase, paiement SumUp, e-mails Resend (ou Gmail / Brevo), IA Claude (API Anthropic).
 
 ## Structure
 - `src/page.html` : gabarit HTML + tout le CSS (palette crème blanc cassé / marron en tokens, contraste renforcé ; toujours en clair, le thème sombre ne s'active que via `data-theme="dark"`). Contient les marqueurs `/*ENGINE*/ /*CONTENT*/ /*APP*/`.
@@ -15,11 +15,12 @@ Page de vente et outil en ligne (français, tutoiement). **Bloc gratuit** : char
   - `sumup-webhook.js` : notification SumUp ; relit le checkout chez SumUp avant de confirmer.
   - Mode test ouvert : `FREE_ACCESS=1` → `/api/config` renvoie `{freeAccess: true}`, le paywall devient « Offert », `verify.js` `{free: true}` délivre un jeton `test-<uuid>` (hors quota IA et statistiques), qui reste valable après le test, sauf si `REVOKE_TEST_ACCESS=1`.
   - `config.js` : réglages publics (`freeAccess`).
+  - `health.js` : diagnostic de mise en ligne (`/api/health`) : mode, prix, présence des clés, fournisseur d'e-mail, tables Supabase. Jamais de valeur secrète.
   - `project.js` : enregistre le projet validé (parcours « déjà un projet ») dans `boussole_leads.quiz.projet`. Côté page, le texte va dans `S.ans.ideas` (module « Tes idées » du bilan, lu par le comité) et `S.projectSaved = true`.
   - `restore.js` : « Déjà acheté ? » → renvoie le lien d'accès (`/?acces=<jeton>`) à l'e-mail d'achat ; réponse identique que l'adresse soit cliente ou non.
   - `claude.js` : relais vers `POST /v1/messages`, réservé aux détenteurs d'un jeton valide, plafonné par achat (`AI_CALLS_LIMIT`, 60 par défaut, RPC `boussole_use_ai`) ; renvoie `{data}` (JSON parsé).
-  - `send-email.js` : Brevo. Type `carte` (profil gratuit) : enregistre le prospect dans `boussole_leads` (1 envoi/min, 10 max par adresse). Type `recap` exige le jeton.
-- `lib/` : `db.js` (Supabase REST, service_role ; renvoie `null` si non configuré, le site continue de marcher), `brevo.js` (envoi via Gmail SMTP si `GMAIL_USER` + `GMAIL_APP_PASSWORD`, sinon Brevo ; seule dépendance npm : `nodemailer`), `payments.js` (`confirmCheckout` : passe à PAID une seule fois, marque le prospect client, envoie l'e-mail avec le lien d'accès), `token.js`.
+  - `send-email.js` : e-mails via `lib/mail.js`. Type `carte` (profil gratuit) : enregistre le prospect dans `boussole_leads` (1 envoi/min, 10 max par adresse). Type `recap` exige le jeton.
+- `lib/` : `db.js` (Supabase REST, service_role ; renvoie `null` si non configuré, le site continue de marcher), `mail.js` (envoi via Resend si `RESEND_API_KEY` + `SENDER_EMAIL`, sinon Gmail SMTP, sinon Brevo ; seule dépendance npm : `nodemailer`), `payments.js` (`confirmCheckout` : passe à PAID une seule fois, marque le prospect client, envoie l'e-mail avec le lien d'accès), `token.js`.
 - `supabase/migrations/` : schéma SQL (tables `boussole_leads`, `boussole_purchases`, fonction `boussole_use_ai`, vue `boussole_stats`). À exécuter dans le SQL Editor de Supabase. Tables préfixées car la base est partagée avec d'autres projets.
 - `.claude/agents/expert-tunnel-vente.md` : agent spécialisé tunnel de vente / expérience client pour cette niche.
 - `docs/recherche-human-design-business-design.md` : dossier de recherche (méthode Business Design en 5 étapes, limites éthiques et légales, sources) et tableau de ce qui est déjà mis en œuvre. À relire avant toute évolution du contenu.

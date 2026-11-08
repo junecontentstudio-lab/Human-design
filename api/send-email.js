@@ -1,6 +1,6 @@
 import { checkToken } from '../lib/token.js';
 import { db, enc } from '../lib/db.js';
-import { esc, site, isEmail, upsertContact, sendEmail, para, button } from '../lib/brevo.js';
+import { esc, site, isEmail, upsertContact, sendEmail, para, button } from '../lib/mail.js';
 
 // Envoie le profil gratuit (type « carte », enregistre le prospect dans Supabase) ou le récap complet (type « recap », payant).
 const short = (v, n = 200) => (typeof v === 'string' ? v.slice(0, n) : null);

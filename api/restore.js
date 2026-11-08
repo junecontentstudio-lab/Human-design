@@ -1,5 +1,5 @@
 import { db, enc } from '../lib/db.js';
-import { isEmail } from '../lib/brevo.js';
+import { isEmail } from '../lib/mail.js';
 import { makeToken } from '../lib/token.js';
 import { sendAccessEmail } from '../lib/payments.js';
 

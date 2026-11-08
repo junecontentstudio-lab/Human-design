@@ -261,7 +261,7 @@ footer .wrap{display:grid;gap:6px}
 .two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 .three{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
 .offer-box{background:var(--bg);border-radius:14px;padding:16px;display:grid;gap:10px}
-.report .offer-name{font-family:var(--display);font-size:1.3rem;font-weight:600;margin:0;text-transform:none;letter-spacing:0;color:var(--ink)}
+.report .offer-name,.proposal .offer-name{font-family:var(--display);font-size:1.3rem;font-weight:600;margin:0;text-transform:none;letter-spacing:0;color:var(--ink)}
 .pitch{margin:0;border-left:3px solid var(--design);padding:4px 0 4px 14px;font-style:italic}
 .chan-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
 .chan-cards div{background:var(--bg);border-radius:12px;padding:12px;display:grid;gap:4px;font-size:.9rem}
@@ -378,12 +378,27 @@ footer .wrap{display:grid;gap:6px}
 .res{display:grid;gap:14px}
 .arch{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:18px;align-items:start;animation:rise .6s ease both}
 .arch ul{margin:0;padding-left:18px;display:grid;gap:4px}
-.res-ideas{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:14px;align-items:start}
-.res-ideas .idea{animation:rise .6s .15s ease both}
-.locked-ideas{display:grid;gap:10px}
-.locked-idea{border:1px dashed var(--line);border-radius:14px;padding:14px;display:grid;gap:6px;background:var(--surface)}
-.locked-idea h4{margin:0;font-family:var(--display);font-weight:600;font-size:1.05rem}
-.locked-idea p{filter:blur(4px);user-select:none;font-size:.9rem}
+.res-head{display:grid;gap:4px;margin-top:6px}
+.res-ideas{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;align-items:start}
+.res-ideas .idea{animation:rise .6s ease both}
+.res-ideas .idea:nth-child(2){animation-delay:.12s}.res-ideas .idea:nth-child(3){animation-delay:.24s}
+.res-ideas .idea h4{font-size:1.12rem}
+/* coach IA */
+.coach{display:grid;gap:14px;margin-bottom:14px}
+.coach-head{display:flex;justify-content:space-between;gap:12px;align-items:start}
+.coach-head h3{font-size:1.3rem;font-weight:400;margin-top:4px}
+.chat{display:grid;gap:8px;max-height:420px;overflow-y:auto;padding:4px 2px}
+.msg{max-width:min(78%,620px);padding:10px 14px;border-radius:16px;font-size:.95rem;white-space:pre-wrap;animation:rise .3s ease both}
+.msg.c{background:var(--bg);border:1px solid var(--line);border-bottom-left-radius:4px;justify-self:start}
+.msg.u{background:var(--accent);color:var(--accent-ink);border-bottom-right-radius:4px;justify-self:end}
+.typing{display:flex;gap:5px;align-items:center}
+.typing span{width:7px;height:7px;border-radius:50%;background:var(--muted);animation:pulse 1.2s infinite}
+.typing span:nth-child(2){animation-delay:.2s}.typing span:nth-child(3){animation-delay:.4s}
+.coach-form{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:end}
+.coach-form textarea{min-height:52px}
+.proposal{display:grid;gap:12px;border:1px dashed var(--design);border-radius:14px;padding:14px}
+.proposal .road{grid-template-columns:repeat(4,minmax(0,1fr))}
+@media (max-width:900px){.res-ideas,.proposal .road{grid-template-columns:1fr}.msg{max-width:92%}}
 .sent{font-size:.9rem;color:var(--muted)}
 /* offre */
 .faq{display:grid;gap:8px}
@@ -402,7 +417,7 @@ footer .wrap{display:grid;gap:6px}
 @keyframes slidein{from{opacity:0;transform:translateX(16px)}to{opacity:1;transform:none}}
 @keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 @keyframes fadein{from{opacity:0}to{opacity:1}}
-@media (max-width:900px){.gate,.arch,.res-ideas{grid-template-columns:1fr}}
+@media (max-width:900px){.gate,.arch{grid-template-columns:1fr}}
 /* recherche : questions réflexives, résonance, projet */
 .k-lab.q{background:transparent;border:1px dashed var(--design);color:var(--accent)}
 .reson{display:flex;gap:8px;align-items:center;flex-wrap:wrap;border-top:1px solid var(--line-off);padding-top:10px;margin-top:2px}
@@ -449,10 +464,10 @@ html{scroll-behavior:smooth}
       <div class="rung free"><p class="eyebrow">Gratuit · 5 min</p><ol class="steps">
         <li><div><b>Ta charte Human Design</b><span>Type, stratégie, autorité, profil et tes 4 clés pour entreprendre.</span></div></li>
         <li><div><b>Ton quiz express</b><span>9 questions en un clic chacune.</span></div></li>
-        <li><div><b>Ton profil d'entrepreneur·e</b><span>Ton archétype et ta piste n°1, envoyés par e-mail.</span></div></li>
+        <li><div><b>Ton profil et tes 3 pistes</b><span>Ton archétype et 3 pistes de business, envoyés par e-mail.</span></div></li>
       </ol></div>
       <div class="rung paid"><p class="eyebrow">Version complète · <span class="price-tag">22 € · prix de lancement</span></p><ul class="pw-mini">
-        <li>Bilan approfondi en 7 modules</li><li>4 pistes classées sur 100 + idées sur mesure par IA</li><li>Comité de 6 experts, offre et plan sur 90 jours</li>
+        <li>Idées sur mesure par IA + bilan approfondi</li><li>Comité de 6 experts IA</li><li>Coach IA pour ton offre et ton plan d'action</li>
       </ul></div>
     </div>
   </div>
@@ -502,7 +517,7 @@ html{scroll-behavior:smooth}
   <div class="wrap">
     <div class="chapter-head">
       <div><p class="eyebrow">Étape 3 · Se découvrir · gratuit</p><h2>Ton profil d'entrepreneur·e</h2></div>
-      <p class="muted">Ton archétype, ta piste de business n°1 et ton premier pas, croisés avec ta charte.</p>
+      <p class="muted">Ton archétype et tes 3 pistes de business, avec un premier pas pour chacune.</p>
     </div>
     <div id="resultsBox"></div>
   </div>

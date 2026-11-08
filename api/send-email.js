@@ -43,8 +43,8 @@ export default async function handler(req, res) {
   const hello = name ? `${esc(name)}, voici` : 'Voici';
   const subject = type === 'carte' ? 'Ton profil d\'entrepreneur·e Human Design' : 'Ton récap business passion';
   const intro = type === 'carte'
-    ? para(`${hello} ton profil d'entrepreneur·e : ton archétype, ta charte Human Design et ta piste de business n°1. Tu le retrouves aussi en pièce jointe, à ouvrir dans ton navigateur pour l'imprimer ou le garder en PDF.`) +
-      para('Envie d\'aller plus loin ? La version complète ajoute un bilan approfondi, 4 pistes classées sur 100, des idées sur mesure par IA, un comité de 6 experts et ton plan d\'action sur 90 jours.') +
+    ? para(`${hello} ton profil d'entrepreneur·e : ton archétype, ta charte Human Design et tes 3 pistes de business. Tu le retrouves aussi en pièce jointe, à ouvrir dans ton navigateur pour l'imprimer ou le garder en PDF.`) +
+      para('Envie d\'aller plus loin ? La version complète ajoute des idées sur mesure par IA, un bilan approfondi, un comité de 6 experts et un coach IA qui affine avec toi ton offre et ton plan d\'action.') +
       button(`${site()}/#offre`, 'Découvrir la version complète')
     : para(`${hello} ton récap complet : ta vision, ton offre et ta feuille de route. Il est aussi en pièce jointe, à ouvrir dans ton navigateur pour l'imprimer ou le garder en PDF.`);
   const ok = await sendEmail({

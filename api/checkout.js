@@ -17,7 +17,7 @@ export default async function handler(req, res) {
         amount: price(),
         currency: 'EUR',
         merchant_code: process.env.SUMUP_MERCHANT_CODE,
-        description: 'Ma Boussole Business - accès complet',
+        description: 'Ma Boussole Business by Business Design - accès complet',
         redirect_url: `${site()}/?paiement=ok#bilan`,
         return_url: `${site()}/api/sumup-webhook`,
         hosted_checkout: { enabled: true }

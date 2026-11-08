@@ -238,7 +238,7 @@ const QUIZ = [
   { k: 'values', t: 'Ce qui compte le plus pour toi', d: 'Choisis 3 valeurs, de la plus importante à la moins importante.', type: 'multi', n: 3, opts: [
     ['liberte', 'Liberté'], ['securite', 'Sécurité financière'], ['impact', 'Impact positif'], ['creativite', 'Créativité'], ['lien', 'Lien humain'],
     ['transmission', 'Transmission'], ['famille', 'Famille et temps libre'], ['reconnaissance', 'Reconnaissance'], ['aventure', 'Aventure et nouveauté']] },
-  { k: 'sell', t: 'Pour gagner ta vie, tu préfères…', type: 'one', opts: [
+  { k: 'sell', t: 'Pour gagner ta vie, tu préfères…', d: 'Tu peux choisir les deux.', type: 'multi', n: 2, min: 1, opts: [
     ['a', 'Vendre ton temps et ta présence', 'Séances, prestations, accompagnement'],
     ['b', 'Créer une fois, vendre souvent', 'Formation, produit, contenu']] },
   { k: 'place', t: 'Ton projet idéal se vit…', type: 'one', opts: [
@@ -298,3 +298,24 @@ const VALIDATION = [
   'Un premier client payant, même au prix de lancement',
   'L\'envie de continuer après ces 30 jours : ton énergie est aussi un critère'
 ];
+
+// Définitions affichées à côté du bodygraph : ce que chaque élément désigne dans le système Human Design.
+const GLOSSARY = {
+  type: 'Ta façon naturelle d\'utiliser ton énergie et d\'interagir avec les opportunités.',
+  strat: 'La manière la plus fluide, selon le système, d\'entrer dans les projets et les relations.',
+  auth: 'Ton repère intérieur pour prendre les décisions qui sont justes pour toi.',
+  profile: 'Deux lignes, consciente et inconsciente, qui décrivent ton rôle et ta façon d\'apprendre et d\'entrer en relation.',
+  def: 'La façon dont tes centres définis sont reliés entre eux : elle montre comment tu fais le lien entre tes idées, tes émotions et ton énergie.',
+  sig: 'Le ressenti qui indique que tu vis en accord avec ton fonctionnement : un signal à observer.',
+  ns: 'L\'émotion qui signale que tu forces, ou que tu vis selon les attentes des autres.',
+  cross: 'Ton thème de vie symbolique, formé par les portes de ton Soleil et de ta Terre (conscient | inconscient).',
+  centers: 'Les 9 centres colorés sont définis : une énergie constante, qui t\'est propre. Les centres blancs sont ouverts : tu y captes et amplifies l\'énergie des autres, ce qui peut devenir une grande sagesse.',
+  lines: 'Les lignes noires viennent de ta Personnalité (ce dont tu as conscience), les lignes cuivrées de ton Design (ce que les autres voient en toi). Un canal entièrement coloré relie deux centres et les définit.'
+};
+const DEF_TXT = {
+  none: 'Aucun centre n\'est défini : tu reflètes ton environnement, d\'où l\'importance de bien le choisir.',
+  single: 'Tous tes centres définis sont reliés : tu fais le lien seul·e entre tes idées, ton énergie et tes émotions, souvent rapidement.',
+  split: 'Tes centres définis forment deux groupes : les autres t\'aident à faire le lien. Prends le temps d\'en parler avant de décider.',
+  triple: 'Tes centres définis forment trois groupes : tu as besoin de temps et de plusieurs personnes pour relier tes idées.',
+  quadruple: 'Tes centres définis forment quatre groupes : laisse mûrir tes décisions, entouré·e de personnes variées.'
+};

@@ -14,13 +14,14 @@ const EXAMPLE = {
     cons: { time: 1, budget: 1, revenue: 1, risk: 0, place: 2 },
     ideas: 'Accompagner des femmes en reconversion', excl: 'Vente à domicile'
   },
-  quick: { path: 'projet', pull: 'S', ask: 'S', skills: ['conseil,oral', 'former,ecrire', 'ecrire,reseaux'], values: ['liberte', 'impact', 'transmission'], sell: 'a', place: '2', time: '1', revenue: '1' }
+  quick: { path: 'projet', pull: 'S', ask: 'S', skills: ['conseil,oral', 'former,ecrire', 'ecrire,reseaux'], values: ['liberte', 'impact', 'transmission'], sell: ['a'], place: '2', time: '1', revenue: '1' }
 };
 const blankAns = () => ({ riasec: Array(30).fill(0), skills: {}, open: {}, values: [], style: Array(8).fill(''), cons: {}, ideas: '', excl: '' });
 const blankState = () => ({ birth: { name: '', date: '', time: '', unknown: false, zone: 'Europe/Paris', city: '' }, ans: blankAns(), quick: {} });
 
 let S = load() || blankState();
 S.quick ||= {};
+if (typeof S.quick.sell === 'string') S.quick.sell = [S.quick.sell];
 let step = 0;
 function load() { try { const v = localStorage.getItem(KEY); return v ? JSON.parse(v) : null; } catch (e) { return null; } }
 function save() { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) { } }
@@ -49,7 +50,7 @@ function centerShape(c, on) {
   else if (c === 'spleen') shape = `<polygon ${a} points="${x - 24},${y - 36} ${x + 32},${y} ${x - 24},${y + 36}"/>`;
   else if (c === 'solar') shape = `<polygon ${a} points="${x + 24},${y - 36} ${x - 32},${y} ${x + 24},${y + 36}"/>`;
   else { const s = c === 'throat' ? 25 : 28; shape = `<rect ${a} x="${x - s}" y="${y - s}" width="${2 * s}" height="${2 * s}" rx="6"/>`; }
-  return `<g><title>${name} : ${on ? 'défini' : 'ouvert'}</title>${shape}</g>`;
+  return `<g class="cg${chartCenter === c ? ' sel' : ''}" data-center="${c}" tabindex="0" role="button" aria-label="${name} : ${on ? 'défini' : 'ouvert'}"><title>${name} : ${on ? 'défini' : 'ouvert'}</title>${shape}</g>`;
 }
 function bodygraph(ch) {
   const groups = {};
@@ -85,37 +86,60 @@ function renderChart() {
   const T = TYPES[ch.type], A = AUTH[ch.authority], b = S.birth;
   const [l1, l2] = ch.profile.split('/');
   const born = new Date(b.date + 'T12:00:00').toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
+  const unk = b.unknown;
+  const defRow = (k, term, value, mine, i) => `<details class="def" style="--i:${i}"><summary><span class="def-term">${term}</span><span class="def-val">${value}</span><span class="def-what">${GLOSSARY[k]}</span></summary>${mine ? `<p class="def-mine">${mine}</p>` : ''}</details>`;
   out.innerHTML = `
-    <div class="who"><h3>${esc(b.name || 'Ta charte')}</h3>${S.example ? '<span class="tag ex">Exemple</span>' : ''}<span class="muted" style="font-size:.88rem">${born}${b.unknown ? ' · heure inconnue' : ' · ' + esc(b.time)}${b.city ? ' · ' + esc(b.city) : ''}</span></div>
+    <div class="who"><h3>${esc(b.name || 'Ta charte')}</h3>${S.example ? '<span class="tag ex">Exemple</span>' : ''}<span class="muted" style="font-size:.88rem">${born}${unk ? ' · heure inconnue' : ' · ' + esc(b.time)}${b.city ? ' · ' + esc(b.city) : ''}</span></div>
     <div class="result">
       <div class="body-wrap">${bodygraph(ch)}
         <div class="legend"><span><i style="background:var(--ink)"></i>Personnalité (conscient)</span><span><i style="background:var(--design)"></i>Design (inconscient)</span></div>
+        <div class="center-info" id="centerInfo" aria-live="polite">${centerInfoHTML(ch)}</div>
       </div>
-      <dl class="facts">
-        <div class="fact wide" style="--i:0"><dt>Type</dt><dd>${T.name}</dd></div>
-        <div class="fact" style="--i:1"><dt>Stratégie</dt><dd>${T.strat}</dd></div>
-        <div class="fact" style="--i:2"><dt>Autorité</dt><dd>${b.unknown ? 'À confirmer' : A[0]}</dd></div>
-        <div class="fact" style="--i:3"><dt>Profil</dt><dd>${b.unknown ? 'À confirmer' : `${ch.profile} · ${LINES[l1][0]} / ${LINES[l2][0]}`}</dd></div>
-        <div class="fact" style="--i:4"><dt>Définition</dt><dd>${DEFS[ch.definition]}</dd></div>
-        <div class="fact" style="--i:5"><dt>Signature</dt><dd>${T.sig}</dd></div>
-        <div class="fact" style="--i:6"><dt>Thème du non-soi</dt><dd>${T.ns}</dd></div>
-        <div class="fact wide" style="--i:7"><dt>Croix d'incarnation (portes)</dt><dd class="mono" style="font-size:1rem">${ch.cross.p.join('/')} | ${ch.cross.d.join('/')}</dd></div>
-      </dl>
+      <div class="defs">
+        <p class="eyebrow">Ta charte, élément par élément · touche une ligne pour lire ce qu'elle dit de toi</p>
+        ${defRow('type', 'Type', T.name, T.desc, 0)}
+        ${defRow('strat', 'Stratégie', T.strat, STRAT_BIZ[ch.type][0], 1)}
+        ${defRow('auth', 'Autorité', unk ? 'À confirmer' : A[0], unk ? 'Elle dépend de ton heure de naissance.' : A[1], 2)}
+        ${defRow('profile', 'Profil', unk ? 'À confirmer' : `${ch.profile} · ${LINES[l1][0]} / ${LINES[l2][0]}`, unk ? 'Il dépend de ton heure de naissance.' : `<b>${LINES[l1][0]} :</b> ${LINES[l1][1]}<br><b>${LINES[l2][0]} :</b> ${LINES[l2][1]}`, 3)}
+        ${defRow('def', 'Définition', DEFS[ch.definition], DEF_TXT[ch.definition], 4)}
+        ${defRow('sig', 'Signature', T.sig, `Quand tu ressens de la ${T.sig.toLowerCase()}, c'est le signe que tu avances à ta façon.`, 5)}
+        ${defRow('ns', 'Thème du non-soi', T.ns, `Si la ${T.ns.toLowerCase()} revient souvent, demande-toi où tu forces ou ce que tu fais pour les autres plutôt que pour toi.`, 6)}
+        ${defRow('cross', "Croix d'incarnation", `<span class="mono">${ch.cross.p.join('/')} | ${ch.cross.d.join('/')}</span>`, '', 7)}
+        <p class="hint" style="margin-top:6px">${GLOSSARY.lines}</p>
+      </div>
     </div>
-    ${b.unknown ? '<p class="hint" style="margin-top:12px">Sans heure de naissance, la Lune et parfois le type peuvent changer : seuls les éléments les plus stables sont à retenir.</p>' : ''}`;
+    ${unk ? '<p class="hint" style="margin-top:12px">Sans heure de naissance, la Lune et parfois le type peuvent changer : seuls les éléments les plus stables sont à retenir.</p>' : ''}`;
 
   const chans = ch.channels.map(([a, c]) => { const k = CHANNEL_TXT[`${a}-${c}`] || CHANNEL_TXT[`${c}-${a}`]; return `<div><span class="mono">${a}–${c}</span><span><b>${k[0]}</b> : ${k[1]}</span></div>`; }).join('') || '<p class="muted">Aucun canal défini : tu captes et amplifies l\'énergie des autres.</p>';
   const centers = Object.keys(CENTER_TXT).map(c => { const on = ch.defined.includes(c), t = CENTER_TXT[c]; return `<div class="center ${on ? 'on' : ''}"><b>${t[0]}<small>${on ? 'Défini' : 'Ouvert'}</small></b><span>${on ? t[1] : t[2]}</span><i class="cq">${CENTER_Q[c]}</i></div>`; }).join('');
   const rows = BODY_LABELS.map(([k, sym, n]) => `<tr><td class="d mono">${ch.des[k].gate}.${ch.des[k].line}</td><td>${sym} ${n}</td><td class="mono">${ch.pers[k].gate}.${ch.pers[k].line}</td></tr>`).join('');
+  const tabs = [['cles', 'Tes 4 clés pour entreprendre'], ['centres', 'Tes 9 centres'], ['talents', `Tes talents (${ch.channels.length})`], ['tech', 'Détails techniques']];
+  const panel = {
+    cles: `<div class="block full hdbiz-head"><p class="muted">Une lecture symbolique, issue de la tradition Human Design, de ta façon de travailler, de décider et de vendre. Ce n'est pas un test validé : garde ce qui te parle, écarte le reste. Tes réponses « Ça me parle / Pas vraiment » guident ensuite ton comité d'experts.</p></div>
+      ${hdCards(ch, S.birth.unknown).map(c => `<div class="block key"><div class="key-top"><span class="key-n">${c.n}</span><div><p class="eyebrow">${c.label}</p><h4>${c.title}</h4></div></div><p class="k-ess">${c.what}</p><div class="k-rows"><div><span class="k-lab">Business</span><p>${lead(c.why)}</p></div><div><span class="k-lab">À faire</span><p>${lead(c.evolve)}</p></div>${c.trap ? `<div><span class="k-lab warn">Alerte</span><p>${c.trap}</p></div>` : ''}${c.q ? `<div><span class="k-lab q">Question</span><p><i>${c.q}</i></p></div>` : ''}</div>${resonHTML(c.k)}</div>`).join('')}`,
+    centres: `<div class="block full"><p class="hint">${GLOSSARY.centers}</p><div class="centers">${centers}</div></div>`,
+    talents: `<div class="block full"><p class="hint">Un canal relie deux centres : il décrit un talent que tu exprimes de façon constante.</p><div class="chan">${chans}</div></div>`,
+    tech: `<div class="block full"><div class="table-scroll"><table><thead><tr><th>Design</th><th>Planète</th><th>Personnalité</th></tr></thead><tbody>${rows}</tbody></table></div><p class="hint" style="margin-top:8px">Positions calculées avec des éphémérides simplifiées (précision d'environ une minute d'arc).</p></div>`
+  };
   $('#chartDetails').innerHTML = `
-    <div class="details">
-      <div class="block full hdbiz-head"><p class="eyebrow">Ton Human Design au service de ton business</p><h4>Tes 4 clés pour entreprendre à ta façon</h4><p class="muted">Une lecture symbolique, issue de la tradition Human Design, de ta façon de travailler, de décider et de vendre. Ce n'est pas un test validé : garde ce qui te parle, écarte le reste. Tes réponses « Ça me parle / Pas vraiment » guident ensuite ton comité d'experts.</p></div>
-      ${hdCards(ch, S.birth.unknown).map(c => `<div class="block key"><div class="key-top"><span class="key-n">${c.n}</span><div><p class="eyebrow">${c.label}</p><h4>${c.title}</h4></div></div><p class="k-ess">${c.what}</p><div class="k-rows"><div><span class="k-lab">Business</span><p>${lead(c.why)}</p></div><div><span class="k-lab">À faire</span><p>${lead(c.evolve)}</p></div>${c.trap ? `<div><span class="k-lab warn">Alerte</span><p>${c.trap}</p></div>` : ''}${c.q ? `<div><span class="k-lab q">Question</span><p><i>${c.q}</i></p></div>` : ''}</div>${resonHTML(c.k)}</div>`).join('')}
-      <div class="block full"><p class="eyebrow">Tes talents innés</p><h4>${ch.channels.length} canal${ch.channels.length > 1 ? 'aux' : ''} défini${ch.channels.length > 1 ? 's' : ''}</h4><div class="chan">${chans}</div></div>
-      <div class="block full"><p class="eyebrow">Tes 9 centres</p><p class="hint">Un centre ouvert ne signifie pas une absence de capacité : c'est un thème que tu vis de façon plus variable.</p><div class="centers">${centers}</div></div>
-      <div class="block full"><details><summary>Positions planétaires (portes et lignes)</summary><div class="table-scroll" style="margin-top:10px"><table><thead><tr><th>Design</th><th>Planète</th><th>Personnalité</th></tr></thead><tbody>${rows}</tbody></table></div></details></div>
-    </div>`;
+    <div class="tabs" role="tablist" aria-label="Ta charte en détail">${tabs.map(([k, l]) => `<button type="button" role="tab" class="tab ${chartTab === k ? 'on' : ''}" data-tab="${k}" aria-selected="${chartTab === k}">${l}</button>`).join('')}</div>
+    <div class="details" role="tabpanel">${panel[chartTab]}</div>`;
 }
+let chartTab = 'cles', chartCenter = null;
+function centerInfoHTML(ch) {
+  if (!chartCenter) return '<p class="hint">Touche un centre du schéma pour découvrir ce qu\'il représente.</p>';
+  const c = chartCenter, on = ch.defined.includes(c), t = CENTER_TXT[c];
+  return `<p class="eyebrow">${t[0]} · ${on ? 'défini' : 'ouvert'}</p><p>${on ? t[1] : t[2]}</p><p class="cq">${CENTER_Q[c]}</p>`;
+}
+document.addEventListener('click', e => {
+  const tab = e.target.closest('[data-tab]');
+  if (tab) { chartTab = tab.dataset.tab; renderChart(); return; }
+  const g = e.target.closest('[data-center]'); if (!g) return;
+  chartCenter = chartCenter === g.dataset.center ? null : g.dataset.center;
+  document.querySelectorAll('.cg').forEach(x => x.classList.toggle('sel', x.dataset.center === chartCenter));
+  const ch = computeChart(); if (ch) $('#centerInfo').innerHTML = centerInfoHTML(ch);
+});
+document.addEventListener('keydown', e => { if ((e.key === 'Enter' || e.key === ' ') && e.target.closest?.('[data-center]')) { e.preventDefault(); e.target.closest('[data-center]').dispatchEvent(new MouseEvent('click', { bubbles: true })); } });
 
 /* ---------- wizard ---------- */
 const MODS = [
@@ -220,7 +244,7 @@ function quickAns() {
   const riasec = RIASEC_Q.map(([l]) => !q.pull ? 0 : l === q.pull ? 5 : l === q.ask ? 4 : 2);
   const skills = {}; SKILLS.forEach(([, l]) => l.forEach(([k]) => { skills[k] = 1; }));
   (q.skills || []).forEach(s => s.split(',').forEach(k => { skills[k] = 3; }));
-  const style = Array(8).fill(''); if (q.sell) style[7] = q.sell;
+  const sell = [].concat(q.sell || []), style = Array(8).fill(''); style[7] = sell.length > 1 ? 'ab' : sell[0] || '';
   return { riasec, skills, open: {}, values: (q.values || []).slice(), style, cons: { time: num(q.time), budget: 1, revenue: num(q.revenue), risk: 1, place: num(q.place) }, ideas: '', excl: '' };
 }
 // Chaque module terminé du bilan approfondi remplace la partie correspondante du quiz express.
@@ -245,6 +269,7 @@ function scoreIdeas() {
     let sty = .6;
     if (a.style[7] === 'a' && (model === 'service' || model === 'conseil')) sty += .3;
     if (a.style[7] === 'b' && ['produit', 'contenu', 'communaute'].includes(model)) sty += .3;
+    if (a.style[7] === 'ab' && model !== 'commerce') sty += .2;
     if (a.style[6] === 'a' && loc !== 'online') sty += .1;
     if (a.style[6] === 'b' && loc === 'online') sty += .1;
     sty = Math.min(1, sty);
@@ -342,7 +367,7 @@ function profileText() {
   const ch = S.chart;
   const skills = SKILLS.flatMap(([, l]) => l).map(([k, n]) => `${n}: ${SKILL_LEVELS[a.skills[k] || 0]}`).join('; ');
   const cons = CONSTRAINTS.map(([k, q, o]) => `${q}: ${a.cons[k] !== undefined ? o[a.cons[k]] : 'non renseigné'}`).join('; ');
-  const style = STYLE_Q.map(([q, x, y], i) => `${q}: ${a.style[i] === 'a' ? x : a.style[i] === 'b' ? y : '?'}`).join('; ');
+  const style = STYLE_Q.map(([q, x, y], i) => `${q}: ${a.style[i] === 'a' ? x : a.style[i] === 'b' ? y : a.style[i] === 'ab' ? `${x} et ${y}` : '?'}`).join('; ');
   const res = k => Object.entries(S.reson || {}).filter(([, v]) => v === k).map(([x]) => RESON_LABEL[x]);
   return [
     `Situation: ${S.quick?.path === 'projet' ? 'a déjà un projet mais bloque (voir ses idées ci-dessous)' : S.quick?.path === 'idee' ? 'n\'a pas encore d\'idée précise' : 'non précisée'}.`,
@@ -491,7 +516,7 @@ function recapData() {
 function recapDocHTML(d) {
   const o = d.o;
   return `
-  <header class="rc-head"><p class="rc-eyebrow">Ma Boussole Business · récap du ${d.date}</p><h2>${d.name ? esc(d.name) + ', ton' : 'Ton'} business passion</h2><p class="rc-angle">${esc(o.name || 'Ton offre')}${o.client ? ' pour ' + esc(o.client.charAt(0).toLowerCase() + o.client.slice(1)) : ''}</p></header>
+  <header class="rc-head"><p class="rc-eyebrow">Ma Boussole Business by Business Design · récap du ${d.date}</p><h2>${d.name ? esc(d.name) + ', ton' : 'Ton'} business passion</h2><p class="rc-angle">${esc(o.name || 'Ton offre')}${o.client ? ' pour ' + esc(o.client.charAt(0).toLowerCase() + o.client.slice(1)) : ''}</p></header>
   ${d.ex.synth ? `<section class="rc-sec"><h3>Ta vision</h3><p class="rc-vision">${esc(d.ex.synth.vision)}</p><p>${esc(d.ex.synth.pourquoi_toi)}</p>${(d.ex.synth.priorites || []).length ? `<p class="rc-w" style="margin-top:10px">Tes 3 priorités</p><ol class="rc-plan">${li(d.ex.synth.priorites)}</ol>` : ''}</section>` : ''}
   <section class="rc-sec"><h3>Ton offre de lancement</h3><dl class="rc-dl">
     <div><dt>Pour qui</dt><dd>${esc(o.client) || '<span class="rc-empty">À préciser</span>'}</dd></div>
@@ -757,12 +782,14 @@ document.addEventListener('click', e => {
 
 /* ---------- parcours gratuit : quiz express, profil et e-mail ---------- */
 const PRICE = '22 €';
+// Prix prévu après le lancement : n'afficher que s'il sera réellement appliqué (annonce de hausse future, pas de faux prix barré).
+const NEXT_PRICE = '49 €';
 let CONFIG = {};
 fetch('/api/config').then(r => r.json()).then(c => { CONFIG = c || {}; applyConfig(); }).catch(() => { });
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const unlocked = () => S.example || S.paid;
 const lead = s => { const i = s.search(/\.\s/); return i > 0 ? `<b>${s.slice(0, i + 1)}</b>${s.slice(i + 1)}` : `<b>${s}</b>`; };
-const answeredQ = q => q.type === 'multi' ? (S.quick[q.k] || []).length === q.n : S.quick[q.k] !== undefined;
+const answeredQ = q => q.type === 'multi' ? (S.quick[q.k] || []).length >= (q.min || q.n) : S.quick[q.k] !== undefined;
 const quizDone = () => QUIZ.every(answeredQ);
 const freeOpen = () => S.example || !!S.email;
 let qStep = 0, qTimer = null;
@@ -811,7 +838,7 @@ function renderQuiz(anim) {
       <div><h3 class="q-title">${q.t}</h3>${q.d ? `<p class="muted" style="margin-top:4px">${q.d}</p>` : ''}</div>
       <div class="qopts" role="group" aria-label="${esc(q.t)}">${opts}</div>
     </div>
-    <div class="q-nav"><button type="button" class="btn ghost" data-qnav="prev" ${qStep === 0 ? 'disabled' : ''}>Précédent</button>${multi ? `<span class="hint">${cnt}/${q.n} choisies</span><button type="button" class="btn" data-qnav="next" ${cnt === q.n ? '' : 'disabled'}>Continuer</button>` : v !== undefined ? '<button type="button" class="btn" data-qnav="next">Continuer</button>' : '<span></span>'}</div>`;
+    <div class="q-nav"><button type="button" class="btn ghost" data-qnav="prev" ${qStep === 0 ? 'disabled' : ''}>Précédent</button>${multi ? `<span class="hint">${q.min ? `${cnt} choisie${cnt > 1 ? 's' : ''}` : `${cnt}/${q.n} choisies`}</span><button type="button" class="btn" data-qnav="next" ${cnt >= (q.min || q.n) ? '' : 'disabled'}>Continuer</button>` : v !== undefined ? '<button type="button" class="btn" data-qnav="next">Continuer</button>' : '<span></span>'}</div>`;
 }
 function quizGo(n) {
   qStep = Math.max(0, Math.min(QUIZ.length, n));
@@ -832,7 +859,7 @@ $('#quizBox').addEventListener('click', e => {
     const arr = S.quick[q.k] ||= [], i = arr.indexOf(val);
     if (i > -1) arr.splice(i, 1);
     else if (arr.length < q.n) arr.push(val);
-    else { toast(`Tu as déjà choisi ${q.n} réponses : retire-en une pour changer.`); return; }
+    else { toast(`Tu peux choisir ${q.n} réponses au maximum : retire-en une pour changer.`); return; }
     save(); renderQuiz();
   } else {
     S.quick[q.k] = val; save(); renderQuiz();
@@ -921,7 +948,7 @@ const HEX = s => s.replace(/var\(--center-on\)/g, '#DDBE93').replace(/var\(--sur
 function freeResultsHTML() {
   const ch = computeChart(), b = S.birth, ar = archetype(), top = scoreIdeas()[0], T = ch ? TYPES[ch.type] : null;
   return `<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Mon profil Boussole Business${b.name ? ' — ' + esc(b.name) : ''}</title><style>${RECAP_CSS}.grid{display:grid;grid-template-columns:240px 1fr;gap:24px;align-items:start}.grid svg{width:100%;height:auto}@media(max-width:560px){.grid{grid-template-columns:1fr}}</style></head><body><main class="doc">
-  <header class="rc-head"><p class="rc-eyebrow">Ma Boussole Business · mon profil d'entrepreneur·e</p><h2>${b.name ? esc(b.name) + ', ' : ''}${ar.name}</h2><p class="rc-angle">${ar.line}</p></header>
+  <header class="rc-head"><p class="rc-eyebrow">Ma Boussole Business by Business Design · mon profil d'entrepreneur·e</p><h2>${b.name ? esc(b.name) + ', ' : ''}${ar.name}</h2><p class="rc-angle">${ar.line}</p></header>
   <section class="rc-sec"><h3>Ton archétype</h3><p>${ar.biz}</p>${T ? `<p><b>Avec ton type ${T.name} :</b> ${TYPE_BIZ[ch.type][1]}</p>` : ''}<p class="rc-w" style="margin-top:10px">Tes forces</p><ul class="rc-ul">${ar.forces.map(f => `<li>${f}</li>`).join('')}</ul></section>
   ${top ? `<section class="rc-sec"><h3>Ta piste n°1 · ${top.total}/100</h3><p class="rc-k-title" style="font-size:18px;margin:0 0 6px">${top.t}</p><p>${top.d}</p><p><b>Premier pas cette semaine :</b> ${top.stepTxt}</p><p><b>Prix indicatif :</b> ${top.price}</p></section>` : ''}
   ${ch ? `<section class="rc-sec grid"><div>${HEX(bodygraph(ch))}</div><dl class="rc-dl">
@@ -990,6 +1017,7 @@ function paywallHTML() {
       ${CONFIG.freeAccess ? freeCardHTML() : `<div class="card pw-right">
         <p class="eyebrow">Accès complet</p>
         <p class="pw-price">${PRICE}</p>
+        <p class="pw-next">Prix de lancement · il passera à ${NEXT_PRICE} après la période de lancement</p>
         <p class="muted">Paiement unique et sécurisé par SumUp · accès immédiat</p>
         <label for="payMail">Ton adresse e-mail<input type="email" id="payMail" autocomplete="email" placeholder="prenom@exemple.fr" value="${esc(S.example ? '' : S.email || '')}"><span class="hint">Ton lien d'accès personnel y sera envoyé.</span></label>
         <label class="check" for="fCgv" style="align-items:flex-start"><input type="checkbox" id="fCgv" style="margin-top:4px"> <span class="hint">J'accepte les <a href="/cgv.html" target="_blank">conditions générales de vente</a>. Je demande l'accès immédiat au contenu et je renonce à mon droit de rétractation.</span></label>
@@ -1014,7 +1042,7 @@ function freeCardHTML() {
       </div>`;
 }
 function applyConfig() {
-  document.querySelectorAll('.price-tag').forEach(el => { el.textContent = CONFIG.freeAccess ? 'offerte pendant le test' : PRICE; });
+  document.querySelectorAll('.price-tag').forEach(el => { el.textContent = CONFIG.freeAccess ? 'offerte pendant le test' : `${PRICE} · prix de lancement`; });
   renderOffer(); updateNextBar();
 }
 document.addEventListener('click', async e => {

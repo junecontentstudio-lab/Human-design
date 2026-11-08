@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Ma Boussole Business · Human Design et business passion</title>
+<title>Ma Boussole Business by Business Design</title>
 <meta name="description" content="Explore ton fonctionnement, découvre des pistes entrepreneuriales qui te ressemblent et teste ton business passion. Charte Human Design et profil gratuits.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400&family=Figtree:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
@@ -80,7 +80,7 @@ textarea{min-height:84px;resize:vertical}
 .tag.ex{background:var(--design);color:var(--accent-ink)}
 
 /* chart result */
-.result{display:grid;grid-template-columns:minmax(220px,300px) 1fr;gap:22px;align-items:start}
+.result{display:grid;grid-template-columns:minmax(200px,250px) 1fr;gap:22px;align-items:start}
 .result > *{min-width:0}
 .body-wrap{position:relative}
 .body-wrap svg{width:100%;height:auto;display:block}
@@ -324,6 +324,28 @@ footer .wrap{display:grid;gap:6px}
 .rung.free{background:var(--sand)}
 .rung.paid{border:1px dashed var(--design);background:var(--surface)}
 .price-tag{color:var(--accent)}
+.brand .by{font-family:var(--body);font-size:.78rem;font-weight:500;color:var(--muted);letter-spacing:.02em;white-space:nowrap}
+.pw-next{font-size:.88rem;color:var(--muted)}
+/* charte : définitions, centres cliquables, onglets */
+.defs{display:grid;gap:6px;align-content:start}
+.def{border:1px solid var(--line);border-radius:12px;background:var(--surface);animation:rise .5s ease both;animation-delay:calc(var(--i,0) * 60ms)}
+.def summary{list-style:none;cursor:pointer;display:grid;gap:2px;padding:10px 14px;position:relative;padding-right:34px}
+.def summary::after{content:"+";position:absolute;right:14px;top:10px;color:var(--muted);font-size:1.1rem}
+.def[open] summary::after{content:"–"}
+.def summary::-webkit-details-marker{display:none}
+.def-term{font-size:.72rem;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);font-weight:600}
+.def-val{font-family:var(--display);font-size:1.12rem;line-height:1.25}
+.def-what{font-size:.84rem;color:var(--muted)}
+.def[open]{border-color:var(--design)}
+.def-mine{padding:0 14px 12px;font-size:.93rem;border-top:1px dashed var(--line);padding-top:10px;margin:0 0 0}
+.cg{cursor:pointer;outline:none}
+.cg:hover polygon,.cg:hover rect,.cg:focus-visible polygon,.cg:focus-visible rect{stroke:var(--accent);stroke-width:2.5}
+.cg.sel polygon,.cg.sel rect{stroke:var(--accent);stroke-width:3}
+.center-info{margin-top:10px;background:var(--bg);border-radius:12px;padding:10px 12px;display:grid;gap:4px;font-size:.9rem;min-height:52px}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-top:18px}
+.tab{font:inherit;font-size:.88rem;border:1px solid var(--line);background:var(--surface);color:var(--muted);border-radius:999px;padding:8px 14px;cursor:pointer}
+.tab.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+@media (max-width:520px){.brand .by{display:block}}
 .pw-mini{margin:0;padding-left:18px;display:grid;gap:4px;font-size:.9rem}
 .ex-bar{background:var(--design);color:var(--accent-ink)}
 .ex-bar .wrap{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;padding-block:8px;font-size:.9rem}
@@ -400,7 +422,7 @@ html{scroll-behavior:smooth}
   <div class="wrap">
     <div class="brand">
       <svg width="26" height="26" viewBox="0 0 26 26" aria-hidden="true"><circle cx="13" cy="13" r="11.5" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M13 4 L16 13 L13 22 L10 13 Z" fill="var(--accent)"/></svg>
-      Ma Boussole Business
+      <span>Ma Boussole Business <span class="by">by Business Design</span></span>
     </div>
     <nav class="nav" aria-label="Sections">
       <a href="#charte">Ta charte</a><a href="#quiz">Ton quiz</a><a href="#resultats">Ton profil</a><a href="#offre" class="nav-offer">Version complète</a><a href="#bilan" class="navl">Ton bilan</a><a href="#pistes" class="navl">Tes pistes</a><a href="#comite" class="navl">Ton comité</a><a href="#recap" class="navl">Ton récap</a>
@@ -427,7 +449,7 @@ html{scroll-behavior:smooth}
         <li><div><b>Ton quiz express</b><span>9 questions en un clic chacune.</span></div></li>
         <li><div><b>Ton profil d'entrepreneur·e</b><span>Ton archétype et ta piste n°1, envoyés par e-mail.</span></div></li>
       </ol></div>
-      <div class="rung paid"><p class="eyebrow">Version complète · <span class="price-tag">22 €</span></p><ul class="pw-mini">
+      <div class="rung paid"><p class="eyebrow">Version complète · <span class="price-tag">22 € · prix de lancement</span></p><ul class="pw-mini">
         <li>Bilan approfondi en 7 modules</li><li>4 pistes classées sur 100 + idées sur mesure par IA</li><li>Comité de 6 experts, offre et plan sur 90 jours</li>
       </ul></div>
     </div>

@@ -19,16 +19,18 @@ export default async function handler(req, res) {
   if (!g && !legacy) return res.status(400).json({ error: 'Contenu invalide' });
   if (type === 'recap' && !checkToken(token)) return res.status(402).json({ error: 'Accès complet requis' });
 
+  let optinNow = !!optin;
   // 1. Enregistre le prospect (et freine les envois répétés vers une même adresse)
   if (type === 'carte') {
     const prev = (await db(`boussole_leads?email=eq.${enc(email)}&select=emails_sent,last_email_at,optin`))?.[0];
     if (prev?.last_email_at && Date.now() - Date.parse(prev.last_email_at) < 60 * 1000) return res.status(429).json({ error: 'Patiente une minute avant un nouvel envoi' });
     if (prev && prev.emails_sent >= 10) return res.status(429).json({ error: 'Trop d\'envois pour cette adresse' });
     const now = new Date().toISOString();
+    optinNow = !!optin || !!prev?.optin;
     await db('boussole_leads?on_conflict=email', {
       method: 'POST', prefer: 'resolution=merge-duplicates',
       body: {
-        email, name: short(name, 80), optin: !!optin || !!prev?.optin,
+        email, name: short(name, 80), optin: optinNow,
         hd_type: short(lead.hd_type, 40), hd_authority: short(lead.hd_authority, 40), hd_profile: short(lead.hd_profile, 10),
         archetype: short(lead.archetype, 80), top_idea: short(lead.top_idea, 120),
         quiz: lead.quiz && typeof lead.quiz === 'object' ? lead.quiz : null,
@@ -53,7 +55,7 @@ export default async function handler(req, res) {
     catch (e) { console.error('PDF', e); }
   } else attachment = { name: `${file}.html`, content: Buffer.from(html).toString('base64') };
   const m = type === 'carte'
-    ? profileEmail({ name: nm, archetype: g?.archetype, pistes: g?.pistes, attached: !!attachment })
+    ? profileEmail({ name: nm, archetype: g?.archetype, pistes: g?.pistes, attached: !!attachment, optin: optinNow, email })
     : guideEmail({ name: nm, offer: g?.offer, token });
   const ok = await sendEmail({ email, name: nm, subject: m.subject, html: m.html, text: m.text, attachment });
   return ok ? res.status(200).json({ ok: true }) : res.status(502).json({ error: 'Envoi impossible' });

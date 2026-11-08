@@ -17,10 +17,12 @@ Page de vente et outil en ligne (français, tutoiement). **Bloc gratuit** : char
   - `config.js` : réglages publics (`freeAccess`).
   - `health.js` : diagnostic de mise en ligne (`/api/health`) : mode, prix, présence des clés, fournisseur d'e-mail, tables Supabase. Jamais de valeur secrète.
   - `project.js` : enregistre le projet validé (parcours « déjà un projet ») dans `boussole_leads.quiz.projet`. Côté page, le texte va dans `S.ans.ideas` (module « Tes idées » du bilan, lu par le comité) et `S.projectSaved = true`.
+  - `relance.js` : cron quotidien (vercel.json, 8 h UTC) : relance J+2 des prospects `optin` non clients (fenêtre J+2 à J+14, 40 max/jour). Exige `CRON_SECRET` ; n'envoie que si `RELANCE_ENABLED=1`, sinon renvoie un décompte. Colonnes `relance_sent_at`, `unsubscribed_at` (migration `20261108_relance.sql`).
+  - `unsubscribe.js` : lien signé (`unsubToken`) dans les e-mails de conseils ; GET = confirmation, POST = désinscription (aussi pour List-Unsubscribe one-click).
   - `restore.js` : « Déjà acheté ? » → renvoie le lien d'accès (`/?acces=<jeton>`) à l'e-mail d'achat ; réponse identique que l'adresse soit cliente ou non.
   - `claude.js` : relais vers `POST /v1/messages`, réservé aux détenteurs d'un jeton valide, plafonné par achat (`AI_CALLS_LIMIT`, 60 par défaut, RPC `boussole_use_ai`) ; renvoie `{data}` (JSON parsé).
   - `send-email.js` : e-mails via `lib/mail.js`. Type `carte` (profil gratuit) : enregistre le prospect dans `boussole_leads` (1 envoi/min, 10 max par adresse). Type `recap` exige le jeton.
-- `lib/` : `db.js` (Supabase REST, service_role ; renvoie `null` si non configuré, le site continue de marcher), `mail.js` (envoi via Resend si `RESEND_API_KEY` + `SENDER_EMAIL`, sinon Gmail SMTP, sinon Brevo ; seule dépendance npm : `nodemailer`), `payments.js` (`confirmCheckout` : passe à PAID une seule fois, marque le prospect client, envoie l'e-mail avec le lien d'accès), `token.js`.
+- `lib/` : `db.js` (Supabase REST, service_role ; renvoie `null` si non configuré, le site continue de marcher), `mail.js` (en-têtes personnalisés pour List-Unsubscribe ; envoi via Resend si `RESEND_API_KEY` + `SENDER_EMAIL`, sinon Gmail SMTP, sinon Brevo ; seule dépendance npm : `nodemailer`), `payments.js` (`confirmCheckout` : passe à PAID une seule fois, marque le prospect client, envoie l'e-mail avec le lien d'accès), `token.js`.
 - `supabase/migrations/` : schéma SQL (tables `boussole_leads`, `boussole_purchases`, fonction `boussole_use_ai`, vue `boussole_stats`). À exécuter dans le SQL Editor de Supabase. Tables préfixées car la base est partagée avec d'autres projets.
 - `.claude/agents/expert-tunnel-vente.md` : agent spécialisé tunnel de vente / expérience client pour cette niche.
 - `docs/recherche-human-design-business-design.md` : dossier de recherche (méthode Business Design en 5 étapes, limites éthiques et légales, sources) et tableau de ce qui est déjà mis en œuvre. À relire avant toute évolution du contenu.
@@ -35,7 +37,7 @@ Tout l'état est dans `localStorage` sous la clé `boussole-business-v1` (objet 
 
 ## À faire / pistes
 - Tester les vrais appels SumUp et Brevo (prix à 1 € via `PRICE_EUR`), vérifier la forme exacte des réponses SumUp (champ `transactions`, notification webhook).
-- Séquence d'e-mails de relance Brevo pour les prospects non clients (automatisation sur la liste Prospects).
+- Autres relances (J+7…) si la relance J+2 convertit ; ne cibler que les prospects `optin` (consentement exigé pour la prospection par e-mail).
 - Captcha éventuel sur le formulaire e-mail gratuit si des abus apparaissent.
 - Valider le calcul de charte sur plusieurs dates contre un calculateur de référence (précision ~1 minute d'arc ; le nœud lunaire utilise une approximation du nœud vrai).
 

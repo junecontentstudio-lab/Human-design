@@ -1,5 +1,13 @@
 {
   "functions": {
-    "api/*.js": { "includeFiles": "assets/fonts/**" }
-  }
+    "api/*.js": {
+      "includeFiles": "assets/fonts/**"
+    }
+  },
+  "crons": [
+    {
+      "path": "/api/relance",
+      "schedule": "0 8 * * *"
+    }
+  ]
 }

@@ -10,12 +10,25 @@ export default async function handler(req, res) {
     const r = await db(`${t}?select=*&limit=0`);
     return r === null ? 'introuvable (exécuter le fichier SQL dans ce projet Supabase)' : 'ok';
   };
+  // Vérifie auprès de SumUp que la clé est valide et que le code marchand est bien celui de ce compte.
+  const sumupCheck = async () => {
+    const key = (process.env.SUMUP_API_KEY || '').trim(), code = process.env.SUMUP_MERCHANT_CODE || '';
+    if (!key || !code) return 'manquant';
+    try {
+      const r = await fetch('https://api.sumup.com/v0.1/me', { headers: { Authorization: `Bearer ${key}` } });
+      if (!r.ok) return `clé API refusée par SumUp (${r.status})`;
+      const me = await r.json(), real = me?.merchant_profile?.merchant_code || '';
+      if (!real) return 'clé ok, code marchand du compte introuvable';
+      if (code !== code.trim()) return `code marchand avec un espace ou un retour à la ligne en trop (corrigé automatiquement) ; ${real === code.trim() ? 'valeur ok' : 'valeur différente du compte'}`;
+      return real === code ? 'ok (clé et code marchand vérifiés)' : `code marchand différent de celui du compte de la clé (le bon commence par ${real.slice(0, 2)}… et finit par …${real.slice(-2)}, ${real.length} caractères)`;
+    } catch (e) { return 'SumUp injoignable'; }
+  };
   const out = {
     site_url: process.env.SITE_URL || 'manquant',
     mode: freeAccess() ? 'test (version complète offerte)' : 'payant',
     prix_encaisse: `${Number(process.env.PRICE_EUR || 22)} €`,
     token_secret: process.env.TOKEN_SECRET ? 'ok' : 'manquant',
-    sumup: process.env.SUMUP_API_KEY && process.env.SUMUP_MERCHANT_CODE ? 'ok' : 'manquant',
+    sumup: await sumupCheck(),
     ia_claude: process.env.ANTHROPIC_API_KEY ? 'ok' : 'manquant',
     emails: mailProvider() ? `ok (${mailProvider()}${process.env.SENDER_EMAIL ? ', depuis ' + process.env.SENDER_EMAIL : ''})` : 'manquant',
     relance_j2: {

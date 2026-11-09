@@ -11,12 +11,12 @@ export default async function handler(req, res) {
   try {
     const r = await fetch('https://api.sumup.com/v0.1/checkouts', {
       method: 'POST',
-      headers: { Authorization: `Bearer ${process.env.SUMUP_API_KEY}`, 'Content-Type': 'application/json' },
+      headers: { Authorization: `Bearer ${(process.env.SUMUP_API_KEY || '').trim()}`, 'Content-Type': 'application/json' },
       body: JSON.stringify({
         checkout_reference: reference,
         amount: price(),
         currency: 'EUR',
-        merchant_code: process.env.SUMUP_MERCHANT_CODE,
+        merchant_code: (process.env.SUMUP_MERCHANT_CODE || '').trim(),
         description: 'Ma Boussole Business by Business Design - accès complet',
         redirect_url: `${site()}/?paiement=ok#bilan`,
         return_url: `${site()}/api/sumup-webhook`,

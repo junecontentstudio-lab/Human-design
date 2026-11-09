@@ -976,7 +976,7 @@ function renderResults() {
     <div class="res-ideas">
       ${ideas.length ? ideas.map((x, i) => ideaCardFree(x, i)).join('') : '<div class="card"><p>Aucune piste ne correspond à tes contraintes actuelles : le bilan approfondi permet de les ajuster finement.</p></div>'}
     </div>
-    ${S.paid && !S.example ? '' : `<div class="card next-card"><div><p class="eyebrow">Aller plus loin</p><h3>Transforme une piste en projet concret</h3><p class="muted" style="margin-top:4px">Idées 100 % sur mesure, bilan approfondi, comité de 6 experts, ton offre, ton plan d'action sur 30 jours et ton récap complet.</p></div><a class="btn" href="#offre">Découvrir la version complète</a></div>`}
+    ${S.paid && !S.example ? '' : `<div class="card next-card"><div><p class="eyebrow">Aller plus loin</p><h3>Transforme une piste en projet concret</h3><p class="muted" style="margin-top:4px">Idées 100 % sur mesure, bilan approfondi, comité de 6 experts, ton offre, ton plan d'action sur 30 jours et ton récap complet.</p>${CONFIG.freeAccess ? '' : `<p class="teaser-price"><b>${PRICE}</b> · paiement unique · prix de lancement</p>`}</div><a class="btn" href="#offre">${CONFIG.freeAccess ? 'Découvrir la version complète' : `Voir la version complète · ${PRICE}`}</a></div>`}
     ${S.quick.path === 'projet' && !S.example ? projectCardHTML() : ''}
     ${S.example ? '' : `<p class="sent">${S.emailSent === 'pending' ? `Envoi de ton profil (PDF) à <b>${esc(S.email)}</b> en cours…` : S.emailSent ? `Ton profil a été envoyé à <b>${esc(S.email)}</b>. Pense à regarder tes courriers indésirables.` : `Ton profil n'a pas pu être envoyé à <b>${esc(S.email)}</b>.`} <button type="button" class="linkbtn" id="resend">Renvoyer</button> · <button type="button" class="linkbtn" id="changeMail">Changer d'adresse</button></p>`}
   </div>`;
@@ -1029,12 +1029,6 @@ function paywallHTML() {
           <li><b>Ton offre signature</b>, ton positionnement, ta vision et ta feuille de route sur 90 jours</li>
           <li><b>Ton récap complet</b> par e-mail, à imprimer ou à enregistrer en PDF</li>
         </ul>
-        <div class="faq">
-          <details><summary>Combien de temps ça prend ?</summary><p>Compte 20 minutes pour le bilan approfondi, que tu peux faire en plusieurs fois, puis 3 à 5 minutes pour l'analyse du comité d'experts.</p></details>
-          ${CONFIG.freeAccess ? `<details><summary>C'est vraiment gratuit ?</summary><p>Oui, pendant la phase de test : aucun paiement ni carte bancaire. Ton accès reste ouvert sur cet appareil jusqu'à la fin du test.</p></details>` : `<details><summary>Et si je change d'appareil ?</summary><p>Après ton paiement, tu reçois un lien d'accès personnel par e-mail : il rouvre ton accès sur ton téléphone, ton ordinateur ou ta tablette.</p></details>
-          <details><summary>Est-ce un abonnement ?</summary><p>Non : un paiement unique de ${PRICE}, sans engagement ni renouvellement.</p></details>`}
-          <details><summary>Le Human Design, c'est scientifique ?</summary><p>Non, et nous ne le présentons jamais ainsi : c'est une grille de réflexion. Tes pistes s'appuient surtout sur tes intérêts, tes compétences, tes valeurs et tes contraintes.</p></details>
-        </div>
       </div>
       ${CONFIG.freeAccess ? freeCardHTML() : `<div class="card pw-right">
         <p class="eyebrow">Accès complet</p>
@@ -1052,6 +1046,13 @@ function paywallHTML() {
           <p class="hint" id="rMsg" role="status"></p>
         </form>
       </div>`}
+    </div>
+    <div class="card pw-faq">      <div class="faq">
+          <details><summary>Combien de temps ça prend ?</summary><p>Compte 20 minutes pour le bilan approfondi, que tu peux faire en plusieurs fois, puis 3 à 5 minutes pour l'analyse du comité d'experts.</p></details>
+          ${CONFIG.freeAccess ? `<details><summary>C'est vraiment gratuit ?</summary><p>Oui, pendant la phase de test : aucun paiement ni carte bancaire. Ton accès reste ouvert sur cet appareil jusqu'à la fin du test.</p></details>` : `<details><summary>Et si je change d'appareil ?</summary><p>Après ton paiement, tu reçois un lien d'accès personnel par e-mail : il rouvre ton accès sur ton téléphone, ton ordinateur ou ta tablette.</p></details>
+          <details><summary>Est-ce un abonnement ?</summary><p>Non : un paiement unique de ${PRICE}, sans engagement ni renouvellement.</p></details>`}
+          <details><summary>Le Human Design, c'est scientifique ?</summary><p>Non, et nous ne le présentons jamais ainsi : c'est une grille de réflexion. Tes pistes s'appuient surtout sur tes intérêts, tes compétences, tes valeurs et tes contraintes.</p></details>
+        </div>
     </div>`;
 }
 function freeCardHTML() {
@@ -1066,7 +1067,7 @@ function freeCardHTML() {
 }
 function applyConfig() {
   document.querySelectorAll('.price-tag').forEach(el => { el.textContent = CONFIG.freeAccess ? 'offerte pendant le test' : `${PRICE} · prix de lancement`; });
-  renderOffer(); updateNextBar();
+  renderOffer(); renderResults(); updateNextBar();
 }
 document.addEventListener('click', async e => {
   if (e.target.id !== 'freeGo') return;

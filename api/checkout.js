@@ -24,7 +24,12 @@ export default async function handler(req, res) {
       })
     });
     const d = await r.json();
-    if (!r.ok || !d.hosted_checkout_url) { console.error('SumUp checkout', r.status, d); return res.status(502).json({ error: 'Paiement indisponible' }); }
+    if (!r.ok || !d.hosted_checkout_url) {
+      console.error('SumUp checkout', r.status, d);
+      // Motif renvoyé par SumUp (code et message, aucune clé), pour diagnostiquer sans ouvrir les journaux Vercel.
+      const e = Array.isArray(d) ? d[0] || {} : d || {};
+      return res.status(502).json({ error: 'Paiement indisponible', sumup: { status: r.status, code: e.error_code || null, message: e.message || null, param: e.param || null } });
+    }
     await db('boussole_purchases', { method: 'POST', body: { checkout_id: d.id, reference, email, amount: price(), status: 'PENDING' } });
     return res.status(200).json({ id: d.id, url: d.hosted_checkout_url });
   } catch (e) {

@@ -26,6 +26,8 @@ export default async function handler(req, res) {
   const out = {
     site_url: process.env.SITE_URL || 'manquant',
     mode: freeAccess() ? 'test (version complète offerte)' : 'payant',
+    // Ce que le serveur voit réellement (aucune clé) : environnement Vercel, version déployée, valeur brute du prix.
+    serveur: { environnement: process.env.VERCEL_ENV || 'inconnu', version: (process.env.VERCEL_GIT_COMMIT_SHA || '').slice(0, 7) || 'inconnue', PRICE_EUR: process.env.PRICE_EUR === undefined ? 'non définie (prix par défaut : 46)' : JSON.stringify(process.env.PRICE_EUR) },
     prix_encaisse: `${Number(process.env.PRICE_EUR || 46)} €`,
     token_secret: process.env.TOKEN_SECRET ? 'ok' : 'manquant',
     sumup: await sumupCheck(),

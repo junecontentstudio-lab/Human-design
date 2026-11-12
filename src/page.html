@@ -72,6 +72,21 @@ textarea{min-height:84px;resize:vertical}
 .hint{font-size:.8rem;color:var(--muted);font-weight:400}
 .teaser-price{margin-top:10px;color:var(--muted)}.teaser-price b{font-family:var(--display);font-size:1.35rem;color:var(--accent);margin-right:4px}
 .pw-faq{margin-top:16px}
+.aff{flex:none;align-self:flex-start;font-size:.74rem;font-weight:600;letter-spacing:.02em;padding:5px 10px;border-radius:999px;border:1px solid var(--design);color:var(--accent);background:var(--surface);white-space:nowrap}
+.aff.a3{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.aff.a2{background:var(--center-on);border-color:var(--center-on);color:var(--ink)}
+.res-note{margin-top:12px}
+.more-btn{display:inline-block;margin-top:8px;text-align:left}
+.more-card{width:100%;margin-top:16px;display:flex;justify-content:space-between;align-items:center;gap:14px;text-align:left;font:inherit;color:inherit;cursor:pointer}
+.more-card small{display:block;color:var(--muted);font-size:.86rem;margin-top:2px}
+.more-card .plus{font-size:1.5rem;color:var(--accent);line-height:1}
+.more-card:hover{border-color:var(--design)}
+#chartNext .next-card{margin-top:16px}
+.hero-preview:empty{display:none}
+.hero-preview{display:grid;grid-template-columns:96px 1fr;gap:14px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:14px 16px}
+.hp-graph svg{width:96px;height:auto;display:block;pointer-events:none}
+.hp-arch{font-family:var(--display);font-style:italic;font-size:1.3rem;color:var(--accent);line-height:1.2;margin-top:4px}
+.hp-line{font-size:.86rem;color:var(--muted);margin:4px 0 6px}
 .pop{position:fixed;inset:0;z-index:60;background:rgba(33,23,15,.55);display:grid;place-items:center;padding:16px;animation:fade .25s ease both}
 .pop-card{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:28px 24px 22px;max-width:460px;width:100%;max-height:calc(100vh - 32px);overflow:auto;box-shadow:0 24px 60px rgba(33,23,15,.28);display:grid;gap:12px;animation:rise .3s ease both}
 .pop-card h3{font-size:1.45rem;font-weight:400;line-height:1.2;padding-right:28px}
@@ -454,6 +469,7 @@ html{scroll-behavior:smooth}
       <p class="hint" style="margin-top:12px">Sans inscription pour commencer · tes réponses restent dans ton navigateur</p>
     </div>
     <div class="ladder">
+      <div class="hero-preview" id="heroPreview"></div>
       <div class="rung free"><p class="eyebrow">Gratuit · 5 min</p><ol class="steps">
         <li><div><b>Ta charte Human Design</b><span>Type, stratégie, autorité, profil et tes 4 clés pour entreprendre.</span></div></li>
         <li><div><b>Ton quiz express</b><span>9 questions en un clic chacune.</span></div></li>
@@ -491,8 +507,8 @@ html{scroll-behavior:smooth}
         <div class="card" id="chartOut"></div>
       </div>
     </div>
-    <div id="chartDetails"></div>
     <div id="chartNext"></div>
+    <div id="chartDetails"></div>
   </div>
 </section>
 

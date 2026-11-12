@@ -232,7 +232,7 @@ const QUIZ = [
     ['E', 'De prendre les choses en main', 'Décider, convaincre, mener le groupe'],
     ['C', 'D\'organiser', 'Un planning, un budget, un dossier']] },
   { k: 'skills', t: 'Tes 3 super-pouvoirs', d: 'Choisis les 3 qui te ressemblent le plus.', type: 'multi', n: 3, opts: [
-    ['conseil,oral', 'Écouter et conseiller'], ['former,ecrire', 'Expliquer, transmettre'], ['ecrire,reseaux', 'Écrire, raconter'],
+    ['conseil,oral', 'Écouter et conseiller'], ['former,ecrire', 'Expliquer, transmettre'], ['ecrire,reseaux,langues', 'Écrire, raconter'],
     ['design,photo', 'Créer du beau'], ['manuel,cuisine,bricolage', 'Faire de mes mains'], ['projet,admin,event', 'Organiser, piloter'],
     ['vendre,oral', 'Convaincre, vendre'], ['digital,nocode,data', 'Le numérique, les outils'], ['sante', 'Santé, bien-être, sport'], ['expertise,finance', 'Un savoir métier pointu']] },
   { k: 'values', t: 'Ce qui compte le plus pour toi', d: 'Choisis 3 valeurs, de la plus importante à la moins importante.', type: 'multi', n: 3, opts: [

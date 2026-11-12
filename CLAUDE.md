@@ -41,6 +41,13 @@ Tout l'état est dans `localStorage` sous la clé `boussole-business-v1` (objet 
 - Captcha éventuel sur le formulaire e-mail gratuit si des abus apparaissent.
 - Valider le calcul de charte sur plusieurs dates contre un calculateur de référence (précision ~1 minute d'arc ; le nœud lunaire utilise une approximation du nœud vrai).
 
+## Parcours et affichage (points à connaître)
+- Charte : seuls type, stratégie, autorité et profil sont affichés d'emblée ; le reste est replié (`defsMore`, `chartOpen`). Le bouton du quiz est placé avant le détail de la charte.
+- Profil gratuit : `freePistes()` (3 pistes de modèles variés) et `affinity()` (affinité en mots). Le score sur 100 n'apparaît que dans la version complète. Tant que le module « compétences » n'est pas rempli, `scoreIdeas()` note chaque idée sur ses 2 compétences les mieux couvertes et n'applique aucun filtre de budget.
+- Parcours « déjà un projet » : la carte projet passe avant les 3 pistes.
+- La section `#offre` n'apparaît qu'après le profil gratuit (`offerVisible()`), la barre « Débloquer » qu'après la lecture des pistes (`S.pistesRead`). Fenêtre « avant de partir » : `showExit()`.
+- Exemple de Camille : comité pré-rempli (`EXAMPLE.experts`), aperçu dans l'accueil (`#heroPreview`).
+
 ## Conventions
 - Textes en français, tutoiement, ton chaleureux et concret. Le Human Design est toujours présenté comme une grille de réflexion, jamais comme une science.
 - Ne jamais utiliser l'expression « bilan de compétences » (prestation réglementée en France).

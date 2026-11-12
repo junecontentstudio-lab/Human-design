@@ -32,7 +32,7 @@ export default async function handler(req, res) {
     ia_claude: process.env.ANTHROPIC_API_KEY ? 'ok' : 'manquant',
     emails: mailProvider() ? `ok (${mailProvider()}${process.env.SENDER_EMAIL ? ', depuis ' + process.env.SENDER_EMAIL : ''})` : 'manquant',
     relance_j2: {
-      colonnes_sql: dbOn() ? ((await db('boussole_leads?select=relance_sent_at,unsubscribed_at&limit=0')) === null ? 'manquantes (exécuter 20261108_relance.sql)' : 'ok') : 'non configuré',
+      colonnes_sql: dbOn() ? ((await db('boussole_leads?select=relance_sent_at,unsubscribed_at,optin_confirmed_at,ip_hash&limit=0')) === null ? 'manquantes (exécuter 20261108_relance.sql)' : 'ok') : 'non configuré',
       cron_secret: process.env.CRON_SECRET ? 'ok' : 'manquant',
       envoi: process.env.RELANCE_ENABLED === '1' ? 'actif' : 'désactivé (RELANCE_ENABLED)'
     },

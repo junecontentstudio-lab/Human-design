@@ -839,7 +839,7 @@ const resetQuizStep = () => { qStep = quizDone() ? QUIZ.length : Math.max(0, QUI
 async function api(path, body) {
   const r = await fetch(path, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
   let d = {}; try { d = await r.json(); } catch (e) { }
-  if (!r.ok) throw { status: r.status, message: d.error || 'Erreur' };
+  if (!r.ok) throw { status: r.status, message: d.error || 'Erreur', code: d.code };
   return d;
 }
 function toast(msg) {
@@ -940,7 +940,7 @@ function gateHTML(ar) {
           <div><p class="eyebrow">Gratuit</p><h3>Où t'envoie-t-on ton profil ?</h3><p class="muted" style="margin-top:4px">Il s'affiche ici tout de suite, et tu le reçois par e-mail pour le garder.</p></div>
           <label for="gName">Ton prénom<input type="text" id="gName" autocomplete="given-name" placeholder="Camille" value="${esc(S.birth.name || '')}"></label>
           <label for="gMail">Ton adresse e-mail<input type="email" id="gMail" autocomplete="email" placeholder="prenom@exemple.fr" required></label>
-          <label class="check" for="gOptin" style="align-items:flex-start"><input type="checkbox" id="gOptin" style="margin-top:4px"> <span class="hint">Je veux aussi recevoir les conseils de Ma Boussole Business pour lancer mon activité (désinscription à tout moment).</span></label>
+          <label class="check" for="gOptin" style="align-items:flex-start"><input type="checkbox" id="gOptin" style="margin-top:4px"> <span class="hint">Je veux aussi recevoir les conseils de Ma Boussole Business pour lancer mon activité (à confirmer dans l'e-mail, désinscription à tout moment).</span></label>
           <button class="btn" type="submit">Révéler mon profil</button>
           <p class="hint" id="gMsg" role="alert"></p>
           <p class="hint">Ton adresse sert à t'envoyer ton profil. Voir notre <a href="/confidentialite.html" target="_blank">politique de confidentialité</a>.</p>
@@ -1002,18 +1002,28 @@ function renderResults() {
     </div>
     ${ideas.length ? '<p class="hint res-note">Affinité estimée à partir de ton quiz express. Le bilan approfondi de la version complète l\'affine et te donne le score détaillé de chaque piste.</p>' : ''}
     ${S.paid && !S.example ? '' : `<div class="card next-card"><div><p class="eyebrow">Aller plus loin</p><h3>Transforme une piste en projet concret</h3><p class="muted" style="margin-top:4px">Idées 100 % sur mesure, bilan approfondi, comité de 6 experts, ton offre, ton plan d'action sur 30 jours et ton récap complet.</p>${CONFIG.freeAccess ? '' : `<p class="teaser-price"><b>${PRICE}</b> · paiement unique · accès immédiat</p>`}</div><a class="btn" href="#offre">${CONFIG.freeAccess ? 'Découvrir la version complète' : `Voir la version complète · ${PRICE}`}</a></div>`}
-    ${S.example ? '' : `<p class="sent">${S.emailSent === 'pending' ? `Envoi de ton profil (PDF) à <b>${esc(S.email)}</b> en cours…` : S.emailSent ? `Ton profil a été envoyé à <b>${esc(S.email)}</b>. Pense à regarder tes courriers indésirables.` : `Ton profil n'a pas pu être envoyé à <b>${esc(S.email)}</b>.`} <button type="button" class="linkbtn" id="resend">Renvoyer</button> · <button type="button" class="linkbtn" id="changeMail">Changer d'adresse</button></p>`}
+    ${S.example ? '' : `<p class="sent">${S.emailSent === 'pending' ? `Envoi de ton profil (PDF) à <b>${esc(S.email)}</b> en cours…` : S.emailSent ? `Ton profil a été envoyé à <b>${esc(S.email)}</b>. Pense à regarder tes courriers indésirables.${S.optin ? ' Pour recevoir aussi nos conseils, <b>confirme ton inscription</b> avec le bouton prévu dans cet e-mail.' : ''}` : `Ton profil n'a pas pu être envoyé à <b>${esc(S.email)}</b>.${sendErr ? ' ' + esc(sendErr) : ''}`} <button type="button" class="linkbtn" id="resend">Renvoyer</button> · <button type="button" class="linkbtn" id="changeMail">Changer d'adresse</button></p>`}
   </div>`;
 }
-async function sendFree() {
+// Jeton de formulaire délivré par /api/config : prouve que la page a été chargée (protection contre les envois automatisés).
+async function freshConfig() { try { CONFIG = await (await fetch('/api/config')).json() || {}; } catch (e) { } }
+let sendErr = '';
+async function sendFree(retry = true) {
   const ar = archetype(), top = freePistes()[0], ch = S.chart, unk = S.birth.unknown;
+  if (!CONFIG.ft) { await freshConfig(); await new Promise(r => setTimeout(r, 9000)); }
   try {
+    sendErr = '';
     await api('/api/send-email', {
-      type: 'carte', email: S.email, name: S.birth.name || '', optin: !!S.optin, guide: guideData('profil'),
+      ft: CONFIG.ft, type: 'carte', email: S.email, name: S.birth.name || '', optin: !!S.optin, guide: guideData('profil'),
       lead: { hd_type: ch ? TYPES[ch.type].name : null, hd_authority: ch && !unk ? AUTH[ch.authority][0] : null, hd_profile: ch && !unk ? ch.profile : null, archetype: ar?.name, top_idea: top?.t, quiz: S.quick, utm: S.utm || null }
     });
     return true;
-  } catch (err) { return false; }
+  } catch (err) {
+    // Page ouverte depuis longtemps ou jeton absent : on en redemande un et on réessaie une fois.
+    if (retry && (err.status === 409 || err.code === 'missing' || err.code === 'fast')) { await freshConfig(); await new Promise(r => setTimeout(r, 9000)); return sendFree(false); }
+    sendErr = err.status === 429 && !err.code ? err.message : '';
+    return false;
+  }
 }
 document.addEventListener('submit', async e => {
   if (e.target.id !== 'gateForm') return;

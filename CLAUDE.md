@@ -13,15 +13,16 @@ Page de vente et outil en ligne (français, tutoiement). **Bloc gratuit** : char
   - `checkout.js` : crée un Hosted Checkout SumUp (`POST /v0.1/checkouts`, `hosted_checkout.enabled`, `return_url` = webhook), enregistre la ligne `boussole_purchases` (PENDING + e-mail), renvoie `{id, url}`.
   - `verify.js` : `{id}` → `confirmCheckout` (lib/payments.js) ; `{token}` → vérifie un lien d'accès. Renvoie un jeton HMAC (`lib/token.js`).
   - `sumup-webhook.js` : notification SumUp ; relit le checkout chez SumUp avant de confirmer.
-  - Mode test ouvert : `FREE_ACCESS=1` → `/api/config` renvoie `{freeAccess: true}`, le paywall devient « Offert », `verify.js` `{free: true}` délivre un jeton `test-<uuid>` (hors quota IA et statistiques), qui reste valable après le test, sauf si `REVOKE_TEST_ACCESS=1`.
+  - Mode test ouvert : `FREE_ACCESS=1` → `/api/config` renvoie `{freeAccess: true}`, le paywall devient « Offert », `verify.js` `{free: true}` délivre un jeton `test-<uuid>` (hors statistiques de ventes, même quota IA que les clientes), qui reste valable après le test, sauf si `REVOKE_TEST_ACCESS=1`.
   - `config.js` : réglages publics (`freeAccess`, `testCharge` = montant réellement encaissé quand `PRICE_EUR` ≠ 46, affiché sous le prix pour le test à 1 €).
   - `health.js` : diagnostic de mise en ligne (`/api/health`) : mode, prix, présence des clés, fournisseur d'e-mail, tables Supabase. Jamais de valeur secrète.
   - `project.js` : enregistre le projet validé (parcours « déjà un projet ») dans `boussole_leads.quiz.projet`. Côté page, le texte va dans `S.ans.ideas` (module « Tes idées » du bilan, lu par le comité) et `S.projectSaved = true`.
-  - `relance.js` : cron quotidien (vercel.json, 8 h UTC) : relance J+2 des prospects `optin` non clients (fenêtre J+2 à J+14, 40 max/jour). Exige `CRON_SECRET` ; n'envoie que si `RELANCE_ENABLED=1`, sinon renvoie un décompte. Colonnes `relance_sent_at`, `unsubscribed_at` (migration `20261108_relance.sql`).
+  - `relance.js` : cron quotidien (vercel.json, 8 h UTC) : relance J+2 des prospects `optin` non clients (fenêtre J+2 à J+14, 40 max/jour). Exige `CRON_SECRET` ; n'envoie que si `RELANCE_ENABLED=1`, sinon renvoie un décompte. Colonnes `relance_sent_at`, `unsubscribed_at`, `optin_confirmed_at`, `ip_hash` (migration `20261108_relance.sql`).
   - `unsubscribe.js` : lien signé (`unsubToken`) dans les e-mails de conseils ; GET = confirmation, POST = désinscription (aussi pour List-Unsubscribe one-click).
   - `restore.js` : « Déjà acheté ? » → renvoie le lien d'accès (`/?acces=<jeton>`) à l'e-mail d'achat ; réponse identique que l'adresse soit cliente ou non.
-  - `claude.js` : relais vers `POST /v1/messages`, réservé aux détenteurs d'un jeton valide, plafonné par achat (`AI_CALLS_LIMIT`, 60 par défaut, RPC `boussole_use_ai`) ; renvoie `{data}` (JSON parsé).
-  - `send-email.js` : e-mails via `lib/mail.js`. Type `carte` (profil gratuit) : enregistre le prospect dans `boussole_leads` (1 envoi/min, 10 max par adresse). Type `recap` exige le jeton.
+  - `claude.js` : relais vers `POST /v1/messages`, réservé aux détenteurs d'un jeton valide, plafonné par achat et par accès de test (`AI_CALLS_LIMIT`, 60 par défaut, RPC `boussole_use_ai` ; les accès de test ont une ligne `boussole_purchases` au statut `TEST`) ; renvoie `{data}` (JSON parsé).
+  - `send-email.js` : e-mails via `lib/mail.js`. Type `carte` (profil gratuit) : exige le jeton de formulaire `ft` délivré par `/api/config` (page chargée depuis au moins 8 s, 12 h au plus ; `lib/token.js` `checkFormToken`), retire tout lien du contenu reçu, limite les envois (1/min et 10 max par adresse, 5 adresses par heure et par connexion via `ip_hash`, plafonds globaux `FREE_EMAILS_PER_HOUR` 150 / `FREE_EMAILS_PER_DAY` 800), puis enregistre le prospect dans `boussole_leads`. Pièce jointe : PDF uniquement. Type `recap` exige le jeton d'accès.
+  - `confirm.js` : double consentement pour les conseils. Le bouton de l'e-mail du profil mène à une page (GET) dont le bouton (POST) pose `optin_confirmed_at`. La relance ne cible que les inscriptions confirmées.
 - `lib/` : `db.js` (Supabase REST, service_role ; renvoie `null` si non configuré, le site continue de marcher), `mail.js` (en-têtes personnalisés pour List-Unsubscribe ; envoi via Resend si `RESEND_API_KEY` + `SENDER_EMAIL`, sinon Gmail SMTP, sinon Brevo ; seule dépendance npm : `nodemailer`), `payments.js` (`confirmCheckout` : passe à PAID une seule fois, marque le prospect client, envoie l'e-mail avec le lien d'accès), `token.js`.
 - `supabase/migrations/` : schéma SQL (tables `boussole_leads`, `boussole_purchases`, fonction `boussole_use_ai`, vue `boussole_stats`). À exécuter dans le SQL Editor de Supabase. Tables préfixées car la base est partagée avec d'autres projets.
 - `.claude/agents/expert-tunnel-vente.md` : agent spécialisé tunnel de vente / expérience client pour cette niche.
@@ -38,7 +39,7 @@ Tout l'état est dans `localStorage` sous la clé `boussole-business-v1` (objet 
 ## À faire / pistes
 - Tester les vrais appels SumUp et Brevo (prix à 1 € via `PRICE_EUR`), vérifier la forme exacte des réponses SumUp (champ `transactions`, notification webhook).
 - Autres relances (J+7…) si la relance J+2 convertit ; ne cibler que les prospects `optin` (consentement exigé pour la prospection par e-mail).
-- Captcha éventuel sur le formulaire e-mail gratuit si des abus apparaissent.
+- Captcha (Cloudflare Turnstile) sur le formulaire e-mail gratuit si des abus apparaissent malgré le jeton de formulaire et les limites.
 - Valider le calcul de charte sur plusieurs dates contre un calculateur de référence (précision ~1 minute d'arc ; le nœud lunaire utilise une approximation du nœud vrai).
 
 ## Parcours et affichage (points à connaître)

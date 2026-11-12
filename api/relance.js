@@ -4,6 +4,7 @@ import { relanceEmail } from '../lib/emails.js';
 
 // Relance à J+2 : un e-mail aux prospects qui ont accepté de recevoir des conseils et n'ont pas acheté.
 // Appelé chaque jour par Vercel Cron (vercel.json), avec l'en-tête « Authorization: Bearer CRON_SECRET ».
+// Seules les personnes qui ont confirmé leur inscription par e-mail (optin_confirmed_at) sont relancées.
 // Rien ne part tant que RELANCE_ENABLED n'est pas à 1 (simple décompte des personnes concernées).
 const wait = ms => new Promise(r => setTimeout(r, ms));
 
@@ -14,7 +15,7 @@ export default async function handler(req, res) {
 
   const day = 86400000, now = Date.now();
   const to = new Date(now - 2 * day).toISOString(), from = new Date(now - 14 * day).toISOString();
-  const rows = await db(`boussole_leads?optin=eq.true&is_client=eq.false&relance_sent_at=is.null&unsubscribed_at=is.null&created_at=lte.${enc(to)}&created_at=gte.${enc(from)}&select=email,name,archetype,top_idea&order=created_at.asc&limit=40`);
+  const rows = await db(`boussole_leads?optin=eq.true&optin_confirmed_at=not.is.null&is_client=eq.false&relance_sent_at=is.null&unsubscribed_at=is.null&created_at=lte.${enc(to)}&created_at=gte.${enc(from)}&select=email,name,archetype,top_idea&order=created_at.asc&limit=40`);
   if (rows === null) return res.status(500).json({ error: 'Lecture impossible : le fichier supabase/migrations/20261108_relance.sql a-t-il été exécuté ?' });
   if (process.env.RELANCE_ENABLED !== '1') return res.status(200).json({ ok: true, envoi: 'désactivé (RELANCE_ENABLED)', personnes_concernees: rows.length });
 

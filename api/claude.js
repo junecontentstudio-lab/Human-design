@@ -17,8 +17,9 @@ export default async function handler(req, res) {
   if (!checkToken(token)) return res.status(402).json({ error: 'Accès complet requis' });
   if (typeof prompt !== 'string' || prompt.length < 20 || prompt.length > 60000) return res.status(400).json({ error: 'Demande invalide' });
   // Plafond d'appels IA par achat (comité complet = 6 appels), pour protéger le budget API.
-  // Les accès de test n'ont pas de ligne d'achat : ils restent hors des statistiques de ventes.
-  if (dbOn() && !isTestToken(token)) {
+  // Les accès de test ont le même plafond : leur ligne porte le statut TEST, hors des statistiques de ventes.
+  if (dbOn()) {
+    if (isTestToken(token)) await db('boussole_purchases?on_conflict=checkout_id', { method: 'POST', prefer: 'resolution=ignore-duplicates', body: { checkout_id: tokenId(token), status: 'TEST', amount: 0 } });
     const ok = await db('rpc/boussole_use_ai', { method: 'POST', body: { p_checkout: tokenId(token), p_limit: Number(process.env.AI_CALLS_LIMIT || 60) } });
     if (ok === false) return res.status(429).json({ error: 'Limite atteinte', code: 'quota' });
   }

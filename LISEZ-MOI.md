@@ -82,7 +82,7 @@ Avec `PRICE_EUR=1` :
 2. Remplis le bilan, coche la case des CGV et paie 1 € avec ta propre carte.
 3. Au retour sur le site, les pistes, le comité et le récap doivent être débloqués.
 4. Lance le comité d'experts, puis envoie-toi le récap par e-mail.
-5. Rembourse-toi le test depuis SumUp, remets `PRICE_EUR=22` et redéploie.
+5. Rembourse-toi le test depuis SumUp, remets `PRICE_EUR=46` et redéploie.
 
 En cas de problème, Vercel affiche les erreurs dans **Logs** : copie-les-moi et je t'aide à corriger.
 
@@ -93,4 +93,4 @@ En cas de problème, Vercel affiche les erreurs dans **Logs** : copie-les-moi et
 - **Coût par client** : un paiement SumUp en ligne prélève une commission (voir leurs tarifs), et une analyse complète du comité consomme quelques centimes à quelques dizaines de centimes d'API Claude. La limite de dépense protège ton budget.
 - **Accès sur un autre appareil** : après le paiement, la cliente reçoit un e-mail avec son lien d'accès personnel, valable sur tous ses appareils. Elle peut le redemander avec « Déjà acheté ? » dans l'encadré de paiement.
 - **Sécurité** : les idées par IA et l'envoi du récap ne fonctionnent qu'avec un paiement vérifié par SumUp. Les 4 pistes classiques sont calculées dans la page : une personne très technique pourrait les afficher sans payer, ce qui reste marginal.
-- **Modifier le prix affiché** : dans `public/index.html`, cherche `const PRICE = '22 €'`. Pense à changer aussi `PRICE_EUR` dans Vercel et le prix dans les CGV.
+- **Modifier le prix affiché** : dans `public/index.html`, cherche `const PRICE = '46 €'`. Pense à changer aussi `PRICE_EUR` dans Vercel et le prix dans les CGV.

@@ -1,6 +1,6 @@
 # Ma Boussole Business by Business Design
 
-Page de vente et outil en ligne (français, tutoiement). **Bloc gratuit** : charte Human Design → quiz express (9 questions, dont le choix du parcours « pas encore d'idée » / « déjà un projet ») → e-mail demandé pour révéler le profil (archétype d'entrepreneur·e + 3 pistes de business) : le profil s'affiche immédiatement et part en même temps par e-mail avec le PDF, en arrière-plan (`S.emailSent = 'pending'` pendant l'envoi). **Version complète à 22 €** (à partir des idées sur mesure) : idées par IA, bilan approfondi en 7 modules, comité de 6 experts IA, offre + récap. Hébergement Vercel, base Supabase, paiement SumUp, e-mails Resend (ou Gmail / Brevo), IA Claude (API Anthropic).
+Page de vente et outil en ligne (français, tutoiement). **Bloc gratuit** : charte Human Design → quiz express (9 questions, dont le choix du parcours « pas encore d'idée » / « déjà un projet ») → e-mail demandé pour révéler le profil (archétype d'entrepreneur·e + 3 pistes de business) : le profil s'affiche immédiatement et part en même temps par e-mail avec le PDF, en arrière-plan (`S.emailSent = 'pending'` pendant l'envoi). **Version complète à 46 €** (à partir des idées sur mesure) : idées par IA, bilan approfondi en 7 modules, comité de 6 experts IA, offre + récap. Hébergement Vercel, base Supabase, paiement SumUp, e-mails Resend (ou Gmail / Brevo), IA Claude (API Anthropic).
 
 ## Structure
 - `src/page.html` : gabarit HTML + tout le CSS (palette crème blanc cassé / marron en tokens, contraste renforcé ; toujours en clair, le thème sombre ne s'active que via `data-theme="dark"`). Contient les marqueurs `/*ENGINE*/ /*CONTENT*/ /*APP*/`.
@@ -14,7 +14,7 @@ Page de vente et outil en ligne (français, tutoiement). **Bloc gratuit** : char
   - `verify.js` : `{id}` → `confirmCheckout` (lib/payments.js) ; `{token}` → vérifie un lien d'accès. Renvoie un jeton HMAC (`lib/token.js`).
   - `sumup-webhook.js` : notification SumUp ; relit le checkout chez SumUp avant de confirmer.
   - Mode test ouvert : `FREE_ACCESS=1` → `/api/config` renvoie `{freeAccess: true}`, le paywall devient « Offert », `verify.js` `{free: true}` délivre un jeton `test-<uuid>` (hors quota IA et statistiques), qui reste valable après le test, sauf si `REVOKE_TEST_ACCESS=1`.
-  - `config.js` : réglages publics (`freeAccess`, `testCharge` = montant réellement encaissé quand `PRICE_EUR` ≠ 22, affiché sous le prix pour le test à 1 €).
+  - `config.js` : réglages publics (`freeAccess`, `testCharge` = montant réellement encaissé quand `PRICE_EUR` ≠ 46, affiché sous le prix pour le test à 1 €).
   - `health.js` : diagnostic de mise en ligne (`/api/health`) : mode, prix, présence des clés, fournisseur d'e-mail, tables Supabase. Jamais de valeur secrète.
   - `project.js` : enregistre le projet validé (parcours « déjà un projet ») dans `boussole_leads.quiz.projet`. Côté page, le texte va dans `S.ans.ideas` (module « Tes idées » du bilan, lu par le comité) et `S.projectSaved = true`.
   - `relance.js` : cron quotidien (vercel.json, 8 h UTC) : relance J+2 des prospects `optin` non clients (fenêtre J+2 à J+14, 40 max/jour). Exige `CRON_SECRET` ; n'envoie que si `RELANCE_ENABLED=1`, sinon renvoie un décompte. Colonnes `relance_sent_at`, `unsubscribed_at` (migration `20261108_relance.sql`).
@@ -27,7 +27,7 @@ Page de vente et outil en ligne (français, tutoiement). **Bloc gratuit** : char
 - `.claude/agents/expert-tunnel-vente.md` : agent spécialisé tunnel de vente / expérience client pour cette niche.
 - `docs/recherche-human-design-business-design.md` : dossier de recherche (méthode Business Design en 5 étapes, limites éthiques et légales, sources) et tableau de ce qui est déjà mis en œuvre. À relire avant toute évolution du contenu.
 - `.env.example` : variables à définir dans Vercel.
-- Prix : `PRICE` (22 €, prix de lancement) et `NEXT_PRICE` (49 €, annoncé comme prix futur) dans `src/app.js`, `PRICE_EUR` côté serveur. Jamais de prix barré « au lieu de » tant que le prix de référence n'a pas été réellement pratiqué (règle française sur les annonces de réduction).
+- Prix : `PRICE` (46 €) et `NEXT_PRICE` (vide ; à renseigner seulement si une hausse est réellement prévue) dans `src/app.js`, `PRICE_EUR` côté serveur. Jamais de prix barré « au lieu de » tant que le prix de référence n'a pas été réellement pratiqué (règle française sur les annonces de réduction).
 
 ## Flux de paiement
 Front : clic « Débloquer » (e-mail + case CGV obligatoires) → `/api/checkout` → `S.pendingCheckout = id` (localStorage) → redirection SumUp → retour sur `SITE_URL/?paiement=ok#bilan` → `verifyReturn()` appelle `/api/verify` (jusqu'à 6 essais) → `S.paid = true`, `S.token` stocké. En parallèle, le webhook SumUp confirme côté serveur et l'e-mail « Ton accès complet » part une seule fois avec le lien `/?acces=<jeton>#bilan` (accès multi-appareils).

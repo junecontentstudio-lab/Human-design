@@ -72,6 +72,13 @@ textarea{min-height:84px;resize:vertical}
 .hint{font-size:.8rem;color:var(--muted);font-weight:400}
 .teaser-price{margin-top:10px;color:var(--muted)}.teaser-price b{font-family:var(--display);font-size:1.35rem;color:var(--accent);margin-right:4px}
 .pw-faq{margin-top:16px}
+.pop{position:fixed;inset:0;z-index:60;background:rgba(33,23,15,.55);display:grid;place-items:center;padding:16px;animation:fade .25s ease both}
+.pop-card{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:28px 24px 22px;max-width:460px;width:100%;max-height:calc(100vh - 32px);overflow:auto;box-shadow:0 24px 60px rgba(33,23,15,.28);display:grid;gap:12px;animation:rise .3s ease both}
+.pop-card h3{font-size:1.45rem;font-weight:400;line-height:1.2;padding-right:28px}
+.pop-card .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:4px}
+.pop-x{position:absolute;top:10px;right:10px;width:40px;height:40px;border:0;background:none;font-size:1.6rem;line-height:1;color:var(--muted);cursor:pointer;border-radius:50%}
+.pop-x:hover{background:var(--sand)}
+@keyframes fade{from{opacity:0}to{opacity:1}}
 .btn{font:inherit;font-weight:600;border:0;border-radius:999px;padding:12px 20px;background:var(--accent);color:var(--accent-ink);cursor:pointer;display:inline-flex;align-items:center;gap:8px;justify-content:center}
 .btn:hover{filter:brightness(1.07)}
 .btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
@@ -451,7 +458,7 @@ html{scroll-behavior:smooth}
         <li><div><b>Ton quiz express</b><span>9 questions en un clic chacune.</span></div></li>
         <li><div><b>Ton profil et tes 3 pistes</b><span>Ton archétype et 3 pistes de business, envoyés par e-mail.</span></div></li>
       </ol></div>
-      <div class="rung paid"><p class="eyebrow">Version complète · <span class="price-tag">22 € · prix de lancement</span></p><ul class="pw-mini">
+      <div class="rung paid"><p class="eyebrow">Version complète · <span class="price-tag">46 € · paiement unique</span></p><ul class="pw-mini">
         <li>Idées sur mesure par IA + bilan approfondi</li><li>Comité de 6 experts IA</li><li>Ton offre, ton plan d'action et ton récap</li>
       </ul></div>
     </div>
@@ -563,7 +570,7 @@ html{scroll-behavior:smooth}
   <div class="wrap">
     <p>Le Human Design est une grille de lecture de soi, pas une science validée. Ce bilan donne des pistes de réflexion ; il ne remplace pas un accompagnement professionnel personnalisé.</p>
     <p>Charte calculée dans ton navigateur avec des éphémérides simplifiées (précision d'environ une minute d'arc).</p>
-    <p class="legal-links"><a href="/mentions-legales.html">Mentions légales</a> · <a href="/cgv.html">CGV</a> · <a href="/confidentialite.html">Confidentialité</a></p>
+    <p class="legal-links"><a href="#offre">Déjà cliente ? Retrouver mon accès</a> · <a href="/mentions-legales.html">Mentions légales</a> · <a href="/cgv.html">CGV</a> · <a href="/confidentialite.html">Confidentialité</a></p>
   </div>
 </footer>
 

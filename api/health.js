@@ -26,7 +26,7 @@ export default async function handler(req, res) {
   const out = {
     site_url: process.env.SITE_URL || 'manquant',
     mode: freeAccess() ? 'test (version complète offerte)' : 'payant',
-    prix_encaisse: `${Number(process.env.PRICE_EUR || 22)} €`,
+    prix_encaisse: `${Number(process.env.PRICE_EUR || 46)} €`,
     token_secret: process.env.TOKEN_SECRET ? 'ok' : 'manquant',
     sumup: await sumupCheck(),
     ia_claude: process.env.ANTHROPIC_API_KEY ? 'ok' : 'manquant',

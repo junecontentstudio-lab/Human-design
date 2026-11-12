@@ -798,9 +798,9 @@ document.addEventListener('click', e => {
 
 
 /* ---------- parcours gratuit : quiz express, profil et e-mail ---------- */
-const PRICE = '22 €';
+const PRICE = '46 €';
 // Prix prévu après le lancement : n'afficher que s'il sera réellement appliqué (annonce de hausse future, pas de faux prix barré).
-const NEXT_PRICE = '49 €';
+const NEXT_PRICE = '';
 let CONFIG = {};
 fetch('/api/config').then(r => r.json()).then(c => { CONFIG = c || {}; applyConfig(); }).catch(() => { });
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -976,7 +976,7 @@ function renderResults() {
     <div class="res-ideas">
       ${ideas.length ? ideas.map((x, i) => ideaCardFree(x, i)).join('') : '<div class="card"><p>Aucune piste ne correspond à tes contraintes actuelles : le bilan approfondi permet de les ajuster finement.</p></div>'}
     </div>
-    ${S.paid && !S.example ? '' : `<div class="card next-card"><div><p class="eyebrow">Aller plus loin</p><h3>Transforme une piste en projet concret</h3><p class="muted" style="margin-top:4px">Idées 100 % sur mesure, bilan approfondi, comité de 6 experts, ton offre, ton plan d'action sur 30 jours et ton récap complet.</p>${CONFIG.freeAccess ? '' : `<p class="teaser-price"><b>${PRICE}</b> · paiement unique · prix de lancement</p>`}</div><a class="btn" href="#offre">${CONFIG.freeAccess ? 'Découvrir la version complète' : `Voir la version complète · ${PRICE}`}</a></div>`}
+    ${S.paid && !S.example ? '' : `<div class="card next-card"><div><p class="eyebrow">Aller plus loin</p><h3>Transforme une piste en projet concret</h3><p class="muted" style="margin-top:4px">Idées 100 % sur mesure, bilan approfondi, comité de 6 experts, ton offre, ton plan d'action sur 30 jours et ton récap complet.</p>${CONFIG.freeAccess ? '' : `<p class="teaser-price"><b>${PRICE}</b> · paiement unique · accès immédiat</p>`}</div><a class="btn" href="#offre">${CONFIG.freeAccess ? 'Découvrir la version complète' : `Voir la version complète · ${PRICE}`}</a></div>`}
     ${S.quick.path === 'projet' && !S.example ? projectCardHTML() : ''}
     ${S.example ? '' : `<p class="sent">${S.emailSent === 'pending' ? `Envoi de ton profil (PDF) à <b>${esc(S.email)}</b> en cours…` : S.emailSent ? `Ton profil a été envoyé à <b>${esc(S.email)}</b>. Pense à regarder tes courriers indésirables.` : `Ton profil n'a pas pu être envoyé à <b>${esc(S.email)}</b>.`} <button type="button" class="linkbtn" id="resend">Renvoyer</button> · <button type="button" class="linkbtn" id="changeMail">Changer d'adresse</button></p>`}
   </div>`;
@@ -1033,9 +1033,9 @@ function paywallHTML() {
       ${CONFIG.freeAccess ? freeCardHTML() : `<div class="card pw-right">
         <p class="eyebrow">Accès complet</p>
         <p class="pw-price">${PRICE}</p>
-        <p class="pw-next">Prix de lancement · il passera à ${NEXT_PRICE} après la période de lancement</p>
+        <p class="pw-next">${NEXT_PRICE ? `Prix de lancement · il passera à ${NEXT_PRICE} après la période de lancement` : 'Paiement unique · sans abonnement'}</p>
         ${CONFIG.testCharge ? `<p class="hint test-note">Mode test : le paiement réellement encaissé est de ${CONFIG.testCharge} €.</p>` : ''}
-        <p class="muted">Paiement unique et sécurisé par SumUp · accès immédiat</p>
+        <p class="muted">Paiement sécurisé par SumUp · accès immédiat</p>
         <label for="payMail">Ton adresse e-mail<input type="email" id="payMail" autocomplete="email" placeholder="prenom@exemple.fr" value="${esc(S.example ? '' : S.email || '')}"><span class="hint">Ton lien d'accès personnel y sera envoyé.</span></label>
         <label class="check" for="fCgv" style="align-items:flex-start"><input type="checkbox" id="fCgv" style="margin-top:4px"> <span class="hint">J'accepte les <a href="/cgv.html" target="_blank">conditions générales de vente</a>. Je demande l'accès immédiat au contenu et je renonce à mon droit de rétractation.</span></label>
         <button class="btn" type="button" id="payGo">Débloquer ma version complète</button>
@@ -1066,7 +1066,7 @@ function freeCardHTML() {
       </div>`;
 }
 function applyConfig() {
-  document.querySelectorAll('.price-tag').forEach(el => { el.textContent = CONFIG.freeAccess ? 'offerte pendant le test' : `${PRICE} · prix de lancement`; });
+  document.querySelectorAll('.price-tag').forEach(el => { el.textContent = CONFIG.freeAccess ? 'offerte pendant le test' : `${PRICE} · paiement unique`; });
   renderOffer(); renderResults(); updateNextBar();
 }
 document.addEventListener('click', async e => {
@@ -1079,8 +1079,13 @@ document.addEventListener('click', async e => {
   try { const d = await api('/api/verify', { free: true }); grant(d.token); toast('Ta version complète est ouverte ✓ Bon test !'); }
   catch (err) { e.target.disabled = false; msg.textContent = 'L\'accès n\'a pas pu s\'ouvrir. Réessaie dans un instant.'; }
 });
+// La version complète ne s'affiche qu'après le profil gratuit (ou pour une cliente, l'exemple, ou un lien direct #offre).
+let offerForced = location.hash === '#offre';
+const offerVisible = () => S.example || S.paid || offerForced || (quizDone() && !!S.email);
 function renderOffer() {
-  const box = $('#offerBox');
+  const box = $('#offerBox'), vis = offerVisible();
+  $('#offre').hidden = !vis;
+  document.querySelectorAll('.nav-offer').forEach(a => a.toggleAttribute('hidden', !vis));
   if (S.paid && !S.example) {
     box.innerHTML = `<div class="card active-card"><div><p class="eyebrow">Accès complet actif ✓</p><h3 style="font-size:1.3rem;font-weight:400;margin-top:4px">Ton bilan approfondi t'attend</h3><p class="muted" style="margin-top:4px">Ton lien d'accès personnel t'a été envoyé par e-mail : il rouvre tout sur n'importe quel appareil.</p></div><a class="btn" href="#bilan">Continuer mon parcours</a></div>`;
     return;
@@ -1217,3 +1222,43 @@ function initForm() {
 }
 
 initForm(); resetQuizStep(); renderAll(); verifyReturn();
+
+/* ---------- lien direct vers l'offre (pied de page, e-mails) ---------- */
+document.addEventListener('click', e => { if (e.target.closest?.('a[href="#offre"]') && !offerVisible()) { offerForced = true; renderOffer(); } }, true);
+
+/* ---------- fenêtre « avant de partir » : profil gratuit fait, offre vue, départ sans achat ---------- */
+// Une seule fois par visite et au plus une fois par jour. Pas de fausse promotion : un simple rappel de ce qui attend la personne.
+const EXIT_KEY = 'boussole-exit-v1';
+let offerSeen = false, exitShown = false, offerSeenAt = 0, maxY = 0;
+const exitOk = () => {
+  if (exitShown || !offerSeen || S.paid || S.example || CONFIG.freeAccess || !S.email || !quizDone() || $('#exitPop')) return false;
+  if (Date.now() - offerSeenAt < 4000) return false;
+  try { if (Date.now() - Number(localStorage.getItem(EXIT_KEY) || 0) < 86400000) return false; } catch (e) { }
+  const a = document.activeElement; return !(a && /INPUT|TEXTAREA|SELECT/.test(a.tagName));
+};
+function showExit() {
+  if (!exitOk()) return;
+  exitShown = true; try { localStorage.setItem(EXIT_KEY, String(Date.now())); } catch (e) { }
+  const ar = archetype(), top = scoreIdeas()[0], nm = S.birth.name ? esc(S.birth.name) + ', ' : '';
+  const d = document.createElement('div'); d.id = 'exitPop'; d.className = 'pop';
+  d.innerHTML = `<div class="pop-card" role="dialog" aria-modal="true" aria-labelledby="exitT">
+    <button type="button" class="pop-x" data-exit="close" aria-label="Fermer">×</button>
+    <p class="eyebrow">Avant de partir</p>
+    <h3 id="exitT">${nm}ta piste mérite mieux qu'un onglet fermé</h3>
+    <p class="muted">${top ? `Tu as trouvé ta piste n°1 : <b>${esc(top.t)}</b>${ar ? `, avec ton profil <b>${esc(ar.name)}</b>` : ''}. ` : ''}La version complète la transforme en projet concret :</p>
+    <ul class="pw-list"><li>Des idées <b>100 % sur mesure</b> et ton bilan approfondi</li><li>Ton <b>comité de 6 experts IA</b> et ton offre signature</li><li>Ton <b>plan d'action sur 30 jours</b> et ton guide en PDF</li></ul>
+    <p class="teaser-price"><b>${PRICE}</b> · paiement unique · accès immédiat</p>
+    <div class="actions"><button type="button" class="btn" data-exit="go">Continuer mon parcours</button><button type="button" class="btn ghost" data-exit="close">Plus tard</button></div>
+    <p class="hint">Ton profil gratuit reste dans ta boîte mail (${esc(S.email)}).</p>
+  </div>`;
+  document.body.appendChild(d); d.querySelector('[data-exit="go"]').focus();
+}
+function closeExit(go) { $('#exitPop')?.remove(); if (go) { $('#offre').scrollIntoView({ block: 'start' }); setTimeout(() => $('#payMail')?.focus({ preventScroll: true }), 400); } }
+document.addEventListener('click', e => { const t = e.target.closest?.('[data-exit]'); if (t) closeExit(t.dataset.exit === 'go'); else if (e.target.id === 'exitPop') closeExit(false); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && $('#exitPop')) closeExit(false); });
+if ('IntersectionObserver' in window) new IntersectionObserver(es => es.forEach(en => { if (en.isIntersecting && !offerSeen && !S.paid) { offerSeen = true; offerSeenAt = Date.now(); maxY = scrollY; } }), { threshold: 0.15 }).observe($('#offerBox'));
+// Ordinateur : la souris sort par le haut de la fenêtre (vers l'onglet ou la barre d'adresse).
+document.documentElement.addEventListener('mouseleave', e => { if (e.clientY <= 0) showExit(); });
+// Téléphone : retour sur l'onglet après l'avoir quitté, ou remontée franche loin de l'offre.
+document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') setTimeout(showExit, 600); });
+addEventListener('scroll', () => { if (!offerSeen || exitShown) return; if (scrollY > maxY) maxY = scrollY; else if (matchMedia('(pointer:coarse)').matches && maxY - scrollY > 1400 && $('#offre').getBoundingClientRect().top > innerHeight) showExit(); }, { passive: true });
